@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.customer.model.entity.CustomerEntity;
-import org.robn.ecommerce.seller.model.entity.SellerEntity;
+
+import java.util.UUID;
 
 @Entity
 @Getter
