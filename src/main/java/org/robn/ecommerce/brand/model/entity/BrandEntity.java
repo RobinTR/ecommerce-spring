@@ -3,6 +3,9 @@ package org.robn.ecommerce.brand.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.product.model.entity.ProductEntity;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,4 +22,7 @@ public class BrandEntity extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductEntity> products;
 }
