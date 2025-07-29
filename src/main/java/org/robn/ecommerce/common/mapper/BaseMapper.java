@@ -1,0 +1,23 @@
+package org.robn.ecommerce.common.mapper;
+
+import java.util.Collection;
+import java.util.List;
+
+public interface BaseMapper<S, T> {
+
+    /**
+     * Converts source object to a target object.
+     *
+     * @param source the source object to map
+     * @return the mapped target object
+     */
+    T map(S source);
+
+    /**
+     * Converts a collection of source objects to a list of target objects.
+     *
+     * @param sources the collection of source objects to map
+     * @return the list of mapped target objects
+     */
+    List<T> map(Collection<S> sources);
+}
