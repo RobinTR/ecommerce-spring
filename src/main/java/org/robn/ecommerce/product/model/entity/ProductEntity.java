@@ -6,6 +6,7 @@ import org.robn.ecommerce.brand.model.entity.BrandEntity;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,10 +23,10 @@ public class ProductEntity extends BaseEntity {
     private UUID id;
 
     @Column(name = "category_id")
-    private Long categoryId;
+    private UUID categoryId;
 
     @Column(name = "brand_id")
-    private Long brandId;
+    private UUID brandId;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", updatable = false, insertable = false)
@@ -48,4 +49,7 @@ public class ProductEntity extends BaseEntity {
 
     @Column(name = "is_verified")
     private Boolean isVerified;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<ProductImageEntity> productImages;
 }
