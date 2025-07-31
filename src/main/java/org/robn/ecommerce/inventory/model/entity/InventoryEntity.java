@@ -18,15 +18,15 @@ public class InventoryEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "warehouse")
-    private String warehouse;
-
     @Column(name = "product_id")
     private Long productId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
+
+    @Column(name = "warehouse")
+    private String warehouse;
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity;
