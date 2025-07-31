@@ -16,14 +16,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "eco_brand")
 public class BrandEntity extends BaseEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    private List<ProductEntity> products;
 }

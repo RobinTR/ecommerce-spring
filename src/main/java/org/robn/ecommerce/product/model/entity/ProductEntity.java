@@ -17,16 +17,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "eco_product")
 public class ProductEntity extends BaseEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "category_id")
-    private UUID categoryId;
+    private Long categoryId;
 
     @Column(name = "brand_id")
-    private UUID brandId;
+    private Long brandId;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", updatable = false, insertable = false)
@@ -52,4 +53,5 @@ public class ProductEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<ProductImageEntity> productImages;
+
 }

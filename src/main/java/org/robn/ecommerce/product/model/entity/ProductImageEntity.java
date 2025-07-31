@@ -14,13 +14,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "eco_product_image")
 public class ProductImageEntity extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
 
     @Column(name = "product_id")
-    private UUID productId;
+    private Long productId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
@@ -31,4 +32,5 @@ public class ProductImageEntity extends BaseEntity {
 
     @Column(name = "alt_text")
     private String altText;
+
 }
