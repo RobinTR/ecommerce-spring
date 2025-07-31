@@ -37,9 +37,6 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "stock_quantity")
-    private Integer stockQuantity;
-
     @Column(name = "is_active")
     private Boolean isActive;
 
