@@ -6,6 +6,7 @@ import org.robn.ecommerce.address.model.entity.AddressEntity;
 import org.robn.ecommerce.user.model.entity.UserEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,7 +24,4 @@ public class CustomerEntity extends UserEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AddressEntity> addresses;
 }

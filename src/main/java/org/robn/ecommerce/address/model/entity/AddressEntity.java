@@ -8,6 +8,7 @@ import org.robn.ecommerce.customer.model.entity.CustomerEntity;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @Builder
@@ -19,6 +20,7 @@ import java.util.UUID;
         @Index(name = "idx_address_city_district_neighborhood", columnList = "city, district, neighborhood")
 })
 public class AddressEntity extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -42,7 +44,4 @@ public class AddressEntity extends BaseEntity {
     @Column(name = "is_default")
     private Boolean isDefault;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
-    private CustomerEntity customer;
 }
