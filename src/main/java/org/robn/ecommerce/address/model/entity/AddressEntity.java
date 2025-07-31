@@ -2,8 +2,8 @@ package org.robn.ecommerce.address.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
-import org.robn.ecommerce.customer.model.entity.CustomerEntity;
 
 import java.util.UUID;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_address", indexes = {

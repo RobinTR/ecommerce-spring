@@ -1,8 +1,11 @@
 package org.robn.ecommerce.address.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.robn.ecommerce.customer.model.entity.CustomerEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.seller.model.entity.SellerEntity;
 
 import java.util.UUID;
@@ -10,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_seller_address")

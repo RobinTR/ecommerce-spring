@@ -6,13 +6,16 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Getter
+@SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
+
     @Column(name = "created_at", updatable = false)
     protected LocalDateTime createdAt;
 
@@ -30,4 +33,5 @@ public abstract class BaseEntity {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }
