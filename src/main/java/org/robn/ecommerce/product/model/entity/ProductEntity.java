@@ -7,7 +7,6 @@ import org.robn.ecommerce.common.model.entity.BaseEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,14 +22,11 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "category_id")
-    private Long categoryId;
-
     @Column(name = "brand_id")
     private Long brandId;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", updatable = false, insertable = false)
+    @JoinColumn(name = "brand_id", insertable = false, updatable = false)
     private BrandEntity brand;
 
     @Column(name = "name")
