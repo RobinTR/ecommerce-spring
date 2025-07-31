@@ -17,4 +17,5 @@ public class GlobalExceptionHandler {
         EcoErrorResponse ecoErrorResponse = EcoErrorResponse.failureOf(HttpStatus.NOT_FOUND, exception.getMessage());
         return new ResponseEntity<>(ecoErrorResponse, ecoErrorResponse.getHttpStatus());
     }
+
 }

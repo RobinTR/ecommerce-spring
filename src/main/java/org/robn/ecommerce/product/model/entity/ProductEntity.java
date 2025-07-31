@@ -6,7 +6,6 @@ import org.robn.ecommerce.brand.model.entity.BrandEntity;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Getter
@@ -46,8 +45,5 @@ public class ProductEntity extends BaseEntity {
 
     @Column(name = "is_verified")
     private Boolean isVerified;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    List<ProductImageEntity> productImages;
 
 }

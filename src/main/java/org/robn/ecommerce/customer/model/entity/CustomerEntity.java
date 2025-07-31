@@ -1,12 +1,10 @@
 package org.robn.ecommerce.customer.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.robn.ecommerce.address.model.entity.AddressEntity;
 import org.robn.ecommerce.user.model.entity.UserEntity;
-
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "eco_customer")
 public class CustomerEntity extends UserEntity {
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -24,4 +23,5 @@ public class CustomerEntity extends UserEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
 }

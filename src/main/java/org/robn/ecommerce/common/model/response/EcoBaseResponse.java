@@ -10,17 +10,21 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class EcoBaseResponse<T> {
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
-    private HttpStatus httpStatus;
-    private Boolean isSuccess;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private T response;
 
     public static final EcoBaseResponse<Void> SUCCESS = EcoBaseResponse.<Void>builder()
             .httpStatus(HttpStatus.OK)
             .isSuccess(true)
             .build();
+
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
+
+    private HttpStatus httpStatus;
+
+    private Boolean isSuccess;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private T response;
 
     public static <T> EcoBaseResponse<T> successOf(final T response) {
         return EcoBaseResponse.<T>builder()
@@ -29,4 +33,5 @@ public class EcoBaseResponse<T> {
                 .response(response)
                 .build();
     }
+
 }

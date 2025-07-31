@@ -3,10 +3,6 @@ package org.robn.ecommerce.brand.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
-import org.robn.ecommerce.product.model.entity.ProductEntity;
-
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
