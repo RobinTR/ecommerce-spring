@@ -5,14 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.robn.ecommerce.user.model.enums.UserStatus;
 
 import java.util.UUID;
 
-@MappedSuperclass
+@Entity
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "eco_user")
 public abstract class UserEntity {
 
     @Id
@@ -25,5 +30,9 @@ public abstract class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private UserStatus status;
 
 }
