@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
 import org.robn.ecommerce.user.model.enums.UserStatus;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_user")
-public class UserEntity {
+public class UserEntity extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

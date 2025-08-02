@@ -2,7 +2,7 @@ package org.robn.ecommerce.category.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
 
 @Entity
 @Getter
@@ -11,7 +11,7 @@ import org.robn.ecommerce.common.model.entity.BaseEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_category")
-public class CategoryEntity extends BaseEntity {
+public class CategoryEntity extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

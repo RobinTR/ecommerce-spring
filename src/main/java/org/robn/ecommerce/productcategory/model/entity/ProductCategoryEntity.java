@@ -3,7 +3,7 @@ package org.robn.ecommerce.productcategory.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.category.model.entity.CategoryEntity;
-import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.entity.AuditEntity;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
 
 @Entity
@@ -13,7 +13,7 @@ import org.robn.ecommerce.product.model.entity.ProductEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_product_category")
-public class ProductCategoryEntity extends BaseEntity {
+public class ProductCategoryEntity extends AuditEntity {
 
     /*
     Relations are managed through the service layer.

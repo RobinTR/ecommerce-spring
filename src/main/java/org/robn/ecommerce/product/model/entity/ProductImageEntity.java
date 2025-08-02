@@ -2,7 +2,7 @@ package org.robn.ecommerce.product.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_product_image")
-public class ProductImageEntity extends BaseEntity {
+public class ProductImageEntity extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

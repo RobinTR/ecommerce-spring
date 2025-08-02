@@ -3,7 +3,7 @@ package org.robn.ecommerce.product.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.brand.model.entity.BrandEntity;
-import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_product")
-public class ProductEntity extends BaseEntity {
+public class ProductEntity extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

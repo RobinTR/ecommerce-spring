@@ -2,6 +2,7 @@ package org.robn.ecommerce.inventory.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.robn.ecommerce.common.model.entity.AuditEntity;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
 
 @Entity
@@ -11,7 +12,7 @@ import org.robn.ecommerce.product.model.entity.ProductEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_inventory")
-public class InventoryEntity {
+public class InventoryEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

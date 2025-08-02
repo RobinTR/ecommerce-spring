@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.entity.AuditEntity;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ import java.util.UUID;
         @Index(name = "idx_address_city_district", columnList = "city, district"),
         @Index(name = "idx_address_city_district_neighborhood", columnList = "city, district, neighborhood")
 })
-public class AddressEntity extends BaseEntity {
+public class AddressEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

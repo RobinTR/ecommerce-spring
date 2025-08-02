@@ -12,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public abstract class AuditEntity extends BaseEntity {
 
-    //TODO: Refactor later to implement Spring Security
     @Column(name = "created_by", updatable = false)
     protected String createdBy;
 
