@@ -30,8 +30,53 @@ public class OrderEntity extends BaseEntity {
     @JoinColumn(name = "customer_id", insertable = false, updatable = false)
     private CustomerEntity customer;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "neighborhood")
+    private String neighborhood;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "subtotal")
+    private BigDecimal subtotal;
+
+    @Column(name = "tax_amount")
+    private BigDecimal taxAmount;
+
+    @Column(name = "shipping_amount")
+    private BigDecimal shippingAmount;
+
+    @Column(name = "discount_amount")
+    private BigDecimal discountAmount;
+
+    @Column(name = "grand_total")
+    private BigDecimal grandTotal;
+
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "promo_code")
+    private String promoCode;
+
+    @Column(name = "notes")
+    private String notes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

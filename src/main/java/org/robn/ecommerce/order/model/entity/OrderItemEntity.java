@@ -43,6 +43,9 @@ public class OrderItemEntity extends BaseEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "discount_amount")
+    private BigDecimal discountAmount;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private OrderItemStatus status;
