@@ -3,7 +3,7 @@ package org.robn.ecommerce.payment.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
-import org.robn.ecommerce.order.model.entity.OrderEntity;
+import org.robn.ecommerce.order.model.entity.BaseOrderEntity;
 import org.robn.ecommerce.payment.model.enums.PaymentMethod;
 import org.robn.ecommerce.payment.model.enums.PaymentProvider;
 import org.robn.ecommerce.payment.model.enums.PaymentStatus;
@@ -31,7 +31,7 @@ public class PaymentEntity extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
-    private OrderEntity order;
+    private BaseOrderEntity order;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "method")

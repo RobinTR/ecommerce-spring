@@ -2,6 +2,7 @@ package org.robn.ecommerce.order.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.customer.model.entity.CustomerEntity;
 import org.robn.ecommerce.order.model.enums.OrderStatus;
@@ -12,23 +13,17 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_order")
-public class OrderEntity extends BaseEntity {
+public abstract class BaseOrderEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
-
-    @Column(name = "customer_id")
-    private UUID customerId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
-    private CustomerEntity customer;
 
     @Column(name = "first_name")
     private String firstName;
