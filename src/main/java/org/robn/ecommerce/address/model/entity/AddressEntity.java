@@ -32,6 +32,15 @@ public class AddressEntity extends AuditEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "city")
     private String city;
 
@@ -41,10 +50,24 @@ public class AddressEntity extends AuditEntity {
     @Column(name = "neighborhood")
     private String neighborhood;
 
-    @Column(name = "address", length = 500)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "is_default")
     private Boolean isDefault;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AddressEntity)) return false;
+        AddressEntity that = (AddressEntity) o;
+
+        return getId() != null && getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 
 }
