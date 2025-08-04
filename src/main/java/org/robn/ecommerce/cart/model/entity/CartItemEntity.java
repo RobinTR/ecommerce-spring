@@ -2,6 +2,7 @@ package org.robn.ecommerce.cart.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.robn.ecommerce.cart.model.enums.CartItemStatus;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
 
