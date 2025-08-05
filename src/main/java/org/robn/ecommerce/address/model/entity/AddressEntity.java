@@ -11,12 +11,12 @@ import org.robn.ecommerce.common.model.entity.AuditEntity;
 import java.util.UUID;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_address", indexes = {
         @Index(name = "idx_address_city", columnList = "city"),
         @Index(name = "idx_address_city_district", columnList = "city, district"),
