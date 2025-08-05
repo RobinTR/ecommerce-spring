@@ -29,6 +29,6 @@ public class SellerEntity extends UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private SellerStatus status;
+    private SellerStatus sellerStatus;
 
 }

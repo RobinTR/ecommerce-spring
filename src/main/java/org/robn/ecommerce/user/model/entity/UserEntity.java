@@ -34,6 +34,6 @@ public class UserEntity extends SoftDeletableEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private UserStatus status;
+    private UserStatus userStatus;
 
 }
