@@ -1,7 +1,10 @@
 package org.robn.ecommerce.order.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.order.model.enums.OrderStatus;
@@ -69,11 +72,11 @@ public abstract class BaseOrderEntity extends BaseEntity {
     @Column(name = "promo_code")
     private String promoCode;
 
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "note")
+    private String note;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private OrderStatus status;
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
 }
