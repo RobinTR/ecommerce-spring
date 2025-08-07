@@ -1,0 +1,57 @@
+package org.robn.ecommerce.brand.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.robn.ecommerce.brand.model.Brand;
+import org.robn.ecommerce.brand.model.mapper.BrandToListResponseMapper;
+import org.robn.ecommerce.brand.model.mapper.BrandToResponseMapper;
+import org.robn.ecommerce.brand.model.request.BrandCreateRequest;
+import org.robn.ecommerce.brand.model.request.BrandUpdateRequest;
+import org.robn.ecommerce.brand.model.response.BrandListResponse;
+import org.robn.ecommerce.brand.model.response.BrandResponse;
+import org.robn.ecommerce.brand.service.BrandService;
+import org.robn.ecommerce.common.model.response.EcoBaseResponse;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/brands")
+public class BrandController {
+
+    private final BrandService brandService;
+    private final BrandToListResponseMapper brandToListResponseMapper;
+    private final BrandToResponseMapper brandToResponseMapper;
+
+    @GetMapping
+    public EcoBaseResponse<List<BrandListResponse>> findAll() {
+        List<Brand> brands = brandService.findAll();
+        List<BrandListResponse> brandsResponse = brandToListResponseMapper.map(brands);
+
+        return EcoBaseResponse.successOf(brandsResponse);
+    }
+
+    @GetMapping("/{id}")
+    public EcoBaseResponse<BrandResponse> findById(@PathVariable Long id) {
+        Brand brand = brandService.findById(id);
+        BrandResponse brandResponse = brandToResponseMapper.map(brand);
+
+        return EcoBaseResponse.successOf(brandResponse);
+    }
+
+    @PostMapping
+    public EcoBaseResponse<Void> create(@RequestBody @Valid BrandCreateRequest brandCreateRequest) {
+        brandService.create(brandCreateRequest);
+
+        return EcoBaseResponse.success();
+    }
+
+    @PutMapping("/{id}")
+    public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final BrandUpdateRequest brandUpdateRequest) {
+        brandService.update(id, brandUpdateRequest);
+
+        return EcoBaseResponse.success();
+    }
+
+}
