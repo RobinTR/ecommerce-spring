@@ -21,14 +21,14 @@ public class SellerEntity extends UserEntity {
     @Column(name = "store_name")
     private String storeName;
 
-    @Column(name = "mersis_no")
-    private String mersisNo;
+    @Column(name = "mersis_number")
+    private String mersisNumber;
 
     @Column(name = "contact_number")
     private String contactNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "seller_status")
     private SellerStatus sellerStatus;
 
 }
