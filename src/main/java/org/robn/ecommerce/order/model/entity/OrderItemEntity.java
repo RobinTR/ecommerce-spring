@@ -23,19 +23,19 @@ public class OrderItemEntity extends BaseEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "product_id")
-    private Long productId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", insertable = false, updatable = false)
-    private ProductEntity product;
-
     @Column(name = "order_id")
     private UUID orderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
     private BaseOrderEntity order;
+
+    @Column(name = "product_id")
+    private Long productId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private ProductEntity product;
 
     @Column(name = "price")
     private BigDecimal price;
