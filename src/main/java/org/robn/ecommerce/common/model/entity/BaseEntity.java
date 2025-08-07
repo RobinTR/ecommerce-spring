@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 @SuperBuilder
@@ -25,7 +26,10 @@ public abstract class BaseEntity {
     @PrePersist
     public void prePersist() {
         LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
+
+        this.createdAt = Optional.ofNullable(this.createdAt)
+                .orElse(now);
+
         this.updatedAt = now;
     }
 
