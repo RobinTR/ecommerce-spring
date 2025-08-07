@@ -34,12 +34,12 @@ public class PaymentEntity extends BaseEntity {
     private BaseOrderEntity order;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "method")
-    private PaymentMethod method;
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider")
-    private PaymentProvider provider;
+    @Column(name = "payment_provider")
+    private PaymentProvider paymentProvider;
 
     @Column(name = "transaction_id")
     // This is the ID returned by the payment gateway
@@ -58,7 +58,7 @@ public class PaymentEntity extends BaseEntity {
     private String errorMessage;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private PaymentStatus status;
+    @Column(name = "payment_status")
+    private PaymentStatus paymentStatus;
 
 }
