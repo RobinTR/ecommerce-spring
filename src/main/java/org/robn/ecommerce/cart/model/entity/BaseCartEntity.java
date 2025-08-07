@@ -46,7 +46,7 @@ public abstract class BaseCartEntity extends BaseEntity {
     private String currency;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private CartStatus status;
+    @Column(name = "cart_status")
+    private CartStatus cartStatus;
 
 }
