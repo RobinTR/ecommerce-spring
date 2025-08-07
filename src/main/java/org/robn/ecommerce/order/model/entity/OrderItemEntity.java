@@ -47,7 +47,7 @@ public class OrderItemEntity extends BaseEntity {
     private BigDecimal discountAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private OrderItemStatus status;
+    @Column(name = "order_item_status")
+    private OrderItemStatus orderItemStatus;
 
 }
