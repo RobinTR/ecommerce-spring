@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
-import org.robn.ecommerce.customer.model.entity.CustomerEntity;
 import org.robn.ecommerce.order.model.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -46,8 +45,8 @@ public abstract class BaseOrderEntity extends BaseEntity {
     @Column(name = "neighborhood")
     private String neighborhood;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "full_address")
+    private String fullAddress;
 
     @Column(name = "subtotal")
     private BigDecimal subtotal;
