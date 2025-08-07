@@ -17,12 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "eco_address", indexes = {
-        @Index(name = "idx_address_city", columnList = "city"),
-        @Index(name = "idx_address_city_district", columnList = "city, district"),
-        @Index(name = "idx_address_city_district_neighborhood", columnList = "city, district, neighborhood")
-})
-public class AddressEntity extends AuditEntity {
+@Table(name = "eco_address")
+public abstract class AddressEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,8 +46,8 @@ public class AddressEntity extends AuditEntity {
     @Column(name = "neighborhood")
     private String neighborhood;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "full_address")
+    private String fullAddress;
 
     @Column(name = "is_default")
     private Boolean isDefault;
