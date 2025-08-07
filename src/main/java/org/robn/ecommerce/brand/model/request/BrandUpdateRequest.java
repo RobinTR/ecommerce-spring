@@ -12,10 +12,6 @@ import org.robn.ecommerce.common.util.validation.Name;
 @Setter
 public class BrandUpdateRequest {
 
-    @NotNull
-    @Positive
-    private Long id;
-
     @Name
     @NotBlank
     @Size(min = 1, max = 100)
