@@ -47,7 +47,7 @@ public class CartItemEntity extends BaseEntity {
     private BigDecimal discountAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private CartItemStatus status;
+    @Column(name = "cart_item_status")
+    private CartItemStatus cartItemStatus;
 
 }
