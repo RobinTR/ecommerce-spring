@@ -33,7 +33,7 @@ public class UserEntity extends SoftDeletableEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "user_status")
     private UserStatus userStatus;
 
 }
