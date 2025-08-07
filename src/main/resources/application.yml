@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_IP:localhost}:${DB_PORT:5432}/ecommerce
+    username: ${DB_USER:eco}
+    password: ${DB_PASSWORD:ecopass}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    baseline-on-migrate: true
