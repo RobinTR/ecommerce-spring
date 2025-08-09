@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class SoftDeletableEntity extends AuditEntity {
+public abstract class SoftDeletableEntity extends BaseEntity {
 
     @Builder.Default
     @Column(name = "deleted")
