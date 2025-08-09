@@ -52,18 +52,4 @@ public abstract class AddressEntity extends BaseEntity {
     @Column(name = "is_default")
     private Boolean isDefault;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AddressEntity)) return false;
-        AddressEntity that = (AddressEntity) o;
-
-        return getId() != null && getId().equals(that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
 }
