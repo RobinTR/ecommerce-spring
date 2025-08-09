@@ -3,8 +3,8 @@ package org.robn.ecommerce.brand.port.adapter;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.brand.model.Brand;
 import org.robn.ecommerce.brand.model.entity.BrandEntity;
+import org.robn.ecommerce.brand.model.mapper.BrandDomainToEntityMapper;
 import org.robn.ecommerce.brand.model.mapper.BrandEntityToDomainMapper;
-import org.robn.ecommerce.brand.model.mapper.BrandToEntityMapper;
 import org.robn.ecommerce.brand.port.BrandReadPort;
 import org.robn.ecommerce.brand.port.BrandSavePort;
 import org.robn.ecommerce.brand.repository.BrandRepository;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class BrandAdapter implements BrandReadPort, BrandSavePort {
 
     private final BrandRepository brandRepository;
-    private final BrandToEntityMapper brandToEntityMapper;
+    private final BrandDomainToEntityMapper brandDomainToEntityMapper;
     private final BrandEntityToDomainMapper brandEntityToDomainMapper;
 
     @Override
@@ -40,7 +40,7 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort {
     @Override
     @Transactional
     public Brand save(Brand brand) {
-        final BrandEntity brandEntity = brandToEntityMapper.map(brand);
+        final BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
         final BrandEntity savedBrandEntity = brandRepository.save(brandEntity);
 
         return brandEntityToDomainMapper.map(savedBrandEntity);

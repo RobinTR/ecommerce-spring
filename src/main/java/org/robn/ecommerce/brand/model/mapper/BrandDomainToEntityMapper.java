@@ -6,6 +6,6 @@ import org.robn.ecommerce.brand.model.entity.BrandEntity;
 import org.robn.ecommerce.common.mapper.BaseMapper;
 
 @Mapper(componentModel = "spring")
-public interface BrandToEntityMapper extends BaseMapper<Brand, BrandEntity> {
+public interface BrandDomainToEntityMapper extends BaseMapper<Brand, BrandEntity> {
 
 }
