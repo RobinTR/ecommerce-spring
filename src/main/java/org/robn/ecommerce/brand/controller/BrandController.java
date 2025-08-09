@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/brands")
 public class BrandController {
 
@@ -48,7 +48,7 @@ public class BrandController {
     }
 
     @PutMapping("/{id}")
-    public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final BrandUpdateRequest brandUpdateRequest) {
+    public EcoBaseResponse<Void> update(@PathVariable Long id, @RequestBody @Valid BrandUpdateRequest brandUpdateRequest) {
         brandService.update(id, brandUpdateRequest);
 
         return EcoBaseResponse.success();
