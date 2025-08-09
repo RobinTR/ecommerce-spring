@@ -16,11 +16,22 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BrandServiceImpl implements BrandService {
 
     private final BrandReadPort brandReadPort;
     private final BrandSavePort brandSavePort;
     private final BrandCreateRequestToDomainMapper brandCreateRequestToDomainMapper;
+
+    @Override
+    public List<Brand> findAll() {
+        return brandReadPort.findAll();
+    }
+
+    @Override
+    public Brand findById(Long id) {
+        return getExistingBrand(id);
+    }
 
     @Override
     @Transactional
@@ -35,16 +46,6 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = getExistingBrand(id);
         brand.setName(brandUpdateRequest.getName());
         brandSavePort.save(brand);
-    }
-
-    @Override
-    public List<Brand> findAll() {
-        return brandReadPort.findAll();
-    }
-
-    @Override
-    public Brand findById(Long id) {
-        return getExistingBrand(id);
     }
 
     private Brand getExistingBrand(Long id) {

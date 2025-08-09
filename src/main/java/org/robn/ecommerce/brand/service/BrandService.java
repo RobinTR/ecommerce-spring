@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface BrandService {
 
-    void create(BrandCreateRequest brandCreateRequest);
-
-    void update(Long id, BrandUpdateRequest brandUpdateRequest);
-
     List<Brand> findAll();
 
     Brand findById(Long id);
+
+    void create(BrandCreateRequest brandCreateRequest);
+
+    void update(Long id, BrandUpdateRequest brandUpdateRequest);
 
 }

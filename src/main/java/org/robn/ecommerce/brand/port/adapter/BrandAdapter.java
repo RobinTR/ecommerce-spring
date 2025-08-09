@@ -9,14 +9,12 @@ import org.robn.ecommerce.brand.port.BrandReadPort;
 import org.robn.ecommerce.brand.port.BrandSavePort;
 import org.robn.ecommerce.brand.repository.BrandRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class BrandAdapter implements BrandReadPort, BrandSavePort {
 
     private final BrandRepository brandRepository;
@@ -38,7 +36,6 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort {
     }
 
     @Override
-    @Transactional
     public Brand save(Brand brand) {
         final BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
         final BrandEntity savedBrandEntity = brandRepository.save(brandEntity);
