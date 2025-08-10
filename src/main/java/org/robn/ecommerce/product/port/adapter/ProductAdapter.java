@@ -1,8 +1,8 @@
 package org.robn.ecommerce.product.port.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.robn.ecommerce.product.mapper.ProductDomainToEntityMapper;
-import org.robn.ecommerce.product.mapper.ProductEntityToDomainMapper;
+import org.robn.ecommerce.product.model.mapper.ProductDomainToEntityMapper;
+import org.robn.ecommerce.product.model.mapper.ProductEntityToDomainMapper;
 import org.robn.ecommerce.product.model.Product;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
 import org.robn.ecommerce.product.port.ProductReadPort;
