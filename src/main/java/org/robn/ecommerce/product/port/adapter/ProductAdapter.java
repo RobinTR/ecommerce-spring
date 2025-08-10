@@ -23,22 +23,22 @@ public class ProductAdapter implements ProductReadPort, ProductSavePort {
 
     @Override
     public List<Product> findAll() {
-        List<ProductEntity> productEntities = productRepository.findAll();
+        final List<ProductEntity> productEntities = productRepository.findAll();
 
         return productEntityToDomainMapper.map(productEntities);
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        Optional<ProductEntity> productEntity = productRepository.findById(id);
+    public Optional<Product> findById(final Long id) {
+        final Optional<ProductEntity> productEntity = productRepository.findById(id);
 
         return productEntity.map(productEntityToDomainMapper::map);
     }
 
     @Override
-    public Product save(Product product) {
-        ProductEntity productEntity = productDomainToEntityMapper.map(product);
-        ProductEntity savedProductEntity = productRepository.save(productEntity);
+    public Product save(final Product product) {
+        final ProductEntity productEntity = productDomainToEntityMapper.map(product);
+        final ProductEntity savedProductEntity = productRepository.save(productEntity);
 
         return productEntityToDomainMapper.map(savedProductEntity);
     }
