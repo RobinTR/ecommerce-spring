@@ -3,8 +3,8 @@ package org.robn.ecommerce.category.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.category.model.Category;
-import org.robn.ecommerce.category.model.mapper.CategoryToListResponseMapper;
-import org.robn.ecommerce.category.model.mapper.CategoryToResponseMapper;
+import org.robn.ecommerce.category.model.mapper.CategoryDomainToListResponseMapper;
+import org.robn.ecommerce.category.model.mapper.CategoryDomainToResponseMapper;
 import org.robn.ecommerce.category.model.request.CategoryCreateRequest;
 import org.robn.ecommerce.category.model.request.CategoryUpdateRequest;
 import org.robn.ecommerce.category.model.response.CategoryListResponse;
@@ -21,34 +21,34 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryToResponseMapper categoryToResponseMapper;
-    private final CategoryToListResponseMapper categoryToListResponseMapper;
+    private final CategoryDomainToResponseMapper categoryDomainToResponseMapper;
+    private final CategoryDomainToListResponseMapper categoryDomainToListResponseMapper;
 
     @GetMapping
     public EcoBaseResponse<List<CategoryListResponse>> findAll() {
         List<Category> categories = categoryService.findAll();
-        List<CategoryListResponse> categoriesResponse = categoryToListResponseMapper.map(categories);
+        List<CategoryListResponse> categoriesResponse = categoryDomainToListResponseMapper.map(categories);
 
         return EcoBaseResponse.successOf(categoriesResponse);
     }
 
     @GetMapping("/{id}")
-    public EcoBaseResponse<CategoryResponse> findById(@PathVariable Long id) {
+    public EcoBaseResponse<CategoryResponse> findById(@PathVariable final Long id) {
         Category category = categoryService.findById(id);
-        CategoryResponse categoryResponse = categoryToResponseMapper.map(category);
+        CategoryResponse categoryResponse = categoryDomainToResponseMapper.map(category);
 
         return EcoBaseResponse.successOf(categoryResponse);
     }
 
     @PostMapping
-    public EcoBaseResponse<Void> create(@RequestBody @Valid CategoryCreateRequest categoryCreateRequest) {
+    public EcoBaseResponse<Void> create(@RequestBody @Valid final CategoryCreateRequest categoryCreateRequest) {
         categoryService.create(categoryCreateRequest);
 
         return EcoBaseResponse.success();
     }
 
     @PutMapping("/{id}")
-    public EcoBaseResponse<Void> update(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final CategoryUpdateRequest categoryUpdateRequest) {
         categoryService.update(id, categoryUpdateRequest);
 
         return EcoBaseResponse.success();

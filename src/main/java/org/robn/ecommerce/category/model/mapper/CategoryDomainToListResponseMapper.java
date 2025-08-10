@@ -6,5 +6,5 @@ import org.robn.ecommerce.category.model.response.CategoryListResponse;
 import org.robn.ecommerce.common.mapper.BaseMapper;
 
 @Mapper(componentModel = "spring")
-public interface CategoryToListResponseMapper extends BaseMapper<Category, CategoryListResponse> {
+public interface CategoryDomainToListResponseMapper extends BaseMapper<Category, CategoryListResponse> {
 }
