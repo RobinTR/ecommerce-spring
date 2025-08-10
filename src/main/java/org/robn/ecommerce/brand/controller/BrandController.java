@@ -3,8 +3,8 @@ package org.robn.ecommerce.brand.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.brand.model.Brand;
-import org.robn.ecommerce.brand.model.mapper.BrandToListResponseMapper;
-import org.robn.ecommerce.brand.model.mapper.BrandToResponseMapper;
+import org.robn.ecommerce.brand.model.mapper.BrandDomainToListResponseMapper;
+import org.robn.ecommerce.brand.model.mapper.BrandDomainToResponseMapper;
 import org.robn.ecommerce.brand.model.request.BrandCreateRequest;
 import org.robn.ecommerce.brand.model.request.BrandUpdateRequest;
 import org.robn.ecommerce.brand.model.response.BrandListResponse;
@@ -21,13 +21,13 @@ import java.util.List;
 public class BrandController {
 
     private final BrandService brandService;
-    private final BrandToListResponseMapper brandToListResponseMapper;
-    private final BrandToResponseMapper brandToResponseMapper;
+    private final BrandDomainToListResponseMapper brandDomainToListResponseMapper;
+    private final BrandDomainToResponseMapper brandDomainToResponseMapper;
 
     @GetMapping
     public EcoBaseResponse<List<BrandListResponse>> findAll() {
         List<Brand> brands = brandService.findAll();
-        List<BrandListResponse> brandsResponse = brandToListResponseMapper.map(brands);
+        List<BrandListResponse> brandsResponse = brandDomainToListResponseMapper.map(brands);
 
         return EcoBaseResponse.successOf(brandsResponse);
     }
@@ -35,7 +35,7 @@ public class BrandController {
     @GetMapping("/{id}")
     public EcoBaseResponse<BrandResponse> findById(@PathVariable Long id) {
         Brand brand = brandService.findById(id);
-        BrandResponse brandResponse = brandToResponseMapper.map(brand);
+        BrandResponse brandResponse = brandDomainToResponseMapper.map(brand);
 
         return EcoBaseResponse.successOf(brandResponse);
     }

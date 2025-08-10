@@ -6,5 +6,5 @@ import org.robn.ecommerce.brand.model.response.BrandListResponse;
 import org.robn.ecommerce.common.mapper.BaseMapper;
 
 @Mapper(componentModel = "spring")
-public interface BrandToListResponseMapper extends BaseMapper<Brand, BrandListResponse> {
+public interface BrandDomainToListResponseMapper extends BaseMapper<Brand, BrandListResponse> {
 }
