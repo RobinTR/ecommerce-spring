@@ -3,6 +3,7 @@ package org.robn.ecommerce.common.exception.handler;
 import jakarta.validation.ConstraintViolationException;
 import org.robn.ecommerce.common.exception.EcoNotFoundException;
 import org.robn.ecommerce.common.model.response.EcoErrorResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +45,17 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         EcoErrorResponse ecoErrorResponse = EcoErrorResponse.failureOf(HttpStatus.BAD_REQUEST, errorMessage);
+        return new ResponseEntity<>(ecoErrorResponse, ecoErrorResponse.getHttpStatus());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<EcoErrorResponse> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
+        EcoErrorResponse ecoErrorResponse = EcoErrorResponse.failureOf(
+                HttpStatus.BAD_REQUEST,
+                "Invalid request: referential integrity check failed. Please verify related fields."
+        );
+
         return new ResponseEntity<>(ecoErrorResponse, ecoErrorResponse.getHttpStatus());
     }
 
