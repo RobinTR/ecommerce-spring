@@ -1,7 +1,7 @@
 package org.robn.ecommerce.brand.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.robn.ecommerce.brand.exception.BrandNotExistException;
+import org.robn.ecommerce.brand.exception.BrandNotFoundException;
 import org.robn.ecommerce.brand.model.Brand;
 import org.robn.ecommerce.brand.model.mapper.BrandCreateRequestToDomainMapper;
 import org.robn.ecommerce.brand.model.request.BrandCreateRequest;
@@ -49,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     private Brand getExistingBrand(Long id) {
-        return brandReadPort.findById(id).orElseThrow(() -> new BrandNotExistException(id));
+        return brandReadPort.findById(id).orElseThrow(() -> new BrandNotFoundException(id));
     }
 
 }
