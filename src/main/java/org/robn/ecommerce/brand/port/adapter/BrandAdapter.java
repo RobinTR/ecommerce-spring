@@ -8,6 +8,7 @@ import org.robn.ecommerce.brand.model.mapper.BrandEntityToDomainMapper;
 import org.robn.ecommerce.brand.port.BrandReadPort;
 import org.robn.ecommerce.brand.port.BrandSavePort;
 import org.robn.ecommerce.brand.repository.BrandRepository;
+import org.robn.ecommerce.product.port.BrandLookupPort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class BrandAdapter implements BrandReadPort, BrandSavePort {
+public class BrandAdapter implements BrandReadPort, BrandSavePort, BrandLookupPort {
 
     private final BrandRepository brandRepository;
     private final BrandDomainToEntityMapper brandDomainToEntityMapper;
@@ -41,6 +42,11 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort {
         final BrandEntity savedBrandEntity = brandRepository.save(brandEntity);
 
         return brandEntityToDomainMapper.map(savedBrandEntity);
+    }
+
+    @Override
+    public Boolean existsById(Long id) {
+        return brandRepository.findById(id).isPresent();
     }
 
 }
