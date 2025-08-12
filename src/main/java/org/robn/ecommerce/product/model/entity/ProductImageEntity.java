@@ -27,8 +27,23 @@ public class ProductImageEntity extends SoftDeletableEntity {
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
 
+    @Column(name = "public_id")
+    private String publicId;
+
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "format")
+    private String format;
+
+    @Column(name = "width")
+    private Integer width;
+
+    @Column(name = "height")
+    private Integer height;
+
+    @Column(name = "size_bytes")
+    private Long sizeBytes;
 
     @Column(name = "alt_text")
     private String altText;
