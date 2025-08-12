@@ -5,6 +5,7 @@ import org.robn.ecommerce.product.model.mapper.ProductDomainToEntityMapper;
 import org.robn.ecommerce.product.model.mapper.ProductEntityToDomainMapper;
 import org.robn.ecommerce.product.model.Product;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
+import org.robn.ecommerce.product.port.ProductLookupPort;
 import org.robn.ecommerce.product.port.ProductReadPort;
 import org.robn.ecommerce.product.port.ProductSavePort;
 import org.robn.ecommerce.product.repository.ProductRepository;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductAdapter implements ProductReadPort, ProductSavePort {
+public class ProductAdapter implements ProductReadPort, ProductSavePort, ProductLookupPort {
 
     private final ProductRepository productRepository;
     private final ProductEntityToDomainMapper productEntityToDomainMapper;
@@ -43,4 +44,8 @@ public class ProductAdapter implements ProductReadPort, ProductSavePort {
         return productEntityToDomainMapper.map(savedProductEntity);
     }
 
+    @Override
+    public Boolean existsById(Long id) {
+        return productRepository.existsById(id);
+    }
 }
