@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,16 +41,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void create(final ProductCreateRequest productCreateRequest) {
-        validateBrandExists(productCreateRequest.getBrandId());
-        Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
+        ensureBrandExists(productCreateRequest.getBrandId());
+        final Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
         productSavePort.save(product);
     }
 
     @Override
     @Transactional
     public void update(final Long id, final ProductUpdateRequest productUpdateRequest) {
-        validateBrandExists(productUpdateRequest.getBrandId());
-        Product product = getProductById(id);
+        ensureBrandExists(productUpdateRequest.getBrandId());
+        final Product product = getProductById(id);
         productUpdateMapper.update(product, productUpdateRequest);
         productSavePort.save(product);
     }
@@ -60,10 +59,10 @@ public class ProductServiceImpl implements ProductService {
         return productReadPort.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
-    private void validateBrandExists(final Long brandId) {
-        Optional.of(brandId)
-                .filter(brandLookupPort::existsById)
-                .orElseThrow(() -> new RelatedBrandNotFoundException(brandId));
+    private void ensureBrandExists(final Long brandId) {
+        if (Boolean.FALSE.equals(brandLookupPort.existsById(brandId))) {
+            throw new RelatedBrandNotFoundException(brandId);
+        }
     }
 
 }
