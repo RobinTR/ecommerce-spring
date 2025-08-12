@@ -46,7 +46,7 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort, BrandLookupPo
 
     @Override
     public Boolean existsById(Long id) {
-        return brandRepository.findById(id).isPresent();
+        return brandRepository.existsById(id);
     }
 
 }
