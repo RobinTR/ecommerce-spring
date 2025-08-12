@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS eco_product_image
     id         UUID PRIMARY KEY       DEFAULT gen_random_uuid(),
     product_id BIGINT        NOT NULL,
     image_url  VARCHAR(2000) NOT NULL,
-    alt_text   VARCHAR(255)  NOT NULL,
+    alt_text   VARCHAR(255),
     created_at TIMESTAMP(0)  NOT NULL,
     updated_at TIMESTAMP(0),
     created_by VARCHAR(255)  NOT NULL DEFAULT 'eco',

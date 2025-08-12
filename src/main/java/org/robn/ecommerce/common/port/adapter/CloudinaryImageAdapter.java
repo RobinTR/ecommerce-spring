@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 @Component
@@ -22,38 +21,49 @@ public class CloudinaryImageAdapter implements ImageStoragePort {
 
     @Override
     public UploadedImage upload(MultipartFile file) {
-        try (InputStream inputStream = file.getInputStream()) {
+        try {
+            @SuppressWarnings("unchecked")
             Map<String, Object> options = ObjectUtils.asMap(
                     "overwrite", true,
                     "resource_type", "image"
             );
 
-            Map result = cloudinary.uploader().upload(inputStream, options);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> result = cloudinary.uploader().upload(file.getBytes(), options);
+
+            String publicId = getStringValue(result, "public_id");
+            String secureUrl = getStringValue(result, "secure_url");
+
+            if (publicId == null || secureUrl == null) {
+                throw new ImageUploadException("Missing critical fields from Cloudinary response.");
+            }
 
             return UploadedImage.builder()
-                    .publicId(result.get("public_id").toString())
-                    .url(result.get("secure_url").toString())
-                    .format(result.get("format").toString())
+                    .publicId(publicId)
+                    .url(secureUrl)
+                    .format(getStringValue(result, "format"))
                     .width(getAsInt(result, "width"))
                     .height(getAsInt(result, "height"))
                     .sizeBytes(getAsLong(result, "bytes"))
                     .build();
         } catch (IOException e) {
-            throw new ImageUploadException("Failed to upload image.");
+            throw new ImageUploadException("Failed to upload image: " + e.getMessage());
         }
     }
 
     @Override
     public void delete(String publicId, Boolean invalidateCdn) {
         try {
-            Map options = Boolean.TRUE.equals(invalidateCdn) ?
+            @SuppressWarnings("unchecked")
+            Map<String, Object> options = Boolean.TRUE.equals(invalidateCdn) ?
                     ObjectUtils.asMap("invalidate", true) :
                     ObjectUtils.emptyMap();
 
-            Map<?, ?> result = cloudinary.uploader().destroy(publicId, options);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> result = cloudinary.uploader().destroy(publicId, options);
             Object status = result.get("result");
 
-            if(!"ok".equals(status) && !"not_found".equals(status)) {
+            if (!"ok".equals(status) && !"not_found".equals(status)) {
                 throw new ImageDeleteException("Failed to delete image: " + publicId);
             }
         } catch (IOException e) {
@@ -61,16 +71,38 @@ public class CloudinaryImageAdapter implements ImageStoragePort {
         }
     }
 
-    private Integer getAsInt(Map<String, Object> map, String key) {
+    private String getStringValue(Map<String, Object> map, String key) {
         Object value = map.get(key);
 
-        return value != null ? Integer.parseInt(value.toString()) : null;
+        return value != null ? value.toString() : null;
+    }
+
+    private Integer getAsInt(Map<String, Object> map, String key) {
+        Object value = map.get(key);
+        if (value == null) return null;
+
+        try {
+            if (value instanceof Integer integer) {
+                return integer;
+            }
+            return Integer.valueOf(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     private Long getAsLong(Map<String, Object> map, String key) {
         Object value = map.get(key);
+        if (value == null) return null;
 
-        return value != null ? Long.parseLong(value.toString()) : null;
+        try {
+            if (value instanceof Long longValue) {
+                return longValue;
+            }
+            return Long.valueOf(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
 }
