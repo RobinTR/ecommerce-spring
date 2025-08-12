@@ -3,9 +3,9 @@ package org.robn.ecommerce.product.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.common.model.UploadedImage;
 import org.robn.ecommerce.common.port.ImageStoragePort;
+import org.robn.ecommerce.product.exception.ProductImageNotFoundException;
 import org.robn.ecommerce.product.exception.RelatedProductNotFoundException;
 import org.robn.ecommerce.product.model.ProductImage;
-import org.robn.ecommerce.product.model.mapper.ProductImageCreateRequestToDomainMapper;
 import org.robn.ecommerce.product.port.ProductImageReadPort;
 import org.robn.ecommerce.product.port.ProductImageSavePort;
 import org.robn.ecommerce.product.port.ProductLookupPort;
@@ -25,7 +25,6 @@ public class ProductImageServiceImpl implements ProductImageService {
     private final ProductImageSavePort productImageSavePort;
     private final ImageStoragePort imageStoragePort;
     private final ProductLookupPort productLookupPort;
-    private final ProductImageCreateRequestToDomainMapper productImageCreateRequestToDomainMapper;
 
     /**
      * Retrieves all product images.
@@ -45,24 +44,31 @@ public class ProductImageServiceImpl implements ProductImageService {
      */
     @Override
     public List<ProductImage> findAllByProductId(final Long productId) {
-        return productImageReadPort.findAllByProductId(productId);
+        final List<ProductImage> productImages = productImageReadPort.findAllByProductId(productId);
+
+        if (productImages.isEmpty()) {
+            throw new ProductImageNotFoundException(productId);
+        }
+
+        return productImages;
     }
 
     /**
      * Uploads an image for a product and saves the image details.
      * This method first checks if the product exists, then uploads the image using the image storage port,
      * and finally saves the image details in the product image save port.
+     *
      * @param productId the ID of the product to which the image will be uploaded
-     * @param file the image file to be uploaded
-     * @param altText the alternative text for the image
+     * @param file      the image file to be uploaded
+     * @param altText   the alternative text for the image
      * @throws RelatedProductNotFoundException if the product with the specified ID does not exist
      */
     @Override
     @Transactional
     public void uploadImage(final Long productId, final MultipartFile file, final String altText) {
         ensureProductExists(productId);
-        UploadedImage uploadedImage = imageStoragePort.upload(file);
-        ProductImage productImage = ProductImage.builder()
+        final UploadedImage uploadedImage = imageStoragePort.upload(file);
+        final ProductImage productImage = ProductImage.builder()
                 .productId(productId)
                 .publicId(uploadedImage.getPublicId())
                 .imageUrl(uploadedImage.getUrl())

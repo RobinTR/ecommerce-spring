@@ -22,22 +22,22 @@ public class ProductImageAdapter implements ProductImageReadPort, ProductImageSa
 
     @Override
     public List<ProductImage> findAll() {
-        List<ProductImageEntity> productImageEntities = productImageRepository.findAll();
+        final List<ProductImageEntity> productImageEntities = productImageRepository.findAll();
 
         return productImageEntityToDomainMapper.map(productImageEntities);
     }
 
     @Override
-    public List<ProductImage> findAllByProductId(Long productId) {
-        List<ProductImageEntity> productImageEntities = productImageRepository.findAllByProductId(productId);
+    public List<ProductImage> findAllByProductId(final Long productId) {
+        final List<ProductImageEntity> productImageEntities = productImageRepository.findAllByProductId(productId);
 
         return productImageEntityToDomainMapper.map(productImageEntities);
     }
 
     @Override
-    public ProductImage save(ProductImage productImage) {
-        ProductImageEntity productImageEntity = productImageDomainToEntityMapper.map(productImage);
-        ProductImageEntity savedProductEntity = productImageRepository.save(productImageEntity);
+    public ProductImage save(final ProductImage productImage) {
+        final ProductImageEntity productImageEntity = productImageDomainToEntityMapper.map(productImage);
+        final ProductImageEntity savedProductEntity = productImageRepository.save(productImageEntity);
 
         return productImageEntityToDomainMapper.map(savedProductEntity);
     }
