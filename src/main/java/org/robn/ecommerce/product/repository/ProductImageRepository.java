@@ -9,5 +9,6 @@ import java.util.UUID;
 public interface ProductImageRepository extends JpaRepository<ProductImageEntity, UUID> {
 
     List<ProductImageEntity> findAllByProductId(Long productId);
+    Integer countByProductId(Long productId);
 
 }

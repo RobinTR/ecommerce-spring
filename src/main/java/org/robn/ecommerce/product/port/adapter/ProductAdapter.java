@@ -48,4 +48,5 @@ public class ProductAdapter implements ProductReadPort, ProductSavePort, Product
     public Boolean existsById(Long id) {
         return productRepository.existsById(id);
     }
+
 }

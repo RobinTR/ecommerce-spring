@@ -11,6 +11,7 @@ import org.robn.ecommerce.product.model.request.ProductUpdateRequest;
 import org.robn.ecommerce.product.port.BrandLookupPort;
 import org.robn.ecommerce.product.port.ProductReadPort;
 import org.robn.ecommerce.product.port.ProductSavePort;
+import org.robn.ecommerce.product.service.ProductImageService;
 import org.robn.ecommerce.product.service.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
     private final BrandLookupPort brandLookupPort;
     private final ProductCreateRequestToDomainMapper productCreateRequestToDomainMapper;
     private final ProductUpdateMapper productUpdateMapper;
+    private final ProductImageService productImageService;
 
     @Override
     public List<Product> findAll() {
@@ -43,7 +45,8 @@ public class ProductServiceImpl implements ProductService {
     public void create(final ProductCreateRequest productCreateRequest) {
         ensureBrandExists(productCreateRequest.getBrandId());
         final Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
-        productSavePort.save(product);
+        final Product savedProduct = productSavePort.save(product);
+        productImageService.uploadImages(savedProduct.getId(), productCreateRequest.getImageFiles(), productCreateRequest.getAltTexts());
     }
 
     @Override

@@ -1,13 +1,14 @@
 package org.robn.ecommerce.product.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
 import org.robn.ecommerce.product.model.ProductImage;
 import org.robn.ecommerce.product.model.mapper.ProductImageDomainToResponseMapper;
+import org.robn.ecommerce.product.model.request.ProductImageUploadRequest;
 import org.robn.ecommerce.product.model.response.ProductImageResponse;
 import org.robn.ecommerce.product.service.ProductImageService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,12 +29,11 @@ public class ProductImageController {
     }
 
     @PostMapping
-    public EcoBaseResponse<Void> uploadImage(
+    public EcoBaseResponse<Void> uploadImages(
             @PathVariable Long productId,
-            @RequestParam("image") MultipartFile imageFile,
-            @RequestParam(value = "altText", required = false) String altText
+            @ModelAttribute @Valid ProductImageUploadRequest request
     ) {
-        productImageService.uploadImage(productId, imageFile, altText);
+        productImageService.uploadImages(productId, request.getImageFiles(), request.getAltTexts());
 
         return EcoBaseResponse.success();
     }

@@ -11,3 +11,15 @@ cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
   api-key: ${CLOUDINARY_API_KEY}
   api-secret: ${CLOUDINARY_API_SECRET}
+
+product:
+  image:
+    # Minimum and maximum number of images allowed per product
+    min-count: 1
+    max-count: 10
+    max-size: 5MB
+    allowed-types:
+      - image/jpeg
+      - image/jpg
+      - image/png
+      - image/webp

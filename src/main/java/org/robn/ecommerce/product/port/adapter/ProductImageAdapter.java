@@ -35,6 +35,11 @@ public class ProductImageAdapter implements ProductImageReadPort, ProductImageSa
     }
 
     @Override
+    public Integer countByProductId(Long productId) {
+        return productImageRepository.countByProductId(productId);
+    }
+
+    @Override
     public ProductImage save(final ProductImage productImage) {
         final ProductImageEntity productImageEntity = productImageDomainToEntityMapper.map(productImage);
         final ProductImageEntity savedProductEntity = productImageRepository.save(productImageEntity);

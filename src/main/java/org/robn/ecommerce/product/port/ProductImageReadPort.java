@@ -10,4 +10,6 @@ public interface ProductImageReadPort {
 
     List<ProductImage> findAllByProductId(Long productId);
 
+    Integer countByProductId(Long productId);
+
 }
