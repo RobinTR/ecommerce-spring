@@ -60,27 +60,15 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     /**
-     * Uploads an image for a product and saves the image details.
-     * This method checks if the product exists and if the image size limit is not exceeded before uploading the image.
+     * Uploads multiple images for a product and saves the image details.
+     * This method checks if the product exists and if the image size limit is not exceeded before uploading the images.
      *
-     * @param productId the ID of the product to which the image will be uploaded
-     * @param file      the image file to be uploaded
-     * @param altText   the alternative text for the image
+     * @param productId the ID of the product to which the images will be uploaded
+     * @param files     a list of image files to be uploaded
+     * @param altTexts  a list of alternative texts for the images, can be null or shorter than files
      * @throws RelatedProductNotFoundException    if the product with the specified ID does not exist
      * @throws ProductImageLimitExceededException if the product already has the maximum number of images allowed
      */
-    @Override
-    @Transactional
-    public void uploadImage(final Long productId, final MultipartFile file, final String altText) {
-
-        ensureProductExists(productId);
-        checkForImageSizeLimit(productId, 1);
-        final UploadedImage uploadedImage = imageStoragePort.upload(file);
-        final ProductImage productImage = buildProductImage(productId, uploadedImage, altText);
-        productImageSavePort.save(productImage);
-
-    }
-
     @Override
     @Transactional
     public void uploadImages(final Long productId, final List<MultipartFile> files, final List<String> altTexts) {

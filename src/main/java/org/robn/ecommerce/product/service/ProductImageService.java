@@ -11,8 +11,6 @@ public interface ProductImageService {
 
     List<ProductImage> findAllByProductId(Long productId);
 
-    void uploadImage(Long productId, MultipartFile file, String altText);
-
     void uploadImages(Long productId, List<MultipartFile> files, List<String> altTexts);
 
 }
