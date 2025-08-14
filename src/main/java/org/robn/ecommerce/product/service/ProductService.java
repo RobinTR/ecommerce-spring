@@ -9,8 +9,11 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> findAll();
+
     Product findById(Long id);
+
     void create(ProductCreateRequest productCreateRequest);
+
     void update(Long id, ProductUpdateRequest productUpdateRequest);
 
 }
