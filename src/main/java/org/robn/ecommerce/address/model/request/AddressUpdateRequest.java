@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.PhoneNumber;
 import org.robn.ecommerce.common.util.validation.name.Name;
-import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
+import org.robn.ecommerce.common.util.validation.name.ValidAddress;
 
 @Getter
 @Setter
@@ -47,7 +47,7 @@ public class AddressUpdateRequest {
     @Size(min = 2, max = 200)
     private String neighborhood;
 
-    @NameWithNumber
+    @ValidAddress
     @NotBlank
     @Size(min = 2, max = 1000)
     private String fullAddress;

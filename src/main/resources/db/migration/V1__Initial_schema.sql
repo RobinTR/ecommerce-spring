@@ -73,32 +73,20 @@ CREATE INDEX idx_address_city_district_neighborhood ON eco_address (city, distri
 CREATE TABLE IF NOT EXISTS eco_customer_address
 (
     id          UUID PRIMARY KEY REFERENCES eco_address (id),
-    customer_id UUID         NOT NULL,
-    created_at  TIMESTAMP(0) NOT NULL,
-    updated_at  TIMESTAMP(0),
-    created_by  VARCHAR(255) NOT NULL DEFAULT 'eco',
-    updated_by  VARCHAR(255),
+    customer_id UUID NOT NULL,
     CONSTRAINT fk_eco_customer_address_eco_customer_customer_id FOREIGN KEY (customer_id) REFERENCES eco_customer (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_guest_address
 (
     id         UUID PRIMARY KEY REFERENCES eco_address (id),
-    session_id VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0),
-    created_by VARCHAR(255) NOT NULL DEFAULT 'eco',
-    updated_by VARCHAR(255)
+    session_id VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS eco_seller_address
 (
-    id         UUID PRIMARY KEY REFERENCES eco_address (id),
-    seller_id  UUID         NOT NULL,
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0),
-    created_by VARCHAR(255) NOT NULL DEFAULT 'eco',
-    updated_by VARCHAR(255),
+    id        UUID PRIMARY KEY REFERENCES eco_address (id),
+    seller_id UUID NOT NULL,
     CONSTRAINT fk_eco_seller_address_eco_seller_seller_id FOREIGN KEY (seller_id) REFERENCES eco_seller (id)
 );
 

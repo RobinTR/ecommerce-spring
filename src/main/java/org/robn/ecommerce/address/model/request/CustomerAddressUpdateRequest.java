@@ -11,7 +11,7 @@ import org.robn.ecommerce.common.util.validation.name.ValidAddress;
 
 @Getter
 @Setter
-public class AddressCreateRequest {
+public class CustomerAddressUpdateRequest {
 
     @Name
     @NotBlank
