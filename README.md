@@ -11,6 +11,7 @@ A Spring Boot based e-commerce application following clean architecture principl
 - **Flyway** – Database versioning and migration
 - **MapStruct** - Object mapping
 - **Lombok** - Code generation
+- **Cloudinary** - Image storage
 
 ---
 
