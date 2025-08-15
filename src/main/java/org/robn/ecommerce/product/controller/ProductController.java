@@ -40,7 +40,7 @@ public class ProductController {
         return EcoBaseResponse.successOf(productResponse);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public EcoBaseResponse<Void> create(@ModelAttribute @Valid final ProductCreateRequest productCreateRequest) {
         productService.create(productCreateRequest);
 
