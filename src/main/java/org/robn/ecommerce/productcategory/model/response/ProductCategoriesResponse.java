@@ -3,7 +3,7 @@ package org.robn.ecommerce.productcategory.model.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.robn.ecommerce.category.model.response.CategoryResponse;
+import org.robn.ecommerce.category.model.response.CategoryListResponse;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ import java.util.List;
 public class ProductCategoriesResponse {
 
     private Long productId;
-    private List<CategoryResponse> categories;
+    private List<CategoryListResponse> categories;
 
 }

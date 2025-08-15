@@ -2,11 +2,12 @@ package org.robn.ecommerce.productcategory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.category.model.Category;
+import org.robn.ecommerce.product.model.Product;
 import org.robn.ecommerce.productcategory.model.ProductCategory;
 import org.robn.ecommerce.productcategory.model.mapper.ProductCategoryCreateRequestToDomainMapper;
 import org.robn.ecommerce.productcategory.model.request.ProductCategoryCreateRequest;
-import org.robn.ecommerce.productcategory.port.CategoryLookupPort;
 import org.robn.ecommerce.productcategory.port.ProductCategoryDeletePort;
+import org.robn.ecommerce.productcategory.port.ProductCategoryReadPort;
 import org.robn.ecommerce.productcategory.port.ProductCategorySavePort;
 import org.robn.ecommerce.productcategory.service.ProductCategoryService;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,19 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ProductCategoryServiceImpl implements ProductCategoryService {
 
-    private final CategoryLookupPort categoryLookupPort;
+    private final ProductCategoryReadPort productCategoryReadPort;
     private final ProductCategorySavePort productCategorySavePort;
     private final ProductCategoryDeletePort productCategoryDeletePort;
     private final ProductCategoryCreateRequestToDomainMapper productCategoryCreateRequestToDomainMapper;
 
     @Override
     public List<Category> findAllCategoriesByProductId(Long productId) {
-        return categoryLookupPort.findAllCategoriesByProductId(productId);
+        return productCategoryReadPort.findAllCategoriesByProductId(productId);
+    }
+
+    @Override
+    public List<Product> findAllProductsByCategoryId(Long categoryId) {
+        return productCategoryReadPort.findAllProductsByCategoryId(categoryId);
     }
 
     @Override
