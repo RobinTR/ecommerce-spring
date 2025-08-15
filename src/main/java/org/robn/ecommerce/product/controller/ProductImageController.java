@@ -28,7 +28,7 @@ public class ProductImageController {
         return EcoBaseResponse.successOf(productImagesResponse);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public EcoBaseResponse<Void> uploadImages(
             @PathVariable Long productId,
             @ModelAttribute @Valid ProductImageUploadRequest request
@@ -37,4 +37,5 @@ public class ProductImageController {
 
         return EcoBaseResponse.success();
     }
+
 }
