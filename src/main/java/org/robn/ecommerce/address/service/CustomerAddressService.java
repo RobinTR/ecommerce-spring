@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface CustomerAddressService {
 
     void create(CustomerAddressCreateRequest customerAddressCreateRequest);
+
     void update(UUID customerId, UUID addressId, CustomerAddressUpdateRequest customerAddressUpdateRequest);
 
 }

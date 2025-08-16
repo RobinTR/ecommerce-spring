@@ -11,6 +11,7 @@ import org.robn.ecommerce.address.repository.CustomerAddressRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -22,16 +23,23 @@ public class CustomerAddressAdapter implements CustomerAddressReadPort, Customer
     private final CustomerAddressDomainToEntityMapper customerAddressDomainToEntityMapper;
 
     @Override
-    public List<CustomerAddress> findByCustomerId(UUID customerId) {
-        List<CustomerAddressEntity> customerAddressEntities = customerAddressRepository.findByCustomerId(customerId);
+    public List<CustomerAddress> findByCustomerId(final UUID customerId) {
+        final List<CustomerAddressEntity> customerAddressEntities = customerAddressRepository.findByCustomerId(customerId);
 
         return customerAddressEntityToDomainMapper.map(customerAddressEntities);
     }
 
     @Override
-    public CustomerAddress save(CustomerAddress customerAddress) {
-        CustomerAddressEntity customerAddressEntity = customerAddressDomainToEntityMapper.map(customerAddress);
-        CustomerAddressEntity savedEntity = customerAddressRepository.save(customerAddressEntity);
+    public Optional<CustomerAddress> findByCustomerIdAndAddressId(final UUID customerId, final UUID addressId) {
+        final Optional<CustomerAddressEntity> customerAddressEntity = customerAddressRepository.findByCustomerIdAndId(customerId, addressId);
+
+        return customerAddressEntity.map(customerAddressEntityToDomainMapper::map);
+    }
+
+    @Override
+    public CustomerAddress save(final CustomerAddress customerAddress) {
+        final CustomerAddressEntity customerAddressEntity = customerAddressDomainToEntityMapper.map(customerAddress);
+        final CustomerAddressEntity savedEntity = customerAddressRepository.save(customerAddressEntity);
 
         return customerAddressEntityToDomainMapper.map(savedEntity);
     }
