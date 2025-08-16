@@ -23,15 +23,15 @@ public class CustomerAddressAdapter implements CustomerAddressReadPort, Customer
     private final CustomerAddressDomainToEntityMapper customerAddressDomainToEntityMapper;
 
     @Override
-    public List<CustomerAddress> findByCustomerId(final UUID customerId) {
-        final List<CustomerAddressEntity> customerAddressEntities = customerAddressRepository.findByCustomerId(customerId);
+    public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
+        final List<CustomerAddressEntity> customerAddressEntities = customerAddressRepository.findAllByCustomerId(customerId);
 
         return customerAddressEntityToDomainMapper.map(customerAddressEntities);
     }
 
     @Override
-    public Optional<CustomerAddress> findByCustomerIdAndAddressId(final UUID customerId, final UUID addressId) {
-        final Optional<CustomerAddressEntity> customerAddressEntity = customerAddressRepository.findByCustomerIdAndId(customerId, addressId);
+    public Optional<CustomerAddress> findByAddressId(final UUID addressId) {
+        final Optional<CustomerAddressEntity> customerAddressEntity = customerAddressRepository.findById(addressId);
 
         return customerAddressEntity.map(customerAddressEntityToDomainMapper::map);
     }

@@ -13,6 +13,7 @@ import org.robn.ecommerce.address.service.CustomerAddressService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +27,16 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
 
     @Override
+    public List<CustomerAddress> findAllByCustomerId(UUID customerId) {
+        return customerAddressReadPort.findAllByCustomerId(customerId);
+    }
+
+    @Override
+    public CustomerAddress findByAddressId(UUID addressId) {
+        return getCustomerAddress(addressId);
+    }
+
+    @Override
     @Transactional
     public void create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
@@ -34,14 +45,14 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     @Transactional
-    public void update(final UUID customerId, final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
-        final CustomerAddress customerAddress = getCustomerAddress(customerId, addressId);
+    public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
+        final CustomerAddress customerAddress = getCustomerAddress(addressId);
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
         customerAddressSavePort.save(customerAddress);
     }
 
-    private CustomerAddress getCustomerAddress(final UUID customerId, final UUID addressId) {
-        return customerAddressReadPort.findByCustomerIdAndAddressId(customerId, addressId).orElseThrow(() -> new CustomerAddressNotFoundException(addressId));
+    private CustomerAddress getCustomerAddress(final UUID addressId) {
+        return customerAddressReadPort.findByAddressId(addressId).orElseThrow(() -> new CustomerAddressNotFoundException(addressId));
     }
 
 }

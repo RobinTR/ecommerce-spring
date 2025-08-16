@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface CustomerAddressReadPort {
 
-    List<CustomerAddress> findByCustomerId(UUID customerId);
+    List<CustomerAddress> findAllByCustomerId(UUID customerId);
 
-    Optional<CustomerAddress> findByCustomerIdAndAddressId(UUID customerId, UUID addressId);
+    Optional<CustomerAddress> findByAddressId(UUID addressId);
 
 }
