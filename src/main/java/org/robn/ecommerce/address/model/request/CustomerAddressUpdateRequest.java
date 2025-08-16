@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.PhoneNumber;
 import org.robn.ecommerce.common.util.validation.name.Name;
+import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
 import org.robn.ecommerce.common.util.validation.name.ValidAddress;
 
 @Getter
 @Setter
 public class CustomerAddressUpdateRequest {
 
-    @Name
+    @NameWithNumber
     @Size(min = 2, max = 200)
     private String title;
 
