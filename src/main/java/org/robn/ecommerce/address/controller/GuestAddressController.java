@@ -50,8 +50,8 @@ public class GuestAddressController {
         return EcoBaseResponse.success();
     }
 
-    @PutMapping
-    public EcoBaseResponse<Void> update(@RequestParam final UUID addressId, @RequestBody @Valid final GuestAddressUpdateRequest guestAddressUpdateRequest) {
+    @PutMapping("/{addressId}")
+    public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final GuestAddressUpdateRequest guestAddressUpdateRequest) {
         guestAddressService.update(addressId, guestAddressUpdateRequest);
 
         return EcoBaseResponse.success();

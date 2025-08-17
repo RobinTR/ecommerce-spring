@@ -48,8 +48,8 @@ public class CustomerAddressController {
         return EcoBaseResponse.success();
     }
 
-    @PutMapping
-    public EcoBaseResponse<Void> update(@RequestParam final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
+    @PutMapping("/{addressId}")
+    public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         customerAddressService.update(addressId, customerAddressUpdateRequest);
 
         return EcoBaseResponse.success();
