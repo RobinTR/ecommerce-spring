@@ -12,11 +12,13 @@ CREATE TABLE IF NOT EXISTS eco_warehouse (
     deleted_by VARCHAR(255)
 );
 
-ALTER TABLE eco_inventory DROP COLUMN warehouse;
-
 ALTER TABLE eco_inventory
     ADD COLUMN warehouse_id BIGINT;
 
 ALTER TABLE eco_inventory
     ADD CONSTRAINT fk_inventory_warehouse_id
         FOREIGN KEY (warehouse_id) REFERENCES eco_warehouse (id);
+
+ALTER TABLE eco_inventory
+    ADD CONSTRAINT uq_eco_inventory_product_warehouse
+        UNIQUE (product_id, warehouse_id);

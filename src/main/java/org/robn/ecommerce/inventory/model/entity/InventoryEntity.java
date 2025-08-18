@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
+import org.robn.ecommerce.warehouse.model.entity.WarehouseEntity;
 
 @Entity
 @Getter
@@ -26,8 +27,12 @@ public class InventoryEntity extends BaseEntity {
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
 
-    @Column(name = "warehouse")
-    private String warehouse;
+    @Column(name = "warehouse_id")
+    private Long warehouseId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
+    private WarehouseEntity warehouse;
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity;

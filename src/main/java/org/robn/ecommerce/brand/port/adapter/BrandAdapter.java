@@ -30,22 +30,22 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort, BrandLookupPo
     }
 
     @Override
-    public Optional<Brand> findById(Long id) {
+    public Optional<Brand> findById(final Long id) {
         final Optional<BrandEntity> brandEntity = brandRepository.findById(id);
 
         return brandEntity.map(brandEntityToDomainMapper::map);
     }
 
     @Override
-    public Brand save(Brand brand) {
-        final BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
-        final BrandEntity savedBrandEntity = brandRepository.save(brandEntity);
+    public Brand save(final Brand brand) {
+        BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
+        brandEntity = brandRepository.save(brandEntity);
 
-        return brandEntityToDomainMapper.map(savedBrandEntity);
+        return brandEntityToDomainMapper.map(brandEntity);
     }
 
     @Override
-    public Boolean existsById(Long id) {
+    public Boolean existsById(final Long id) {
         return brandRepository.existsById(id);
     }
 
