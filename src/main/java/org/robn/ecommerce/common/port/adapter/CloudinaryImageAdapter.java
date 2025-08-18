@@ -35,7 +35,7 @@ public class CloudinaryImageAdapter implements ImageStoragePort {
             String secureUrl = getStringValue(result, "secure_url");
 
             if (publicId == null || secureUrl == null) {
-                throw new ImageUploadException("Missing critical fields from Cloudinary response.");
+                throw ImageUploadException.of("Missing critical fields from Cloudinary response.");
             }
 
             return UploadedImage.builder()
@@ -47,7 +47,7 @@ public class CloudinaryImageAdapter implements ImageStoragePort {
                     .sizeBytes(getAsLong(result, "bytes"))
                     .build();
         } catch (IOException e) {
-            throw new ImageUploadException("Failed to upload image: " + e.getMessage());
+            throw ImageUploadException.of("Failed to upload image: " + e.getMessage());
         }
     }
 
@@ -64,10 +64,10 @@ public class CloudinaryImageAdapter implements ImageStoragePort {
             Object status = result.get("result");
 
             if (!"ok".equals(status) && !"not_found".equals(status)) {
-                throw new ImageDeleteException("Failed to delete image: " + publicId);
+                throw ImageDeleteException.of("Failed to delete image: " + publicId);
             }
         } catch (IOException e) {
-            throw new ImageDeleteException("Error during Cloudinary image deletion.");
+            throw ImageDeleteException.of("Error during Cloudinary image deletion.");
         }
     }
 

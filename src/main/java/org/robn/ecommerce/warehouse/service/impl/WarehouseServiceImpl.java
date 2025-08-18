@@ -52,7 +52,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private Warehouse getWarehouseById(final Long id) {
         return warehouseReadPort.findById(id)
-                .orElseThrow(() -> new WarehouseNotFoundException(id));
+                .orElseThrow(() -> WarehouseNotFoundException.of(id));
     }
 
 }

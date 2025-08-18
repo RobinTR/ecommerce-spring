@@ -52,7 +52,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         final List<ProductImage> productImages = productImageReadPort.findAllByProductId(productId);
 
         if (productImages.isEmpty()) {
-            throw new ProductImageNotFoundException(productId);
+            throw ProductImageNotFoundException.of(productId);
         }
 
         return productImages;
@@ -89,7 +89,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     private void ensureProductExists(final Long productId) {
 
         if (Boolean.FALSE.equals(productLookupPort.existsById(productId))) {
-            throw new RelatedProductNotFoundException(productId);
+            throw RelatedProductNotFoundException.of(productId);
         }
 
     }
@@ -101,7 +101,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         final int maxImageCount = productImageConfig.getMaxCount();
 
         if (totalCount > maxImageCount) {
-            throw new ProductImageLimitExceededException(
+            throw ProductImageLimitExceededException.of(
                     String.format("Cannot upload %d images. Product %d already has %d images. Maximum allowed is %d.",
                             fileCount, productId, imageCount, maxImageCount));
         }

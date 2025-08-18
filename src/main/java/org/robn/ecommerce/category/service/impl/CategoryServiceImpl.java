@@ -36,20 +36,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void create(final CategoryCreateRequest categoryCreateRequest) {
-        Category category = categoryCreateRequestToDomainMapper.map(categoryCreateRequest);
+        final Category category = categoryCreateRequestToDomainMapper.map(categoryCreateRequest);
         categorySavePort.save(category);
     }
 
     @Override
     @Transactional
     public void update(final Long id, final CategoryUpdateRequest categoryUpdateRequest) {
-        Category categoryToUpdate = getExistingCategory(id);
+        final Category categoryToUpdate = getExistingCategory(id);
         categoryToUpdate.setName(categoryUpdateRequest.getName());
         categorySavePort.save(categoryToUpdate);
     }
 
     private Category getExistingCategory(final Long id) {
-        return categoryReadPort.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
+        return categoryReadPort.findById(id).orElseThrow(() -> CategoryNotExistException.of(id));
     }
 
 }

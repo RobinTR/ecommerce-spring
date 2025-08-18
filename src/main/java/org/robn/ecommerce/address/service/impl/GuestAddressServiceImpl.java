@@ -55,7 +55,7 @@ public class GuestAddressServiceImpl implements GuestAddressService {
     }
 
     private GuestAddress getGuestAddress(final UUID addressId) {
-        return guestAddressReadPort.findByAddressId(addressId).orElseThrow(() -> new GuestAddressNotFoundException(addressId));
+        return guestAddressReadPort.findByAddressId(addressId).orElseThrow(() -> GuestAddressNotFoundException.of(addressId));
     }
 
 }

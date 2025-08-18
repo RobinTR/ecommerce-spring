@@ -59,12 +59,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Product getProductById(final Long id) {
-        return productReadPort.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        return productReadPort.findById(id).orElseThrow(() -> ProductNotFoundException.of(id));
     }
 
     private void ensureBrandExists(final Long brandId) {
         if (Boolean.FALSE.equals(brandLookupPort.existsById(brandId))) {
-            throw new RelatedBrandNotFoundException(brandId);
+            throw RelatedBrandNotFoundException.of(brandId);
         }
     }
 

@@ -29,27 +29,27 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand findById(Long id) {
+    public Brand findById(final Long id) {
         return getExistingBrand(id);
     }
 
     @Override
     @Transactional
-    public void create(BrandCreateRequest brandCreateRequest) {
-        Brand brand = brandCreateRequestToDomainMapper.map(brandCreateRequest);
+    public void create(final BrandCreateRequest brandCreateRequest) {
+        final Brand brand = brandCreateRequestToDomainMapper.map(brandCreateRequest);
         brandSavePort.save(brand);
     }
 
     @Override
     @Transactional
-    public void update(Long id, BrandUpdateRequest brandUpdateRequest) {
-        Brand brand = getExistingBrand(id);
+    public void update(final Long id, final BrandUpdateRequest brandUpdateRequest) {
+        final Brand brand = getExistingBrand(id);
         brand.setName(brandUpdateRequest.getName());
         brandSavePort.save(brand);
     }
 
-    private Brand getExistingBrand(Long id) {
-        return brandReadPort.findById(id).orElseThrow(() -> new BrandNotFoundException(id));
+    private Brand getExistingBrand(final Long id) {
+        return brandReadPort.findById(id).orElseThrow(() -> BrandNotFoundException.of(id));
     }
 
 }

@@ -42,7 +42,7 @@ public class AddressServiceImpl implements AddressService {
 
     private Address getExistingAddress(final UUID id) {
         return addressReadPort.findById(id)
-                .orElseThrow(() -> new AddressNotFoundException(id));
+                .orElseThrow(() -> AddressNotFoundException.of(id));
     }
 
 }

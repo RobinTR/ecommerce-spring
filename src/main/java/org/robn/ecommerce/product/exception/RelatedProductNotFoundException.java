@@ -4,6 +4,11 @@ import org.robn.ecommerce.common.exception.EcoNotFoundException;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when a related product is not found.
+ * This exception extends {@link EcoNotFoundException} to indicate that the related product
+ * with the specified ID does not exist.
+ */
 public class RelatedProductNotFoundException extends EcoNotFoundException {
 
     @Serial
@@ -14,8 +19,18 @@ public class RelatedProductNotFoundException extends EcoNotFoundException {
      *
      * @param id the ID of the related product that does not exist
      */
-    public RelatedProductNotFoundException(Long id) {
+    private RelatedProductNotFoundException(final Long id) {
         super(String.format("Related product with ID %d was not found.", id));
+    }
+
+    /**
+     * Factory method to create a new instance of {@link RelatedProductNotFoundException}.
+     *
+     * @param id the ID of the related product that does not exist
+     * @return a new instance of {@link RelatedProductNotFoundException}
+     */
+    public static RelatedProductNotFoundException of(final Long id) {
+        return new RelatedProductNotFoundException(id);
     }
 
 }

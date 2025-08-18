@@ -52,7 +52,7 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     }
 
     private SellerAddress getSellerAddressById(final UUID addressId) {
-        return sellerAddressReadPort.findByAddressId(addressId).orElseThrow(() -> new SellerAddressNotFoundException(addressId));
+        return sellerAddressReadPort.findByAddressId(addressId).orElseThrow(() -> SellerAddressNotFoundException.of(addressId));
     }
 
 }

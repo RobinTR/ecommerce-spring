@@ -7,8 +7,12 @@ public class ImageUploadException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 4422493249947799335L;
 
-    public ImageUploadException(String message) {
+    private ImageUploadException(String message) {
         super(message);
+    }
+
+    public static ImageUploadException of(String message) {
+        return new ImageUploadException(message);
     }
 
 }

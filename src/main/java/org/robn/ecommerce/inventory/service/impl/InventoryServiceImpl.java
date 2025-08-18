@@ -76,7 +76,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     private Inventory getInventoryOrThrow(final Long id) {
-        return readPort.findById(id).orElseThrow(() -> new InventoryNotFoundException(id));
+        return readPort.findById(id).orElseThrow(() -> InventoryNotFoundException.of(id));
     }
 
     private boolean existsByProductIdAndWarehouseId(final Long productId, final Long warehouseId) {

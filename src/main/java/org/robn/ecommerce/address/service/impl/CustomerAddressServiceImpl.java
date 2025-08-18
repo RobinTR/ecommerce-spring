@@ -27,12 +27,12 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
 
     @Override
-    public List<CustomerAddress> findAllByCustomerId(UUID customerId) {
+    public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
         return customerAddressReadPort.findAllByCustomerId(customerId);
     }
 
     @Override
-    public CustomerAddress findByAddressId(UUID addressId) {
+    public CustomerAddress findByAddressId(final UUID addressId) {
         return getCustomerAddress(addressId);
     }
 
@@ -52,7 +52,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     }
 
     private CustomerAddress getCustomerAddress(final UUID addressId) {
-        return customerAddressReadPort.findByAddressId(addressId).orElseThrow(() -> new CustomerAddressNotFoundException(addressId));
+        return customerAddressReadPort.findByAddressId(addressId).orElseThrow(() -> CustomerAddressNotFoundException.of(addressId));
     }
 
 }
