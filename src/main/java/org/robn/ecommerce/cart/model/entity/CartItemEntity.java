@@ -23,19 +23,19 @@ public class CartItemEntity extends BaseEntity {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "cart_id")
+    private UUID cartId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id", insertable = false, updatable = false)
+    private CartEntity cart;
+
     @Column(name = "product_id")
     private Long productId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
-
-    @Column(name = "cart_id")
-    private UUID cartId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", insertable = false, updatable = false)
-    private BaseCartEntity cart;
 
     @Column(name = "price")
     private BigDecimal price;

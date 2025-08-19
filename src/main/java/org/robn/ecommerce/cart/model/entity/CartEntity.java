@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.common.model.owner.OwnerType;
+import org.robn.ecommerce.customer.model.entity.CustomerEntity;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,14 +20,27 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_cart")
-public abstract class BaseCartEntity extends BaseEntity {
+public class CartEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
+
+    @Column(name = "customer_id")
+    private UUID customerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private CustomerEntity customer;
+
+    @Column(name = "session_id")
+    private UUID sessionId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "owner_type")
+    private OwnerType ownerType;
 
     @Column(name = "subtotal")
     private BigDecimal subtotal;
