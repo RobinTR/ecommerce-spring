@@ -3,6 +3,12 @@ package org.robn.ecommerce.common.mapper;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * BaseMapper interface for converting between source and target objects.
+ *
+ * @param <S> the type of the source object
+ * @param <T> the type of the target object
+ */
 public interface BaseMapper<S, T> {
 
     /**
