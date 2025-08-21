@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-public final class GuestCart extends BaseDomainModel {
+public class GuestCart extends BaseDomainModel {
 
     private UUID id;
     private BigDecimal subtotal;

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-public final class CustomerCart extends BaseDomainModel {
+public class CustomerCart extends BaseDomainModel {
 
     private UUID id;
     private UUID customerId;

@@ -29,6 +29,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public Cart create() {
         Cart cart = Cart.builder()
+                .id(UUID.randomUUID())
                 .cartStatus(CartStatus.ACTIVE)
                 .build();
 
