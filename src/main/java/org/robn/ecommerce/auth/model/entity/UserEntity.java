@@ -1,4 +1,4 @@
-package org.robn.ecommerce.user.model.entity;
+package org.robn.ecommerce.auth.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
-import org.robn.ecommerce.user.model.enums.UserStatus;
+import org.robn.ecommerce.auth.model.enums.UserStatus;
 
 import java.util.UUID;
 

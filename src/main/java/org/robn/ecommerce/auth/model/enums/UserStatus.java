@@ -1,4 +1,4 @@
-package org.robn.ecommerce.user.model.enums;
+package org.robn.ecommerce.auth.model.enums;
 
 public enum UserStatus {
 

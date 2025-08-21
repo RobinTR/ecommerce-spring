@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.robn.ecommerce.user.model.entity.UserEntity;
+import org.robn.ecommerce.auth.model.entity.UserEntity;
 
 @Entity
 @Getter

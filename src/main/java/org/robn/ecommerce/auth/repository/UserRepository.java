@@ -1,6 +1,6 @@
-package org.robn.ecommerce.user.repository;
+package org.robn.ecommerce.auth.repository;
 
-import org.robn.ecommerce.user.model.entity.UserEntity;
+import org.robn.ecommerce.auth.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

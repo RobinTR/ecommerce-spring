@@ -1,11 +1,11 @@
-package org.robn.ecommerce.user.model;
+package org.robn.ecommerce.auth.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.BaseDomainModel;
-import org.robn.ecommerce.user.model.enums.UserStatus;
+import org.robn.ecommerce.auth.model.enums.UserStatus;
 
 import java.util.UUID;
 
