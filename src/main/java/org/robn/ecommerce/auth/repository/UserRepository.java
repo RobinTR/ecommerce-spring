@@ -1,13 +1,15 @@
 package org.robn.ecommerce.auth.repository;
 
-import org.robn.ecommerce.auth.model.entity.UserEntity;
+import org.robn.ecommerce.auth.model.entity.EcoUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+public interface UserRepository extends JpaRepository<EcoUserEntity, UUID> {
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<EcoUserEntity> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 
 }

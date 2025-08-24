@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.robn.ecommerce.auth.model.entity.UserEntity;
+import org.robn.ecommerce.auth.model.entity.EcoUserEntity;
 
 @Entity
 @Getter
@@ -17,7 +17,7 @@ import org.robn.ecommerce.auth.model.entity.UserEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_customer")
-public class CustomerEntity extends UserEntity {
+public class CustomerEntity extends EcoUserEntity {
 
     @Column(name = "first_name")
     private String firstName;

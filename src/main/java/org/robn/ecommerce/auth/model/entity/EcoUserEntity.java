@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
-import org.robn.ecommerce.auth.model.enums.UserStatus;
+import org.robn.ecommerce.auth.model.enums.EcoUserStatus;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_user")
-public class UserEntity extends SoftDeletableEntity {
+public class EcoUserEntity extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,6 +35,14 @@ public class UserEntity extends SoftDeletableEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
-    private UserStatus userStatus;
+    private EcoUserStatus ecoUserStatus;
+
+    @ManyToMany
+    @JoinTable(
+            name = "eco_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<EcoRoleEntity> roles;
 
 }

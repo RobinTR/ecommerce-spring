@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.robn.ecommerce.auth.model.entity.EcoUserEntity;
 import org.robn.ecommerce.seller.model.enums.SellerStatus;
-import org.robn.ecommerce.auth.model.entity.UserEntity;
 
 @Entity
 @Getter
@@ -16,7 +16,7 @@ import org.robn.ecommerce.auth.model.entity.UserEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_seller")
-public class SellerEntity extends UserEntity {
+public class SellerEntity extends EcoUserEntity {
 
     @Column(name = "store_name")
     private String storeName;
