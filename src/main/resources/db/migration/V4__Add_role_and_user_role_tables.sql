@@ -17,3 +17,9 @@ CREATE TABLE IF NOT EXISTS eco_user_role
     CONSTRAINT fk_eco_user_role_user_id FOREIGN KEY (user_id) REFERENCES eco_user (id),
     CONSTRAINT fk_eco_user_role_role_id FOREIGN KEY (role_id) REFERENCES eco_role (id)
 );
+
+INSERT INTO eco_role (name, created_at)
+VALUES ('ROLE_USER', CURRENT_TIMESTAMP),
+       ('ROLE_CUSTOMER', CURRENT_TIMESTAMP),
+       ('ROLE_SELLER', CURRENT_TIMESTAMP),
+       ('ROLE_ADMIN', CURRENT_TIMESTAMP);
