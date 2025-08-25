@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<EcoUserEntity, UUID> {
+public interface EcoUserRepository extends JpaRepository<EcoUserEntity, UUID> {
 
     Optional<EcoUserEntity> findByEmail(String email);
 

@@ -1,6 +1,7 @@
 package org.robn.ecommerce.common.exception.handler;
 
 import jakarta.validation.ConstraintViolationException;
+import org.robn.ecommerce.auth.exception.EcoUserAlreadyExistsByEmailException;
 import org.robn.ecommerce.common.exception.EcoNotFoundException;
 import org.robn.ecommerce.common.model.response.EcoErrorResponse;
 import org.robn.ecommerce.inventory.exception.InventoryAlreadyExistsException;
@@ -21,6 +22,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<EcoErrorResponse> handleEcoNotFoundException(final EcoNotFoundException exception) {
         final EcoErrorResponse ecoErrorResponse = EcoErrorResponse.failureOf(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return new ResponseEntity<>(ecoErrorResponse, ecoErrorResponse.getHttpStatus());
+    }
+
+    @ExceptionHandler(EcoUserAlreadyExistsByEmailException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<EcoErrorResponse> handleUserExists(final EcoUserAlreadyExistsByEmailException exception) {
+        final EcoErrorResponse ecoErrorResponse = EcoErrorResponse.failureOf(HttpStatus.CONFLICT, exception.getMessage());
 
         return new ResponseEntity<>(ecoErrorResponse, ecoErrorResponse.getHttpStatus());
     }
