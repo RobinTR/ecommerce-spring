@@ -20,20 +20,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
-public class ProductCategoryController {
+@RequestMapping("/api/v1/product-category-relations")
+public class ProductCategoryRelationController {
 
     private final ProductCategoryService productCategoryService;
     private final CategoryDomainToListResponseMapper categoryDomainToListResponseMapper;
     private final ProductDomainToListResponseMapper productDomainToListResponseMapper;
 
-
-    @GetMapping("/products/{productId}/categories")
+    @GetMapping("/by-product/{productId}")
     public EcoBaseResponse<ProductCategoriesResponse> findAllCategoriesByProductId(@PathVariable final Long productId) {
-        List<Category> categories = productCategoryService.findAllCategoriesByProductId(productId);
-        List<CategoryListResponse> categoryListResponse = categoryDomainToListResponseMapper.map(categories);
+        final List<Category> categories = productCategoryService.findAllCategoriesByProductId(productId);
+        final List<CategoryListResponse> categoryListResponse = categoryDomainToListResponseMapper.map(categories);
 
-        ProductCategoriesResponse response = ProductCategoriesResponse.builder()
+        final ProductCategoriesResponse response = ProductCategoriesResponse.builder()
                 .productId(productId)
                 .categories(categoryListResponse)
                 .build();
@@ -41,12 +40,12 @@ public class ProductCategoryController {
         return EcoBaseResponse.successOf(response);
     }
 
-    @GetMapping("/categories/{categoryId}/products")
+    @GetMapping("/by-category/{categoryId}")
     public EcoBaseResponse<CategoryProductsResponse> findAllProductsByCategoryId(@PathVariable final Long categoryId) {
-        List<Product> products = productCategoryService.findAllProductsByCategoryId(categoryId);
-        List<ProductListResponse> productListResponse = productDomainToListResponseMapper.map(products);
+        final List<Product> products = productCategoryService.findAllProductsByCategoryId(categoryId);
+        final List<ProductListResponse> productListResponse = productDomainToListResponseMapper.map(products);
 
-        CategoryProductsResponse response = CategoryProductsResponse.builder()
+        final CategoryProductsResponse response = CategoryProductsResponse.builder()
                 .categoryId(categoryId)
                 .products(productListResponse)
                 .build();
