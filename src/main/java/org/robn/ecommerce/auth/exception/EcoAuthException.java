@@ -9,7 +9,7 @@ import java.io.Serial;
 public class EcoAuthException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = -5570032363394153168L;
+    private static final long serialVersionUID = 1154548223957749178L;
 
     /**
      * Constructs a new EcoAuthException with the specified detail message.
@@ -28,6 +28,10 @@ public class EcoAuthException extends RuntimeException {
      */
     protected EcoAuthException(final String message, final Throwable cause) {
         super(message, cause);
+    }
+
+    public static EcoAuthException of(final String message) {
+        return new EcoAuthException(message);
     }
 
 }

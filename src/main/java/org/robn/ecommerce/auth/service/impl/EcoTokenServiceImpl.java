@@ -65,6 +65,14 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     }
 
     @Override
+    public UUID getUserId(final String token) {
+        final Claims claims = getPayload(token);
+        final String userId = claims.get("userId", String.class);
+
+        return UUID.fromString(userId);
+    }
+
+    @Override
     public void verifyAndValidate(final String token) {
         if (token == null || token.isBlank()) {
             throw EcoTokenInvalidException.of(token);
@@ -84,13 +92,13 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     @Override
     public UsernamePasswordAuthenticationToken getAuthentication(final String token) {
         final Claims claims = getPayload(token);
-        final String username = claims.getSubject();
+        final UUID userId = getUserId(token);
         final List<String> roles = claims.get("roles", List.class);
         final List<SimpleGrantedAuthority> authorities = roles == null
                 ? List.of()
                 : roles.stream().map(SimpleGrantedAuthority::new).toList();
 
-        return new UsernamePasswordAuthenticationToken(username, null, authorities);
+        return new UsernamePasswordAuthenticationToken(userId, null, authorities);
     }
 
     private SecretKey getKey() {
