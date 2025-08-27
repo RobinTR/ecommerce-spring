@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public interface CustomerAddressService {
 
-    List<CustomerAddress> findAllByCustomerId(UUID customerId);
+    List<CustomerAddress> findAllByCustomerId(UUID customerId, UUID currentUserId, boolean isAdmin);
 
-    CustomerAddress findByAddressId(UUID addressId);
+    CustomerAddress findByAddressId(UUID addressId, UUID customerId, boolean isAdmin);
 
-    void create(CustomerAddressCreateRequest customerAddressCreateRequest);
+    void create(CustomerAddressCreateRequest customerAddressCreateRequest, UUID userId, boolean isAdmin);
 
-    void update(UUID addressId, CustomerAddressUpdateRequest customerAddressUpdateRequest);
+    void update(CustomerAddressUpdateRequest customerAddressUpdateRequest, UUID addressId, UUID userId, boolean isAdmin);
 
 }

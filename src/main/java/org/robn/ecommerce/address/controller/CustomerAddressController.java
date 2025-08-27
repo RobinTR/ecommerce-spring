@@ -10,6 +10,7 @@ import org.robn.ecommerce.address.model.request.CustomerAddressUpdateRequest;
 import org.robn.ecommerce.address.model.response.CustomerAddressListResponse;
 import org.robn.ecommerce.address.model.response.CustomerAddressResponse;
 import org.robn.ecommerce.address.service.CustomerAddressService;
+import org.robn.ecommerce.auth.util.SecurityUtil;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +30,21 @@ public class CustomerAddressController {
     @GetMapping("/customer/{customerId}")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal == #customerId")
     public EcoBaseResponse<List<CustomerAddressListResponse>> findAllByCustomerId(@PathVariable final UUID customerId) {
-        final List<CustomerAddress> customerAddresses = customerAddressService.findAllByCustomerId(customerId);
+        final UUID currentUserId = SecurityUtil.getCurrentUserId();
+        final boolean isAdmin = SecurityUtil.isAdmin();
+        final List<CustomerAddress> customerAddresses = customerAddressService.findAllByCustomerId(customerId, currentUserId, isAdmin);
         final List<CustomerAddressListResponse> response = customerAddressDomainToListResponseMapper.map(customerAddresses);
 
         return EcoBaseResponse.successOf(response);
     }
 
     @GetMapping("/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<CustomerAddressResponse> findByAddressId(@PathVariable final UUID addressId) {
-        CustomerAddress customerAddress = customerAddressService.findByAddressId(addressId);
-        CustomerAddressResponse response = customerAddressDomainToResponseMapper.map(customerAddress);
+        final UUID currentUserId = SecurityUtil.getCurrentUserId();
+        final boolean isAdmin = SecurityUtil.isAdmin();
+        final CustomerAddress customerAddress = customerAddressService.findByAddressId(addressId, currentUserId, isAdmin);
+        final CustomerAddressResponse response = customerAddressDomainToResponseMapper.map(customerAddress);
 
         return EcoBaseResponse.successOf(response);
     }
@@ -46,14 +52,18 @@ public class CustomerAddressController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<Void> create(@RequestBody @Valid final CustomerAddressCreateRequest customerAddressCreateRequest) {
-        customerAddressService.create(customerAddressCreateRequest);
+        final UUID currentUserId = SecurityUtil.getCurrentUserId();
+        final boolean isAdmin = SecurityUtil.isAdmin();
+        customerAddressService.create(customerAddressCreateRequest, currentUserId, isAdmin);
 
         return EcoBaseResponse.success();
     }
 
     @PutMapping("/{addressId}")
     public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
-        customerAddressService.update(addressId, customerAddressUpdateRequest);
+        final UUID currentUserId = SecurityUtil.getCurrentUserId();
+        final boolean isAdmin = SecurityUtil.isAdmin();
+        customerAddressService.update(customerAddressUpdateRequest, addressId, currentUserId, isAdmin);
 
         return EcoBaseResponse.success();
     }
