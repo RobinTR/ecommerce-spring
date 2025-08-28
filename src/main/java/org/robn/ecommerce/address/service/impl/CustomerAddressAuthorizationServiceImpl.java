@@ -11,7 +11,7 @@ public class CustomerAddressAuthorizationServiceImpl implements CustomerAddressA
 
     @Override
     public void checkAccess(final UUID currentUserId, final boolean isAdmin, final UUID targetCustomerId) {
-        if (!isAdmin && !targetCustomerId.equals(currentUserId)) {
+        if (!(isAdmin || targetCustomerId.equals(currentUserId))) {
             throw EcoAccessDeniedException.of();
         }
     }
