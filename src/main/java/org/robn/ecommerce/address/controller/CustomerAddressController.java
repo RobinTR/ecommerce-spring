@@ -28,7 +28,7 @@ public class CustomerAddressController {
     private final CustomerAddressDomainToResponseMapper customerAddressDomainToResponseMapper;
 
     @GetMapping("/customer/{customerId}")
-    @PreAuthorize("hasRole('ADMIN') or authentication.principal == #customerId")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('CUSTOMER') and authentication.principal == #customerId)")
     public EcoBaseResponse<List<CustomerAddressListResponse>> findAllByCustomerId(@PathVariable final UUID customerId) {
         final UUID currentUserId = SecurityUtil.getCurrentUserId();
         final boolean isAdmin = SecurityUtil.isAdmin();
@@ -60,6 +60,7 @@ public class CustomerAddressController {
     }
 
     @PutMapping("/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         final UUID currentUserId = SecurityUtil.getCurrentUserId();
         final boolean isAdmin = SecurityUtil.isAdmin();
