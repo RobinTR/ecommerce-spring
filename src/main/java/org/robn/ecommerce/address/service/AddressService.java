@@ -9,6 +9,6 @@ public interface AddressService {
 
     void create(AddressCreateRequest addressCreateRequest);
 
-    void update(UUID id, AddressUpdateRequest addressUpdateRequest);
+    void update(UUID addressId, AddressUpdateRequest addressUpdateRequest);
 
 }

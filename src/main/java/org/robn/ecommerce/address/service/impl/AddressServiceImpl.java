@@ -34,8 +34,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public void update(final UUID id, final AddressUpdateRequest addressUpdateRequest) {
-        final Address address = getExistingAddress(id);
+    public void update(final UUID addressId, final AddressUpdateRequest addressUpdateRequest) {
+        final Address address = getExistingAddress(addressId);
         addressUpdateMapper.update(address, addressUpdateRequest);
         addressSavePort.save(address);
     }
