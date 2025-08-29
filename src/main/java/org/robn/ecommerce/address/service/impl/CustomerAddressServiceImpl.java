@@ -11,6 +11,7 @@ import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.port.CustomerAddressSavePort;
 import org.robn.ecommerce.address.service.AddressAuthorizationService;
 import org.robn.ecommerce.address.service.CustomerAddressService;
+import org.robn.ecommerce.auth.util.EcoSecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,34 +30,38 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final AddressAuthorizationService authorizationService;
 
     @Override
-    public List<CustomerAddress> findAllByCustomerId(final UUID customerId, final UUID currentUserId, final boolean isAdmin) {
-        final List<CustomerAddress> allByCustomerId = customerAddressReadPort.findAllByCustomerId(customerId);
-        authorizationService.checkAccess(currentUserId, isAdmin, allByCustomerId.stream().findFirst().map(CustomerAddress::getCustomerId).orElseThrow(() -> CustomerAddressNotFoundException.of(customerId)));
-
-        return allByCustomerId;
+    public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
+        return customerAddressReadPort.findAllByCustomerId(customerId);
     }
 
     @Override
-    public CustomerAddress findByAddressId(final UUID addressId, final UUID customerId, final boolean isAdmin) {
-        CustomerAddress customerAddress = getCustomerAddress(addressId);
-        authorizationService.checkAccess(customerId, isAdmin, customerAddress.getCustomerId());
+    public CustomerAddress findByAddressId(final UUID addressId) {
+        final CustomerAddress customerAddress = getCustomerAddress(addressId);
+
+        if (EcoSecurityUtil.isCustomer()) {
+            authorizationService.checkAccessForCurrentUser(customerAddress.getCustomerId());
+        }
 
         return customerAddress;
     }
 
     @Override
     @Transactional
-    public void create(final CustomerAddressCreateRequest customerAddressCreateRequest, final UUID customerId, final boolean isAdmin) {
+    public void create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
-        authorizationService.checkAccess(customerId, isAdmin, customerAddress.getCustomerId());
+        customerAddress.setCustomerId(EcoSecurityUtil.getCurrentUserId());
         customerAddressSavePort.save(customerAddress);
     }
 
     @Override
     @Transactional
-    public void update(final CustomerAddressUpdateRequest customerAddressUpdateRequest, final UUID addressId, final UUID customerId, final boolean isAdmin) {
+    public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         final CustomerAddress customerAddress = getCustomerAddress(addressId);
-        authorizationService.checkAccess(customerId, isAdmin, customerAddress.getCustomerId());
+
+        if (EcoSecurityUtil.isCustomer()) {
+            authorizationService.checkAccessForCurrentUser(customerAddress.getCustomerId());
+        }
+
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
         customerAddressSavePort.save(customerAddress);
     }

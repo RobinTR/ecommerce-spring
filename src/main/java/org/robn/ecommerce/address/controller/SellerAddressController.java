@@ -11,6 +11,7 @@ import org.robn.ecommerce.address.model.response.SellerAddressListResponse;
 import org.robn.ecommerce.address.model.response.SellerAddressResponse;
 import org.robn.ecommerce.address.service.SellerAddressService;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class SellerAddressController {
     private final SellerAddressDomainToResponseMapper sellerAddressDomainToResponseMapper;
 
     @GetMapping("/seller/{sellerId}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and authentication.principal = #sellerId )")
     public EcoBaseResponse<List<SellerAddressListResponse>> findAllBySellerId(@PathVariable final UUID sellerId) {
         final List<SellerAddress> sellerAddresses = sellerAddressService.findAllBySellerId(sellerId);
         final List<SellerAddressListResponse> response = sellerAddressDomainToListResponseMapper.map(sellerAddresses);
@@ -34,6 +36,7 @@ public class SellerAddressController {
     }
 
     @GetMapping("/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     public EcoBaseResponse<SellerAddressResponse> findByAddressId(@PathVariable final UUID addressId) {
         final SellerAddress sellerAddress = sellerAddressService.findByAddressId(addressId);
         final SellerAddressResponse response = sellerAddressDomainToResponseMapper.map(sellerAddress);
@@ -42,6 +45,7 @@ public class SellerAddressController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('SELLER')")
     public EcoBaseResponse<Void> create(@RequestBody @Valid final SellerAddressCreateRequest sellerAddressCreateRequest) {
         sellerAddressService.create(sellerAddressCreateRequest);
 
@@ -49,6 +53,7 @@ public class SellerAddressController {
     }
 
     @PutMapping("/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
         sellerAddressService.update(addressId, sellerAddressUpdateRequest);
 
