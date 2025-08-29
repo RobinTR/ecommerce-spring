@@ -9,7 +9,7 @@ import org.robn.ecommerce.address.model.request.CustomerAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.CustomerAddressUpdateRequest;
 import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.port.CustomerAddressSavePort;
-import org.robn.ecommerce.address.service.CustomerAddressAuthorizationService;
+import org.robn.ecommerce.address.service.AddressAuthorizationService;
 import org.robn.ecommerce.address.service.CustomerAddressService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressSavePort customerAddressSavePort;
     private final CustomerAddressCreateRequestToDomainMapper customerAddressCreateRequestToDomainMapper;
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
-    private final CustomerAddressAuthorizationService authorizationService;
+    private final AddressAuthorizationService authorizationService;
 
     @Override
     public List<CustomerAddress> findAllByCustomerId(final UUID customerId, final UUID currentUserId, final boolean isAdmin) {
