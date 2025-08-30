@@ -52,8 +52,8 @@ public class EcoAuthServiceImpl implements EcoAuthService {
     }
 
     @Override
-    public EcoToken login(EcoUserLoginRequest ecoUserLoginRequest) {
-        EcoUser user = ecoUserReadPort.findByEmail(ecoUserLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
+    public EcoToken login(final EcoUserLoginRequest ecoUserLoginRequest) {
+        final EcoUser user = ecoUserReadPort.findByEmail(ecoUserLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
 
         if (!passwordEncoder.matches(ecoUserLoginRequest.password(), user.getPassword())) {
             throw EcoInvalidEmailOrPasswordException.of();

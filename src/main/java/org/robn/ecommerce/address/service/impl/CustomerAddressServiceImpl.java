@@ -9,7 +9,6 @@ import org.robn.ecommerce.address.model.request.CustomerAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.CustomerAddressUpdateRequest;
 import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.port.CustomerAddressSavePort;
-import org.robn.ecommerce.address.service.AddressAuthorizationService;
 import org.robn.ecommerce.address.service.CustomerAddressService;
 import org.robn.ecommerce.auth.util.EcoSecurityUtil;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressSavePort customerAddressSavePort;
     private final CustomerAddressCreateRequestToDomainMapper customerAddressCreateRequestToDomainMapper;
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
-    private final AddressAuthorizationService authorizationService;
 
     @Override
     public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
@@ -36,13 +34,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     public CustomerAddress findByAddressId(final UUID addressId) {
-        final CustomerAddress customerAddress = getCustomerAddress(addressId);
-
-        if (EcoSecurityUtil.isCustomer()) {
-            authorizationService.checkAccessForCurrentUser(customerAddress.getCustomerId());
-        }
-
-        return customerAddress;
+        return getCustomerAddress(addressId);
     }
 
     @Override
@@ -57,13 +49,15 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Transactional
     public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         final CustomerAddress customerAddress = getCustomerAddress(addressId);
-
-        if (EcoSecurityUtil.isCustomer()) {
-            authorizationService.checkAccessForCurrentUser(customerAddress.getCustomerId());
-        }
-
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
         customerAddressSavePort.save(customerAddress);
+    }
+
+    @Override
+    public boolean isAddressBelongsToCustomer(final UUID addressId, final UUID targetCustomerId) {
+        final CustomerAddress customerAddress = getCustomerAddress(addressId);
+
+        return customerAddress.getCustomerId().equals(targetCustomerId);
     }
 
     private CustomerAddress getCustomerAddress(final UUID addressId) {

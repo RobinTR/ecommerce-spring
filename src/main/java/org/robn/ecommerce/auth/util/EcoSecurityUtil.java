@@ -20,23 +20,4 @@ public class EcoSecurityUtil {
         return (UUID) authentication.getPrincipal();
     }
 
-    public static boolean isAdmin() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        return authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-    }
-
-    public static boolean isCustomer() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        return authentication != null && authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_CUSTOMER"));
-    }
-
-    public static boolean isSeller() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        return authentication != null && authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_SELLER"));
-    }
-
 }
