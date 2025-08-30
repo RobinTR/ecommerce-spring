@@ -17,4 +17,6 @@ public interface SellerAddressService {
 
     void update(UUID addressId, SellerAddressUpdateRequest sellerAddressUpdateRequest);
 
+    boolean isAddressBelongsToSeller(UUID addressId, UUID targetSellerId);
+
 }

@@ -9,7 +9,6 @@ import org.robn.ecommerce.address.model.request.SellerAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.SellerAddressUpdateRequest;
 import org.robn.ecommerce.address.port.SellerAddressReadPort;
 import org.robn.ecommerce.address.port.SellerAddressSavePort;
-import org.robn.ecommerce.address.service.AddressAuthorizationService;
 import org.robn.ecommerce.address.service.SellerAddressService;
 import org.robn.ecommerce.auth.util.EcoSecurityUtil;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     private final SellerAddressSavePort sellerAddressSavePort;
     private final SellerAddressCreateRequestToDomainMapper sellerAddressCreateRequestToDomainMapper;
     private final SellerAddressUpdateMapper sellerAddressUpdateMapper;
-    private final AddressAuthorizationService authorizationService;
 
     @Override
     public List<SellerAddress> findAllBySellerId(final UUID sellerId) {
@@ -36,12 +34,6 @@ public class SellerAddressServiceImpl implements SellerAddressService {
 
     @Override
     public SellerAddress findByAddressId(final UUID addressId) {
-        final SellerAddress sellerAddress = getSellerAddressById(addressId);
-
-        if (EcoSecurityUtil.isSeller()) {
-            authorizationService.checkAccessForCurrentUser(sellerAddress.getSellerId());
-        }
-
         return getSellerAddressById(addressId);
     }
 
@@ -57,13 +49,15 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     @Transactional
     public void update(final UUID addressId, final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
         final SellerAddress existingAddress = getSellerAddressById(addressId);
-
-        if (EcoSecurityUtil.isSeller()) {
-            authorizationService.checkAccessForCurrentUser(existingAddress.getSellerId());
-        }
-
         sellerAddressUpdateMapper.update(existingAddress, sellerAddressUpdateRequest);
         sellerAddressSavePort.save(existingAddress);
+    }
+
+    @Override
+    public boolean isAddressBelongsToSeller(final UUID addressId, final UUID targetSellerId) {
+        final SellerAddress sellerAddress = getSellerAddressById(addressId);
+
+        return sellerAddress.getSellerId().equals(targetSellerId);
     }
 
     private SellerAddress getSellerAddressById(final UUID addressId) {
