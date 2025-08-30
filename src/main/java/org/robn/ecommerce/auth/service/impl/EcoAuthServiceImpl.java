@@ -5,6 +5,7 @@ import org.robn.ecommerce.auth.exception.EcoInvalidEmailOrPasswordException;
 import org.robn.ecommerce.auth.exception.EcoRoleNotFoundException;
 import org.robn.ecommerce.auth.exception.EcoUserAlreadyExistsByEmailException;
 import org.robn.ecommerce.auth.model.EcoRole;
+import org.robn.ecommerce.auth.model.EcoToken;
 import org.robn.ecommerce.auth.model.EcoUser;
 import org.robn.ecommerce.auth.model.enums.EcoUserStatus;
 import org.robn.ecommerce.auth.model.request.EcoUserCreateRequest;
@@ -12,8 +13,8 @@ import org.robn.ecommerce.auth.model.request.EcoUserLoginRequest;
 import org.robn.ecommerce.auth.port.EcoRoleReadPort;
 import org.robn.ecommerce.auth.port.EcoUserReadPort;
 import org.robn.ecommerce.auth.port.EcoUserSavePort;
+import org.robn.ecommerce.auth.service.EcoAuthService;
 import org.robn.ecommerce.auth.service.EcoTokenService;
-import org.robn.ecommerce.auth.service.EcoUserService;
 import org.robn.ecommerce.parameter.port.EcoParameterReadPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class EcoUserServiceImpl implements EcoUserService {
+public class EcoAuthServiceImpl implements EcoAuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final EcoTokenService ecoTokenService;
@@ -35,7 +36,7 @@ public class EcoUserServiceImpl implements EcoUserService {
 
     @Override
     @Transactional
-    public EcoUser register(final EcoUserCreateRequest ecoUserCreateRequest) {
+    public EcoToken register(final EcoUserCreateRequest ecoUserCreateRequest) {
         validateEmail(ecoUserCreateRequest.email());
 
         final EcoUser user = EcoUser.builder()
@@ -45,18 +46,20 @@ public class EcoUserServiceImpl implements EcoUserService {
                 .roles(getDefaultRoles())
                 .build();
 
-        return ecoUserSavePort.save(user);
+        final EcoUser savedUser = ecoUserSavePort.save(user);
+
+        return ecoTokenService.generateToken(savedUser.getClaims());
     }
 
     @Override
-    public EcoUser login(EcoUserLoginRequest ecoUserLoginRequest) {
+    public EcoToken login(EcoUserLoginRequest ecoUserLoginRequest) {
         EcoUser user = ecoUserReadPort.findByEmail(ecoUserLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
 
         if (!passwordEncoder.matches(ecoUserLoginRequest.password(), user.getPassword())) {
             throw EcoInvalidEmailOrPasswordException.of();
         }
 
-        return user;
+        return ecoTokenService.generateToken(user.getClaims());
     }
 
     private void validateEmail(final String email) {
