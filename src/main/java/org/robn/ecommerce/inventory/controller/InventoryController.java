@@ -46,9 +46,7 @@ public class InventoryController {
     }
 
     @GetMapping("/by-product-warehouse")
-    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(
-            @RequestParam final Long productId,
-            @RequestParam final Long warehouseId) {
+    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(@RequestParam final Long productId, @RequestParam final Long warehouseId) {
         final Inventory inventory = inventoryService.findByProductIdAndWarehouseId(productId, warehouseId);
 
         return EcoBaseResponse.successOf(domainToResponseMapper.map(inventory));
@@ -62,9 +60,7 @@ public class InventoryController {
     }
 
     @PutMapping("/{id}")
-    public EcoBaseResponse<InventoryResponse> update(
-            @PathVariable final Long id,
-            @RequestBody @Valid final InventoryUpdateRequest inventoryUpdateRequest) {
+    public EcoBaseResponse<InventoryResponse> update(@PathVariable final Long id, @RequestBody @Valid final InventoryUpdateRequest inventoryUpdateRequest) {
         final Inventory inventory = inventoryService.update(id, inventoryUpdateRequest);
 
         return EcoBaseResponse.successOf(domainToResponseMapper.map(inventory));

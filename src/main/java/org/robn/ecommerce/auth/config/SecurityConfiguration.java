@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/guest-addresses/**").permitAll()
                         .requestMatchers("/api/v1/brands/**").permitAll()
                         .requestMatchers("/api/v1/categories/**").permitAll()
+                        .requestMatchers("/api/v1/inventories/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
