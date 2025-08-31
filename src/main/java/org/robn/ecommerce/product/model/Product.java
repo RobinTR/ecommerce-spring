@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.BaseDomainModel;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 public class Product extends BaseDomainModel {
 
     private Long id;
+    private UUID sellerId;
     private Long brandId;
     private String name;
     private String description;

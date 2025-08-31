@@ -5,12 +5,14 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class ProductResponse {
 
     private Long id;
+    private UUID sellerId;
     private Long brandId;
     private String name;
     private String description;

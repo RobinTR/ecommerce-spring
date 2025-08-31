@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.robn.ecommerce.brand.model.entity.BrandEntity;
 import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
+import org.robn.ecommerce.seller.model.entity.SellerEntity;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,6 +22,13 @@ public class ProductEntity extends SoftDeletableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "seller_id")
+    private UUID sellerId;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id", insertable = false, updatable = false)
+    private SellerEntity seller;
 
     @Column(name = "brand_id")
     private Long brandId;

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -52,10 +53,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void update(final Long id, final ProductUpdateRequest productUpdateRequest) {
-        ensureBrandExists(productUpdateRequest.getBrandId());
+        if (productUpdateRequest.getBrandId() != null) {
+            ensureBrandExists(productUpdateRequest.getBrandId());
+        }
+
         final Product product = getProductById(id);
         productUpdateMapper.update(product, productUpdateRequest);
         productSavePort.save(product);
+    }
+
+    @Override
+    public boolean isProductOwnedBySeller(final Long productId, final UUID sellerId) {
+        final Product product = getProductById(productId);
+
+        return product.getSellerId().equals(sellerId);
     }
 
     private Product getProductById(final Long id) {

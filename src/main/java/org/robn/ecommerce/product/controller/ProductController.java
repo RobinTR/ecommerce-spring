@@ -11,6 +11,7 @@ import org.robn.ecommerce.product.model.request.ProductUpdateRequest;
 import org.robn.ecommerce.product.model.response.ProductListResponse;
 import org.robn.ecommerce.product.model.response.ProductResponse;
 import org.robn.ecommerce.product.service.ProductService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +27,22 @@ public class ProductController {
 
     @GetMapping
     public EcoBaseResponse<List<ProductListResponse>> findAll() {
-        List<Product> products = productService.findAll();
-        List<ProductListResponse> productsResponse = productDomainToListResponseMapper.map(products);
+        final List<Product> products = productService.findAll();
+        final List<ProductListResponse> productsResponse = productDomainToListResponseMapper.map(products);
 
         return EcoBaseResponse.successOf(productsResponse);
     }
 
     @GetMapping("/{id}")
     public EcoBaseResponse<ProductResponse> findById(@PathVariable final Long id) {
-        Product product = productService.findById(id);
-        ProductResponse productResponse = productDomainToResponseMapper.map(product);
+        final Product product = productService.findById(id);
+        final ProductResponse productResponse = productDomainToResponseMapper.map(product);
 
         return EcoBaseResponse.successOf(productResponse);
     }
 
     @PostMapping(consumes = "multipart/form-data")
+    @PreAuthorize("hasRole('SELLER')")
     public EcoBaseResponse<Void> create(@ModelAttribute @Valid final ProductCreateRequest productCreateRequest) {
         productService.create(productCreateRequest);
 
@@ -48,6 +50,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @productSecurity.isOwner(#id, authentication.principal))")
     public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final ProductUpdateRequest productUpdateRequest) {
         productService.update(id, productUpdateRequest);
 
