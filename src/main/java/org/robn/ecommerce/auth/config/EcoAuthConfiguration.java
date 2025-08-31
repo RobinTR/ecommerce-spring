@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.robn.ecommerce.common.model.enums.EcoConfigParameter;
 import org.robn.ecommerce.parameter.model.EcoParameter;
 import org.robn.ecommerce.parameter.port.EcoParameterReadPort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -13,31 +14,23 @@ import java.util.Optional;
 @Configuration
 public class EcoAuthConfiguration {
 
-    private final String tokkenIssuer;
-
-    private final String tokenSecretKey;
-
+    private final String tokenIssuer;
     private final Integer accessTokenExpireMinute;
-
     private final Integer refreshTokenExpireDay;
+    private final String secretKey;
 
-    public EcoAuthConfiguration(EcoParameterReadPort parameterReadPort) {
-        final List<EcoParameter> parameters = parameterReadPort.findAll();
+    public EcoAuthConfiguration(EcoParameterReadPort parameterReadPort, @Value("${security.jwt.secret-key}") String secretKey) {
+        final List<EcoParameter> parameters = List.copyOf(parameterReadPort.findAll());
+        this.secretKey = secretKey;
+        this.tokenIssuer = EcoConfigParameter.ECO.getDefaultValue();
+        this.accessTokenExpireMinute = getIntParameter(parameters, EcoConfigParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE);
+        this.refreshTokenExpireDay = getIntParameter(parameters, EcoConfigParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY);
+    }
 
-        this.tokkenIssuer = EcoConfigParameter.ECO.getDefaultValue();
-
-        final String token = Optional.ofNullable(EcoParameter.getDefinition(EcoConfigParameter.AUTH_TOKEN_SECRET_KEY, parameters))
-                .orElse(EcoConfigParameter.AUTH_TOKEN_SECRET_KEY.getDefaultValue());
-        this.tokenSecretKey = token;
-
-        this.accessTokenExpireMinute = Optional.ofNullable(EcoParameter.getDefinition(EcoConfigParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE, parameters))
-                .map(Integer::valueOf)
-                .orElse(Integer.valueOf(EcoConfigParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
-
-        this.refreshTokenExpireDay = Optional.ofNullable(EcoParameter.getDefinition(EcoConfigParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY, parameters))
-                .map(Integer::valueOf)
-                .orElse(Integer.valueOf(EcoConfigParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
-
+    private Integer getIntParameter(List<EcoParameter> parameters, EcoConfigParameter config) {
+        return Optional.ofNullable(EcoParameter.getDefinition(config, parameters))
+                .map(Integer::parseInt)
+                .orElse(Integer.parseInt(config.getDefaultValue()));
     }
 
 }

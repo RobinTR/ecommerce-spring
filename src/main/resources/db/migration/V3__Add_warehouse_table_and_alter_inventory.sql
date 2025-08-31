@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS eco_warehouse
     full_address VARCHAR(1000),
     created_at   TIMESTAMP(0) NOT NULL,
     updated_at   TIMESTAMP(0),
-    created_by   VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by   VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by   VARCHAR(255),
     deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at   TIMESTAMP(0),

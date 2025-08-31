@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS eco_user
     user_status VARCHAR(50)  NOT NULL,
     created_at  TIMESTAMP(0) NOT NULL,
     updated_at  TIMESTAMP(0),
-    created_by  VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by  VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by  VARCHAR(255),
     deleted     BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at  TIMESTAMP(0),
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS eco_customer
     phone_number VARCHAR(11)  NOT NULL,
     created_at   TIMESTAMP(0) NOT NULL,
     updated_at   TIMESTAMP(0),
-    created_by   VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by   VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by   VARCHAR(255),
     deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at   TIMESTAMP(0),
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS eco_seller
     seller_status  VARCHAR(50)  NOT NULL,
     created_at     TIMESTAMP(0) NOT NULL,
     updated_at     TIMESTAMP(0),
-    created_by     VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by     VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by     VARCHAR(255),
     deleted        BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at     TIMESTAMP(0),
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS eco_address
     is_default   BOOLEAN       NOT NULL DEFAULT FALSE,
     created_at   TIMESTAMP(0)  NOT NULL,
     updated_at   TIMESTAMP(0),
-    created_by   VARCHAR(255)  NOT NULL DEFAULT 'eco',
+    created_by   VARCHAR(255)  NOT NULL DEFAULT 'ECO',
     updated_by   VARCHAR(255)
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS eco_brand
     name       VARCHAR(200) NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TIMESTAMP(0),
-    created_by VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by VARCHAR(255),
     deleted    BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at TIMESTAMP(0),
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS eco_category
     name       VARCHAR(200) NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TIMESTAMP(0),
-    created_by VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by VARCHAR(255),
     deleted    BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_at TIMESTAMP(0),
@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS eco_category
 CREATE TABLE IF NOT EXISTS eco_product
 (
     id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    seller_id   UUID           NOT NULL,
     brand_id    BIGINT         NOT NULL,
     name        VARCHAR(200)   NOT NULL,
     description TEXT           NOT NULL,
@@ -129,12 +130,13 @@ CREATE TABLE IF NOT EXISTS eco_product
     is_verified BOOLEAN        NOT NULL DEFAULT FALSE,
     created_at  TIMESTAMP(0)   NOT NULL,
     updated_at  TIMESTAMP(0),
-    created_by  VARCHAR(255)   NOT NULL DEFAULT 'eco',
+    created_by  VARCHAR(255)   NOT NULL DEFAULT 'ECO',
     updated_by  VARCHAR(255),
     deleted     BOOLEAN        NOT NULL DEFAULT FALSE,
     deleted_at  TIMESTAMP(0),
     deleted_by  VARCHAR(255),
-    CONSTRAINT fk_eco_product_eco_brand_id FOREIGN KEY (brand_id) REFERENCES eco_brand (id)
+    CONSTRAINT fk_eco_product_eco_brand_id FOREIGN KEY (brand_id) REFERENCES eco_brand (id),
+    CONSTRAINT fk_eco_product_eco_seller_id FOREIGN KEY (seller_id) REFERENCES eco_seller (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_product_image
@@ -145,7 +147,7 @@ CREATE TABLE IF NOT EXISTS eco_product_image
     alt_text   VARCHAR(255),
     created_at TIMESTAMP(0)  NOT NULL,
     updated_at TIMESTAMP(0),
-    created_by VARCHAR(255)  NOT NULL DEFAULT 'eco',
+    created_by VARCHAR(255)  NOT NULL DEFAULT 'ECO',
     updated_by VARCHAR(255),
     deleted    BOOLEAN       NOT NULL DEFAULT FALSE,
     deleted_at TIMESTAMP(0),
@@ -160,7 +162,7 @@ CREATE TABLE IF NOT EXISTS eco_product_category
     category_id BIGINT       NOT NULL,
     created_at  TIMESTAMP(0) NOT NULL,
     updated_at  TIMESTAMP(0),
-    created_by  VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by  VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by  VARCHAR(255),
     CONSTRAINT fk_eco_product_category_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id),
     CONSTRAINT fk_eco_product_category_eco_category_id FOREIGN KEY (category_id) REFERENCES eco_category (id)
@@ -288,7 +290,7 @@ CREATE TABLE IF NOT EXISTS eco_inventory
     stock_quantity INTEGER      NOT NULL,
     created_at     TIMESTAMP(0) NOT NULL,
     updated_at     TIMESTAMP(0),
-    created_by     VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by     VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by     VARCHAR(255),
     CONSTRAINT fk_eco_inventory_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id)
 );

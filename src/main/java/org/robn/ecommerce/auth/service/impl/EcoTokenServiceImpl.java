@@ -102,14 +102,14 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     }
 
     private SecretKey getKey() {
-        final byte[] keyBytes = Decoders.BASE64.decode(ecoAuthConfiguration.getTokenSecretKey());
+        final byte[] keyBytes = Decoders.BASE64.decode(ecoAuthConfiguration.getSecretKey());
 
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private JwtBuilder createJwtBuilder(final long currentTimeMillis) {
         return Jwts.builder()
-                .issuer(ecoAuthConfiguration.getTokkenIssuer())
+                .issuer(ecoAuthConfiguration.getTokenIssuer())
                 .issuedAt(new Date(currentTimeMillis))
                 .signWith(getKey());
     }

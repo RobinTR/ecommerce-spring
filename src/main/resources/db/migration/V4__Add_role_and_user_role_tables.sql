@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS eco_role
     name       VARCHAR(200) NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TIMESTAMP(0),
-    created_by VARCHAR(255) NOT NULL DEFAULT 'eco',
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by VARCHAR(255),
     CONSTRAINT uq_eco_role_name UNIQUE (name)
 );
