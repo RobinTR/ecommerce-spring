@@ -11,6 +11,7 @@ import org.robn.ecommerce.category.model.response.CategoryListResponse;
 import org.robn.ecommerce.category.model.response.CategoryResponse;
 import org.robn.ecommerce.category.service.CategoryService;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +27,22 @@ public class CategoryController {
 
     @GetMapping
     public EcoBaseResponse<List<CategoryListResponse>> findAll() {
-        List<Category> categories = categoryService.findAll();
-        List<CategoryListResponse> categoriesResponse = categoryDomainToListResponseMapper.map(categories);
+        final List<Category> categories = categoryService.findAll();
+        final List<CategoryListResponse> categoriesResponse = categoryDomainToListResponseMapper.map(categories);
 
         return EcoBaseResponse.successOf(categoriesResponse);
     }
 
     @GetMapping("/{id}")
     public EcoBaseResponse<CategoryResponse> findById(@PathVariable final Long id) {
-        Category category = categoryService.findById(id);
-        CategoryResponse categoryResponse = categoryDomainToResponseMapper.map(category);
+        final Category category = categoryService.findById(id);
+        final CategoryResponse categoryResponse = categoryDomainToResponseMapper.map(category);
 
         return EcoBaseResponse.successOf(categoryResponse);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public EcoBaseResponse<Void> create(@RequestBody @Valid final CategoryCreateRequest categoryCreateRequest) {
         categoryService.create(categoryCreateRequest);
 
@@ -48,6 +50,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final CategoryUpdateRequest categoryUpdateRequest) {
         categoryService.update(id, categoryUpdateRequest);
 
