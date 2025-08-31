@@ -19,7 +19,7 @@ public class EcoAuthConfiguration {
     private final Integer refreshTokenExpireDay;
     private final String secretKey;
 
-    public EcoAuthConfiguration(EcoParameterReadPort parameterReadPort, @Value("${security.jwt.secret-key}") String secretKey) {
+    public EcoAuthConfiguration(final EcoParameterReadPort parameterReadPort, @Value("${security.jwt.secret-key}") final String secretKey) {
         final List<EcoParameter> parameters = List.copyOf(parameterReadPort.findAll());
         this.secretKey = secretKey;
         this.tokenIssuer = EcoConfigParameter.ECO.getDefaultValue();
@@ -27,7 +27,7 @@ public class EcoAuthConfiguration {
         this.refreshTokenExpireDay = getIntParameter(parameters, EcoConfigParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY);
     }
 
-    private Integer getIntParameter(List<EcoParameter> parameters, EcoConfigParameter config) {
+    private Integer getIntParameter(final List<EcoParameter> parameters, final EcoConfigParameter config) {
         return Optional.ofNullable(EcoParameter.getDefinition(config, parameters))
                 .map(Integer::parseInt)
                 .orElse(Integer.parseInt(config.getDefaultValue()));
