@@ -19,7 +19,7 @@ public class EcoRoleAdapter implements EcoRoleReadPort {
 
     @Override
     public Optional<EcoRole> findByName(final String name) {
-        Optional<EcoRoleEntity> entity = ecoRoleRepository.findByName(name);
+        final Optional<EcoRoleEntity> entity = ecoRoleRepository.findByName(name);
 
         return entity.map(entityToDomainMapper::map);
     }

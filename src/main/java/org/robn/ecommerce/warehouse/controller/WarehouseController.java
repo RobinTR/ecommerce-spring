@@ -33,7 +33,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}")
-    public EcoBaseResponse<WarehouseResponse> findById(final @PathVariable Long id) {
+    public EcoBaseResponse<WarehouseResponse> findById(@PathVariable final Long id) {
         final Warehouse warehouse = warehouseService.findById(id);
         final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
 

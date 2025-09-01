@@ -51,10 +51,10 @@ public class InventoryAdapter implements InventoryReadPort, InventorySavePort {
 
     @Override
     public Inventory save(final Inventory inventory) {
-        InventoryEntity inventoryEntity = inventoryDomainToEntityMapper.map(inventory);
-        inventoryEntity = inventoryRepository.save(inventoryEntity);
+        final InventoryEntity inventoryEntity = inventoryDomainToEntityMapper.map(inventory);
+        final InventoryEntity savedInventoryEntity = inventoryRepository.save(inventoryEntity);
 
-        return inventoryEntityToDomainMapper.map(inventoryEntity);
+        return inventoryEntityToDomainMapper.map(savedInventoryEntity);
     }
 
 }

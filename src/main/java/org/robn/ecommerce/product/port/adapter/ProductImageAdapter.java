@@ -35,7 +35,7 @@ public class ProductImageAdapter implements ProductImageReadPort, ProductImageSa
     }
 
     @Override
-    public Integer countByProductId(Long productId) {
+    public Integer countByProductId(final Long productId) {
         return productImageRepository.countByProductId(productId);
     }
 

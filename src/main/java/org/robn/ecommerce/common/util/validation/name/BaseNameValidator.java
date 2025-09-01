@@ -5,22 +5,24 @@ import org.springframework.util.StringUtils;
 
 public abstract class BaseNameValidator {
 
-    protected boolean isEmpty(String value) {
+    protected boolean isEmpty(final String value) {
         return !StringUtils.hasText(value);
     }
 
-    protected boolean hasLeadingOrTrailingSpaces(String value) {
+    protected boolean hasLeadingOrTrailingSpaces(final String value) {
         return value.startsWith(" ") || value.endsWith(" ");
     }
 
-    protected boolean hasInvalidSpaces(String value, ConstraintValidatorContext context) {
+    protected boolean hasInvalidSpaces(final String value, final ConstraintValidatorContext context) {
         if (hasLeadingOrTrailingSpaces(value)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "Name must not start or end with a space"
             ).addConstraintViolation();
+
             return true;
         }
+
         return false;
     }
 

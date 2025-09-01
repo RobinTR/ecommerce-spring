@@ -30,28 +30,28 @@ public class ProductProductCategoryAdapter implements ProductCategoryReadPort, P
     private final ProductEntityToDomainMapper productEntityToDomainMapper;
 
     @Override
-    public void delete(Long productId, Long categoryId) {
+    public void delete(final Long productId, final Long categoryId) {
         productCategoryRepository.deleteByProductIdAndCategoryId(productId, categoryId);
     }
 
     @Override
-    public List<Category> findAllCategoriesByProductId(Long productId) {
-        List<CategoryEntity> entities = productCategoryRepository.findCategoriesByProductId(productId);
+    public List<Category> findAllCategoriesByProductId(final Long productId) {
+        final List<CategoryEntity> entities = productCategoryRepository.findCategoriesByProductId(productId);
 
         return categoryEntityToDomainMapper.map(entities);
     }
 
     @Override
-    public List<Product> findAllProductsByCategoryId(Long categoryId) {
-        List<ProductEntity> entities = productCategoryRepository.findProductsByCategoryId(categoryId);
+    public List<Product> findAllProductsByCategoryId(final Long categoryId) {
+        final List<ProductEntity> entities = productCategoryRepository.findProductsByCategoryId(categoryId);
 
         return productEntityToDomainMapper.map(entities);
     }
 
     @Override
-    public ProductCategory save(ProductCategory productCategory) {
-        ProductCategoryEntity productCategoryEntity = productCategoryDomainToEntityMapper.map(productCategory);
-        ProductCategoryEntity savedEntity = productCategoryRepository.save(productCategoryEntity);
+    public ProductCategory save(final ProductCategory productCategory) {
+        final ProductCategoryEntity productCategoryEntity = productCategoryDomainToEntityMapper.map(productCategory);
+        final ProductCategoryEntity savedEntity = productCategoryRepository.save(productCategoryEntity);
 
         return productCategoryEntityToDomainMapper.map(savedEntity);
     }

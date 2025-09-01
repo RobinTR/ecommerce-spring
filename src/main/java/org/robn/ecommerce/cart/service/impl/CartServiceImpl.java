@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public Cart create() {
-        Cart cart = Cart.builder()
+        final Cart cart = Cart.builder()
                 .id(UUID.randomUUID())
                 .cartStatus(CartStatus.ACTIVE)
                 .build();

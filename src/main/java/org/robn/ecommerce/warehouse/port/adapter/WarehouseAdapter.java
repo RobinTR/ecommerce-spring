@@ -23,7 +23,7 @@ public class WarehouseAdapter implements WarehouseReadPort, WarehouseSavePort {
 
     @Override
     public List<Warehouse> findAll() {
-        List<WarehouseEntity> warehouseEntities = warehouseRepository.findAll();
+        final List<WarehouseEntity> warehouseEntities = warehouseRepository.findAll();
 
         return warehouseEntityToDomainMapper.map(warehouseEntities);
     }

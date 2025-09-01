@@ -21,7 +21,7 @@ public class ProductImageController {
     private final ProductImageDomainToResponseMapper productImageDomainToResponseMapper;
 
     @GetMapping
-    public EcoBaseResponse<List<ProductImageResponse>> findAllByProductId(final @PathVariable("productId") Long productId) {
+    public EcoBaseResponse<List<ProductImageResponse>> findAllByProductId(@PathVariable("productId") final Long productId) {
         final List<ProductImage> productImages = productImageService.findAllByProductId(productId);
         final List<ProductImageResponse> productImagesResponse = productImageDomainToResponseMapper.map(productImages);
 
@@ -30,8 +30,8 @@ public class ProductImageController {
 
     @PostMapping(consumes = "multipart/form-data")
     public EcoBaseResponse<Void> uploadImages(
-            @PathVariable Long productId,
-            @ModelAttribute @Valid ProductImageUploadRequest request
+            @PathVariable final Long productId,
+            @ModelAttribute @Valid final ProductImageUploadRequest request
     ) {
         productImageService.uploadImages(productId, request.getImageFiles(), request.getAltTexts());
 

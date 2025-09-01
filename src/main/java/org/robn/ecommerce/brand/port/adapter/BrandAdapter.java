@@ -38,10 +38,10 @@ public class BrandAdapter implements BrandReadPort, BrandSavePort, BrandLookupPo
 
     @Override
     public Brand save(final Brand brand) {
-        BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
-        brandEntity = brandRepository.save(brandEntity);
+        final BrandEntity brandEntity = brandDomainToEntityMapper.map(brand);
+        final BrandEntity savedBrandEntity = brandRepository.save(brandEntity);
 
-        return brandEntityToDomainMapper.map(brandEntity);
+        return brandEntityToDomainMapper.map(savedBrandEntity);
     }
 
     @Override

@@ -23,22 +23,22 @@ public class CategoryAdapter implements CategoryReadPort, CategorySavePort {
 
     @Override
     public List<Category> findAll() {
-        List<CategoryEntity> categoryEntities = categoryRepository.findAll();
+        final List<CategoryEntity> categoryEntities = categoryRepository.findAll();
 
         return categoryEntityToDomainMapper.map(categoryEntities);
     }
 
     @Override
-    public Optional<Category> findById(Long id) {
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
+    public Optional<Category> findById(final Long id) {
+        final Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
 
         return categoryEntity.map(categoryEntityToDomainMapper::map);
     }
 
     @Override
-    public Category save(Category category) {
-        CategoryEntity categoryEntity = categoryDomainToEntityMapper.map(category);
-        CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
+    public Category save(final Category category) {
+        final CategoryEntity categoryEntity = categoryDomainToEntityMapper.map(category);
+        final CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
 
         return categoryEntityToDomainMapper.map(savedCategory);
     }

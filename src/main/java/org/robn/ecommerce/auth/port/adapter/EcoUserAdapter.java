@@ -29,8 +29,8 @@ public class EcoUserAdapter implements EcoUserReadPort, EcoUserSavePort {
     }
 
     @Override
-    public Optional<EcoUser> findByEmail(String email) {
-        Optional<EcoUserEntity> user = ecoUserRepository.findByEmail(email);
+    public Optional<EcoUser> findByEmail(final String email) {
+        final Optional<EcoUserEntity> user = ecoUserRepository.findByEmail(email);
 
         return user.map(userEntityToEcoUserMapper::map);
     }

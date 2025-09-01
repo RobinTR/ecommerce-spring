@@ -48,7 +48,6 @@ public class ProductImageServiceImpl implements ProductImageService {
      */
     @Override
     public List<ProductImage> findAllByProductId(final Long productId) {
-
         final List<ProductImage> productImages = productImageReadPort.findAllByProductId(productId);
 
         if (productImages.isEmpty()) {
@@ -56,7 +55,6 @@ public class ProductImageServiceImpl implements ProductImageService {
         }
 
         return productImages;
-
     }
 
     /**
@@ -72,30 +70,25 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     @Transactional
     public void uploadImages(final Long productId, final List<MultipartFile> files, final List<String> altTexts) {
-
         ensureProductExists(productId);
         checkForImageSizeLimit(productId, files.size());
 
         for (int i = 0; i < files.size(); i++) {
-            MultipartFile file = files.get(i);
-            String altText = (altTexts != null && i < altTexts.size()) ? altTexts.get(i) : null;
+            final MultipartFile file = files.get(i);
+            final String altText = (altTexts != null && i < altTexts.size()) ? altTexts.get(i) : null;
             final UploadedImage uploadedImage = imageStoragePort.upload(file);
             final ProductImage productImage = buildProductImage(productId, uploadedImage, altText);
             productImageSavePort.save(productImage);
         }
-
     }
 
     private void ensureProductExists(final Long productId) {
-
         if (Boolean.FALSE.equals(productLookupPort.existsById(productId))) {
             throw RelatedProductNotFoundException.of(productId);
         }
-
     }
 
     private void checkForImageSizeLimit(final Long productId, final Integer fileCount) {
-
         final Integer imageCount = Optional.ofNullable(productImageReadPort.countByProductId(productId)).orElse(0);
         final int totalCount = imageCount + fileCount;
         final int maxImageCount = productImageConfig.getMaxCount();
@@ -105,11 +98,9 @@ public class ProductImageServiceImpl implements ProductImageService {
                     String.format("Cannot upload %d images. Product %d already has %d images. Maximum allowed is %d.",
                             fileCount, productId, imageCount, maxImageCount));
         }
-
     }
 
-    private ProductImage buildProductImage(Long productId, UploadedImage uploadedImage, String altText) {
-
+    private ProductImage buildProductImage(final Long productId, final UploadedImage uploadedImage, final String altText) {
         return ProductImage.builder()
                 .productId(productId)
                 .publicId(uploadedImage.getPublicId())

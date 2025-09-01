@@ -5,7 +5,6 @@ import org.robn.ecommerce.address.exception.GuestAddressNotFoundException;
 import org.robn.ecommerce.address.model.GuestAddress;
 import org.robn.ecommerce.address.model.mapper.GuestAddressCreateRequestToDomainMapper;
 import org.robn.ecommerce.address.model.mapper.GuestAddressUpdateMapper;
-import org.robn.ecommerce.address.model.mapper.GuestAddressUpdateRequestToDomainMapper;
 import org.robn.ecommerce.address.model.request.GuestAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.GuestAddressUpdateRequest;
 import org.robn.ecommerce.address.port.GuestAddressReadPort;
@@ -25,7 +24,6 @@ public class GuestAddressServiceImpl implements GuestAddressService {
     private final GuestAddressReadPort guestAddressReadPort;
     private final GuestAddressSavePort guestAddressSavePort;
     private final GuestAddressCreateRequestToDomainMapper guestAddressCreateRequestToDomainMapper;
-    private final GuestAddressUpdateRequestToDomainMapper guestAddressUpdateRequestToDomainMapper;
     private final GuestAddressUpdateMapper guestAddressUpdateMapper;
 
     @Override

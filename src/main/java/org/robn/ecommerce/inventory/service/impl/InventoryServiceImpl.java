@@ -50,7 +50,6 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public Inventory create(final InventoryCreateRequest inventoryCreateRequest) {
-
         final Long productId = inventoryCreateRequest.productId();
         final Long warehouseId = inventoryCreateRequest.warehouseId();
 

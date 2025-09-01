@@ -21,8 +21,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final EcoTokenService tokenService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
+        final String authHeader = request.getHeader("Authorization");
         String token = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

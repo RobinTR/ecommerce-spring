@@ -47,6 +47,7 @@ public class ImageListValidator implements ConstraintValidator<ImageList, List<M
             }
 
             final String contentType = file.getContentType();
+
             if (contentType == null || !allowedTypes.contains(contentType)) {
                 addConstraintViolation(context, String.format("Image %d has an unsupported content type: %s. Allowed types are: %s",
                         i + 1, contentType, String.join(", ", allowedTypes)));
