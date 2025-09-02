@@ -7,6 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a parameter is not found.
  * This exception extends the {@link EcoNotFoundException} class.
+ * It provides a factory method to create instances with a formatted message.
  */
 public class EcoParameterNotFoundException extends EcoNotFoundException {
 
