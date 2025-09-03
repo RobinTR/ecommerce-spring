@@ -24,4 +24,8 @@ public class SellerAddress extends BaseDomainModel {
     private String fullAddress;
     private Boolean isDefault;
 
+    public boolean isOwnedBy(final UUID targetSellerId) {
+        return this.sellerId != null && this.sellerId.equals(targetSellerId);
+    }
+
 }

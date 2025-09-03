@@ -9,8 +9,9 @@ import org.robn.ecommerce.address.model.request.SellerAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.SellerAddressUpdateRequest;
 import org.robn.ecommerce.address.port.SellerAddressReadPort;
 import org.robn.ecommerce.address.port.SellerAddressSavePort;
+import org.robn.ecommerce.address.service.SellerAddressSecurityService;
 import org.robn.ecommerce.address.service.SellerAddressService;
-import org.robn.ecommerce.auth.util.EcoSecurityUtil;
+import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +27,20 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     private final SellerAddressSavePort sellerAddressSavePort;
     private final SellerAddressCreateRequestToDomainMapper sellerAddressCreateRequestToDomainMapper;
     private final SellerAddressUpdateMapper sellerAddressUpdateMapper;
+    private final SecurityReadPort securityReadPort;
+    private final SellerAddressSecurityService securityService;
 
     @Override
     public List<SellerAddress> findAllBySellerId(final UUID sellerId) {
+        securityService.checkOwnershipBySellerId(sellerId);
+
         return sellerAddressReadPort.findAllBySellerId(sellerId);
     }
 
     @Override
     public SellerAddress findByAddressId(final UUID addressId) {
+        securityService.checkOwnershipByAddressId(addressId);
+
         return getSellerAddressById(addressId);
     }
 
@@ -41,23 +48,17 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     @Transactional
     public void create(final SellerAddressCreateRequest sellerAddressCreateRequest) {
         final SellerAddress sellerAddress = sellerAddressCreateRequestToDomainMapper.map(sellerAddressCreateRequest);
-        sellerAddress.setSellerId(EcoSecurityUtil.getCurrentUserId());
+        sellerAddress.setSellerId(securityReadPort.getCurrentUserId());
         sellerAddressSavePort.save(sellerAddress);
     }
 
     @Override
     @Transactional
     public void update(final UUID addressId, final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
+        securityService.checkOwnershipByAddressId(addressId);
         final SellerAddress existingAddress = getSellerAddressById(addressId);
         sellerAddressUpdateMapper.update(existingAddress, sellerAddressUpdateRequest);
         sellerAddressSavePort.save(existingAddress);
-    }
-
-    @Override
-    public boolean isAddressBelongsToSeller(final UUID addressId, final UUID targetSellerId) {
-        final SellerAddress sellerAddress = getSellerAddressById(addressId);
-
-        return sellerAddress.getSellerId().equals(targetSellerId);
     }
 
     private SellerAddress getSellerAddressById(final UUID addressId) {

@@ -11,7 +11,7 @@ import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.port.CustomerAddressSavePort;
 import org.robn.ecommerce.address.service.CustomerAddressSecurityService;
 import org.robn.ecommerce.address.service.CustomerAddressService;
-import org.robn.ecommerce.auth.util.EcoSecurityUtil;
+import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +28,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressCreateRequestToDomainMapper customerAddressCreateRequestToDomainMapper;
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
     private final CustomerAddressSecurityService securityService;
+    private final SecurityReadPort securityReadPort;
 
     @Override
     public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
@@ -47,7 +48,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Transactional
     public void create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
-        customerAddress.setCustomerId(EcoSecurityUtil.getCurrentUserId());
+        customerAddress.setCustomerId(securityReadPort.getCurrentUserId());
         customerAddressSavePort.save(customerAddress);
     }
 
