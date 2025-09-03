@@ -36,7 +36,7 @@ public class SellerAddressController {
     }
 
     @GetMapping("/{addressId}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @sellerAddressService.isAddressBelongsToSeller(#addressId, authentication.principal))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @sellerAddressSecurity.isOwner(#addressId, authentication.principal))")
     public EcoBaseResponse<SellerAddressResponse> findByAddressId(@PathVariable final UUID addressId) {
         final SellerAddress sellerAddress = sellerAddressService.findByAddressId(addressId);
         final SellerAddressResponse response = sellerAddressDomainToResponseMapper.map(sellerAddress);
@@ -53,7 +53,7 @@ public class SellerAddressController {
     }
 
     @PutMapping("/{addressId}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @sellerAddressService.isAddressBelongsToSeller(#addressId, authentication.principal))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @sellerAddressSecurity.isOwner(#addressId, authentication.principal))")
     public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
         sellerAddressService.update(addressId, sellerAddressUpdateRequest);
 

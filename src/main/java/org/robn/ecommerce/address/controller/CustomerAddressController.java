@@ -27,7 +27,7 @@ public class CustomerAddressController {
     private final CustomerAddressDomainToResponseMapper customerAddressDomainToResponseMapper;
 
     @GetMapping("/customer/{customerId}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('CUSTOMER') and authentication.principal == #customerId)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<List<CustomerAddressListResponse>> findAllByCustomerId(@PathVariable final UUID customerId) {
         final List<CustomerAddress> customerAddresses = customerAddressService.findAllByCustomerId(customerId);
         final List<CustomerAddressListResponse> response = customerAddressDomainToListResponseMapper.map(customerAddresses);
@@ -36,7 +36,7 @@ public class CustomerAddressController {
     }
 
     @GetMapping("/{addressId}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('CUSTOMER') and @customerAddressService.isAddressBelongsToCustomer(#addressId, authentication.principal))")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<CustomerAddressResponse> findByAddressId(@PathVariable final UUID addressId) {
         final CustomerAddress customerAddress = customerAddressService.findByAddressId(addressId);
         final CustomerAddressResponse response = customerAddressDomainToResponseMapper.map(customerAddress);
@@ -53,7 +53,7 @@ public class CustomerAddressController {
     }
 
     @PutMapping("/{addressId}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('CUSTOMER') and @customerAddressService.isAddressBelongsToCustomer(#addressId, authentication.principal))")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         customerAddressService.update(addressId, customerAddressUpdateRequest);
 

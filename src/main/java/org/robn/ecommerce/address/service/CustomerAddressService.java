@@ -17,6 +17,4 @@ public interface CustomerAddressService {
 
     void update(UUID addressId, CustomerAddressUpdateRequest customerAddressUpdateRequest);
 
-    boolean isAddressBelongsToCustomer(UUID addressId, UUID targetCustomerId);
-
 }

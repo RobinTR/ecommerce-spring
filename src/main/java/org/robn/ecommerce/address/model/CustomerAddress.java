@@ -25,4 +25,8 @@ public class CustomerAddress extends BaseDomainModel {
     private String fullAddress;
     private Boolean isDefault;
 
+    public boolean isOwnedBy(final UUID targetCustomerId) {
+        return this.customerId != null && this.customerId.equals(targetCustomerId);
+    }
+
 }

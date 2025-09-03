@@ -9,6 +9,7 @@ import org.robn.ecommerce.address.model.request.CustomerAddressCreateRequest;
 import org.robn.ecommerce.address.model.request.CustomerAddressUpdateRequest;
 import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.port.CustomerAddressSavePort;
+import org.robn.ecommerce.address.service.CustomerAddressSecurityService;
 import org.robn.ecommerce.address.service.CustomerAddressService;
 import org.robn.ecommerce.auth.util.EcoSecurityUtil;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,19 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressSavePort customerAddressSavePort;
     private final CustomerAddressCreateRequestToDomainMapper customerAddressCreateRequestToDomainMapper;
     private final CustomerAddressUpdateMapper customerAddressUpdateMapper;
+    private final CustomerAddressSecurityService securityService;
 
     @Override
     public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
+        securityService.checkOwnershipByCustomerId(customerId);
+
         return customerAddressReadPort.findAllByCustomerId(customerId);
     }
 
     @Override
     public CustomerAddress findByAddressId(final UUID addressId) {
+        securityService.checkOwnershipByAddressId(addressId);
+
         return getCustomerAddress(addressId);
     }
 
@@ -48,16 +54,10 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Override
     @Transactional
     public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
+        securityService.checkOwnershipByAddressId(addressId);
         final CustomerAddress customerAddress = getCustomerAddress(addressId);
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
         customerAddressSavePort.save(customerAddress);
-    }
-
-    @Override
-    public boolean isAddressBelongsToCustomer(final UUID addressId, final UUID targetCustomerId) {
-        final CustomerAddress customerAddress = getCustomerAddress(addressId);
-
-        return customerAddress.getCustomerId().equals(targetCustomerId);
     }
 
     private CustomerAddress getCustomerAddress(final UUID addressId) {
