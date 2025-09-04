@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
+    private static final String BASE_URL = "/api/v1";
     private final JwtFilter jwtFilter;
 
     @Bean
@@ -32,14 +33,14 @@ public class SecurityConfiguration {
                 .exceptionHandling(customizer -> customizer.authenticationEntryPoint(ecoAuthenticationEntryPoint))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").anonymous()
-                        .requestMatchers("/api/v1/guest-addresses/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
-                        .requestMatchers("/api/v1/inventories/**").hasRole(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/product-category-relations/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/warehouses/**").permitAll()
+                        .requestMatchers(BASE_URL + "/auth/**").anonymous()
+                        .requestMatchers(BASE_URL + "/guest-addresses/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, BASE_URL + "/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, BASE_URL + "/categories/**").permitAll()
+                        .requestMatchers(BASE_URL + "/inventories/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, BASE_URL + "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, BASE_URL + "/product-category-relations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, BASE_URL + "/warehouses/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
