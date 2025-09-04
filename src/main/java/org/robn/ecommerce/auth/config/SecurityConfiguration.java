@@ -2,9 +2,11 @@ package org.robn.ecommerce.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.filter.JwtFilter;
+import org.robn.ecommerce.auth.model.enums.Role;
 import org.robn.ecommerce.auth.security.EcoAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,12 +32,9 @@ public class SecurityConfiguration {
                 .exceptionHandling(customizer -> customizer.authenticationEntryPoint(ecoAuthenticationEntryPoint))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/guest-addresses/**").permitAll()
-                        .requestMatchers("/api/v1/brands/**").permitAll()
-                        .requestMatchers("/api/v1/categories/**").permitAll()
-                        .requestMatchers("/api/v1/products/**").permitAll()
-                        .requestMatchers("/api/v1/inventories/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/auth/**").anonymous()
+                        .requestMatchers("/api/v1/inventories/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/product-category-relations/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
