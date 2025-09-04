@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('SELLER') and @productSecurity.isOwner(#id, authentication.principal))")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final ProductUpdateRequest productUpdateRequest) {
         productService.update(id, productUpdateRequest);
 

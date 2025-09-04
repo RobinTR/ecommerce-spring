@@ -22,4 +22,8 @@ public class Product extends BaseDomainModel {
     private Boolean isActive;
     private Boolean isVerified;
 
+    public boolean isOwnedBy(final UUID targetUserId) {
+        return this.sellerId != null && this.sellerId.equals(targetUserId);
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.robn.ecommerce.product.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.robn.ecommerce.product.exception.ProductNotFoundException;
 import org.robn.ecommerce.product.exception.RelatedBrandNotFoundException;
 import org.robn.ecommerce.product.model.Product;
@@ -12,12 +13,12 @@ import org.robn.ecommerce.product.port.BrandLookupPort;
 import org.robn.ecommerce.product.port.ProductReadPort;
 import org.robn.ecommerce.product.port.ProductSavePort;
 import org.robn.ecommerce.product.service.ProductImageService;
+import org.robn.ecommerce.product.service.ProductSecurityService;
 import org.robn.ecommerce.product.service.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +28,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductReadPort productReadPort;
     private final ProductSavePort productSavePort;
     private final BrandLookupPort brandLookupPort;
+    private final SecurityReadPort securityReadPort;
     private final ProductCreateRequestToDomainMapper productCreateRequestToDomainMapper;
     private final ProductUpdateMapper productUpdateMapper;
     private final ProductImageService productImageService;
+    private final ProductSecurityService productSecurityService;
 
     @Override
     public List<Product> findAll() {
@@ -46,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
     public void create(final ProductCreateRequest productCreateRequest) {
         ensureBrandExists(productCreateRequest.getBrandId());
         final Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
+        product.setSellerId(securityReadPort.getCurrentUserId());
         final Product savedProduct = productSavePort.save(product);
         productImageService.uploadImages(savedProduct.getId(), productCreateRequest.getImageFiles(), productCreateRequest.getAltTexts());
     }
@@ -53,6 +57,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void update(final Long id, final ProductUpdateRequest productUpdateRequest) {
+        productSecurityService.checkAccessByProductId(id);
+
         if (productUpdateRequest.getBrandId() != null) {
             ensureBrandExists(productUpdateRequest.getBrandId());
         }
@@ -60,13 +66,6 @@ public class ProductServiceImpl implements ProductService {
         final Product product = getProductById(id);
         productUpdateMapper.update(product, productUpdateRequest);
         productSavePort.save(product);
-    }
-
-    @Override
-    public boolean isProductOwnedBySeller(final Long productId, final UUID sellerId) {
-        final Product product = getProductById(productId);
-
-        return product.getSellerId().equals(sellerId);
     }
 
     private Product getProductById(final Long id) {
