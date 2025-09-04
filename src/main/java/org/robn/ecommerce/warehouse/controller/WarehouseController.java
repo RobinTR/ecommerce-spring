@@ -26,7 +26,6 @@ public class WarehouseController {
     private final WarehouseDomainToResponseMapper warehouseDomainToResponseMapper;
 
     @GetMapping
-    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<WarehouseListResponse>> findAll() {
         final List<Warehouse> warehouses = warehouseService.findAll();
         final List<WarehouseListResponse> response = warehouseDomainToListResponseMapper.map(warehouses);
@@ -35,7 +34,6 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()")
     public EcoBaseResponse<WarehouseResponse> findById(@PathVariable final Long id) {
         final Warehouse warehouse = warehouseService.findById(id);
         final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);

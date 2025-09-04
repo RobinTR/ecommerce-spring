@@ -22,7 +22,6 @@ public class ProductImageController {
     private final ProductImageDomainToResponseMapper productImageDomainToResponseMapper;
 
     @GetMapping
-    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<ProductImageResponse>> findAllByProductId(@PathVariable("productId") final Long productId) {
         final List<ProductImage> productImages = productImageService.findAllByProductId(productId);
         final List<ProductImageResponse> productImagesResponse = productImageDomainToResponseMapper.map(productImages);

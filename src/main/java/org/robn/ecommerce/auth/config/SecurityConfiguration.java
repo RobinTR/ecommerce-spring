@@ -33,8 +33,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").anonymous()
+                        .requestMatchers("/api/v1/guest-addresses/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                         .requestMatchers("/api/v1/inventories/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/product-category-relations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/warehouses/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)

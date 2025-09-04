@@ -26,7 +26,6 @@ public class CategoryController {
     private final CategoryDomainToListResponseMapper categoryDomainToListResponseMapper;
 
     @GetMapping
-    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<CategoryListResponse>> findAll() {
         final List<Category> categories = categoryService.findAll();
         final List<CategoryListResponse> categoriesResponse = categoryDomainToListResponseMapper.map(categories);
@@ -35,7 +34,6 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()")
     public EcoBaseResponse<CategoryResponse> findById(@PathVariable final Long id) {
         final Category category = categoryService.findById(id);
         final CategoryResponse categoryResponse = categoryDomainToResponseMapper.map(category);
