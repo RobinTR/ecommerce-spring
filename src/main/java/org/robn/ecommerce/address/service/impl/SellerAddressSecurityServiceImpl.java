@@ -20,7 +20,7 @@ public class SellerAddressSecurityServiceImpl implements SellerAddressSecuritySe
     private final SecurityReadPort securityReadPort;
 
     @Override
-    public void checkOwnershipByAddressId(final UUID addressId) {
+    public void checkAccessByAddressId(final UUID addressId) {
         final SellerAddress sellerAddress = sellerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> SellerAddressNotFoundException.of(addressId));
 
@@ -30,7 +30,7 @@ public class SellerAddressSecurityServiceImpl implements SellerAddressSecuritySe
     }
 
     @Override
-    public void checkOwnershipBySellerId(final UUID sellerId) {
+    public void checkAccessBySellerId(final UUID sellerId) {
         if (!isAdmin() && !securityReadPort.getCurrentUserId().equals(sellerId)) {
             throw EcoAccessDeniedException.of();
         }

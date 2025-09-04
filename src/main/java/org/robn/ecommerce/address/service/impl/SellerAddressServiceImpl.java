@@ -32,14 +32,14 @@ public class SellerAddressServiceImpl implements SellerAddressService {
 
     @Override
     public List<SellerAddress> findAllBySellerId(final UUID sellerId) {
-        securityService.checkOwnershipBySellerId(sellerId);
+        securityService.checkAccessBySellerId(sellerId);
 
         return sellerAddressReadPort.findAllBySellerId(sellerId);
     }
 
     @Override
     public SellerAddress findByAddressId(final UUID addressId) {
-        securityService.checkOwnershipByAddressId(addressId);
+        securityService.checkAccessByAddressId(addressId);
 
         return getSellerAddressById(addressId);
     }
@@ -55,7 +55,7 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     @Override
     @Transactional
     public void update(final UUID addressId, final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
-        securityService.checkOwnershipByAddressId(addressId);
+        securityService.checkAccessByAddressId(addressId);
         final SellerAddress existingAddress = getSellerAddressById(addressId);
         sellerAddressUpdateMapper.update(existingAddress, sellerAddressUpdateRequest);
         sellerAddressSavePort.save(existingAddress);
