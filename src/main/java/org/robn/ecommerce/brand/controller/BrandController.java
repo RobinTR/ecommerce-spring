@@ -26,6 +26,7 @@ public class BrandController {
     private final BrandDomainToResponseMapper brandDomainToResponseMapper;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<BrandListResponse>> findAll() {
         final List<Brand> brands = brandService.findAll();
         final List<BrandListResponse> brandsResponse = brandDomainToListResponseMapper.map(brands);
@@ -34,6 +35,7 @@ public class BrandController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<BrandResponse> findById(@PathVariable final Long id) {
         final Brand brand = brandService.findById(id);
         final BrandResponse brandResponse = brandDomainToResponseMapper.map(brand);

@@ -26,6 +26,7 @@ public class ProductController {
     private final ProductDomainToResponseMapper productDomainToResponseMapper;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<ProductListResponse>> findAll() {
         final List<Product> products = productService.findAll();
         final List<ProductListResponse> productsResponse = productDomainToListResponseMapper.map(products);
@@ -34,6 +35,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<ProductResponse> findById(@PathVariable final Long id) {
         final Product product = productService.findById(id);
         final ProductResponse productResponse = productDomainToResponseMapper.map(product);

@@ -11,6 +11,7 @@ import org.robn.ecommerce.warehouse.model.request.WarehouseUpdateRequest;
 import org.robn.ecommerce.warehouse.model.response.WarehouseListResponse;
 import org.robn.ecommerce.warehouse.model.response.WarehouseResponse;
 import org.robn.ecommerce.warehouse.service.WarehouseService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class WarehouseController {
     private final WarehouseDomainToResponseMapper warehouseDomainToResponseMapper;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<WarehouseListResponse>> findAll() {
         final List<Warehouse> warehouses = warehouseService.findAll();
         final List<WarehouseListResponse> response = warehouseDomainToListResponseMapper.map(warehouses);
@@ -33,6 +35,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<WarehouseResponse> findById(@PathVariable final Long id) {
         final Warehouse warehouse = warehouseService.findById(id);
         final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
@@ -41,6 +44,7 @@ public class WarehouseController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public EcoBaseResponse<Void> create(@RequestBody @Valid final WarehouseCreateRequest warehouseCreateRequest) {
         warehouseService.save(warehouseCreateRequest);
 
@@ -48,6 +52,7 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final WarehouseUpdateRequest warehouseUpdateRequest) {
         warehouseService.update(id, warehouseUpdateRequest);
 
