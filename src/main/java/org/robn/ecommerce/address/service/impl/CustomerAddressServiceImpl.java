@@ -32,14 +32,14 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     public List<CustomerAddress> findAllByCustomerId(final UUID customerId) {
-        securityService.checkOwnershipByCustomerId(customerId);
+        securityService.checkAccessByCustomerId(customerId);
 
         return customerAddressReadPort.findAllByCustomerId(customerId);
     }
 
     @Override
     public CustomerAddress findByAddressId(final UUID addressId) {
-        securityService.checkOwnershipByAddressId(addressId);
+        securityService.checkAccessByAddressId(addressId);
 
         return getCustomerAddress(addressId);
     }
@@ -55,7 +55,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Override
     @Transactional
     public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
-        securityService.checkOwnershipByAddressId(addressId);
+        securityService.checkAccessByAddressId(addressId);
         final CustomerAddress customerAddress = getCustomerAddress(addressId);
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
         customerAddressSavePort.save(customerAddress);

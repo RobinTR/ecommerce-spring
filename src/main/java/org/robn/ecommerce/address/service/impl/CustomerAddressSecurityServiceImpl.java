@@ -20,7 +20,7 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
     private final SecurityReadPort securityReadPort;
 
     @Override
-    public void checkOwnershipByAddressId(final UUID addressId) {
+    public void checkAccessByAddressId(final UUID addressId) {
         final CustomerAddress customerAddress = customerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> CustomerAddressNotFoundException.of(addressId));
 
@@ -30,7 +30,7 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
     }
 
     @Override
-    public void checkOwnershipByCustomerId(final UUID customerId) {
+    public void checkAccessByCustomerId(final UUID customerId) {
         if (!isAdmin() && !securityReadPort.getCurrentUserId().equals(customerId)) {
             throw EcoAccessDeniedException.of();
         }

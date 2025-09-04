@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public interface CustomerAddressSecurityService {
 
-    void checkOwnershipByAddressId(UUID addressId);
+    void checkAccessByAddressId(UUID addressId);
 
-    void checkOwnershipByCustomerId(UUID customerId);
+    void checkAccessByCustomerId(UUID customerId);
 
 }
