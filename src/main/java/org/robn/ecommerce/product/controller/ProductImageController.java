@@ -8,6 +8,7 @@ import org.robn.ecommerce.product.model.mapper.ProductImageDomainToResponseMappe
 import org.robn.ecommerce.product.model.request.ProductImageUploadRequest;
 import org.robn.ecommerce.product.model.response.ProductImageResponse;
 import org.robn.ecommerce.product.service.ProductImageService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProductImageController {
     private final ProductImageDomainToResponseMapper productImageDomainToResponseMapper;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public EcoBaseResponse<List<ProductImageResponse>> findAllByProductId(@PathVariable("productId") final Long productId) {
         final List<ProductImage> productImages = productImageService.findAllByProductId(productId);
         final List<ProductImageResponse> productImagesResponse = productImageDomainToResponseMapper.map(productImages);
@@ -29,6 +31,7 @@ public class ProductImageController {
     }
 
     @PostMapping(consumes = "multipart/form-data")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
     public EcoBaseResponse<Void> uploadImages(
             @PathVariable final Long productId,
             @ModelAttribute @Valid final ProductImageUploadRequest request
