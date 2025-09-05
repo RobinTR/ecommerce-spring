@@ -10,13 +10,10 @@ import org.robn.ecommerce.auth.model.EcoUser;
 import org.robn.ecommerce.auth.model.enums.EcoUserStatus;
 import org.robn.ecommerce.auth.model.request.EcoUserCreateRequest;
 import org.robn.ecommerce.auth.model.request.EcoUserLoginRequest;
-import org.robn.ecommerce.auth.port.EcoRoleReadPort;
-import org.robn.ecommerce.auth.port.EcoUserReadPort;
-import org.robn.ecommerce.auth.port.EcoUserSavePort;
+import org.robn.ecommerce.auth.port.*;
 import org.robn.ecommerce.auth.service.EcoAuthService;
 import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.parameter.port.EcoParameterReadPort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +24,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class EcoAuthServiceImpl implements EcoAuthService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordHashReadPort passwordHashReadPort;
+    private final PasswordHashSavePort passwordHashSavePort;
     private final EcoTokenService ecoTokenService;
     private final EcoUserReadPort ecoUserReadPort;
     private final EcoUserSavePort ecoUserSavePort;
@@ -41,7 +39,7 @@ public class EcoAuthServiceImpl implements EcoAuthService {
 
         final EcoUser user = EcoUser.builder()
                 .email(ecoUserCreateRequest.email())
-                .password(passwordEncoder.encode(ecoUserCreateRequest.password()))
+                .password(passwordHashSavePort.hashPassword(ecoUserCreateRequest.password()))
                 .ecoUserStatus(EcoUserStatus.ACTIVE)
                 .roles(getDefaultRoles())
                 .build();
@@ -55,7 +53,7 @@ public class EcoAuthServiceImpl implements EcoAuthService {
     public EcoToken login(final EcoUserLoginRequest ecoUserLoginRequest) {
         final EcoUser user = ecoUserReadPort.findByEmail(ecoUserLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
 
-        if (!passwordEncoder.matches(ecoUserLoginRequest.password(), user.getPassword())) {
+        if (!passwordHashReadPort.matches(ecoUserLoginRequest.password(), user.getPassword())) {
             throw EcoInvalidEmailOrPasswordException.of();
         }
 

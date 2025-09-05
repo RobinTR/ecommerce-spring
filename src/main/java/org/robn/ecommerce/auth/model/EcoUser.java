@@ -28,7 +28,6 @@ public class EcoUser extends BaseDomainModel {
 
     public Claims getClaims() {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
-
         claimsBuilder.add(EcoTokenClaims.SUBJECT.getValue(), this.email);
         claimsBuilder.add(EcoTokenClaims.USER_ID.getValue(), this.id.toString());
         claimsBuilder.add(EcoTokenClaims.USER_EMAIL.getValue(), this.email);
