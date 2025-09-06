@@ -2,22 +2,25 @@ package org.robn.ecommerce.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.exception.EcoInvalidEmailOrPasswordException;
-import org.robn.ecommerce.auth.exception.EcoRoleNotFoundException;
-import org.robn.ecommerce.auth.exception.EcoUserAlreadyExistsByEmailException;
-import org.robn.ecommerce.auth.model.EcoRole;
 import org.robn.ecommerce.auth.model.EcoToken;
 import org.robn.ecommerce.auth.model.EcoUser;
-import org.robn.ecommerce.auth.model.enums.EcoUserStatus;
-import org.robn.ecommerce.auth.model.request.EcoUserCreateRequest;
-import org.robn.ecommerce.auth.model.request.EcoUserLoginRequest;
-import org.robn.ecommerce.auth.port.*;
+import org.robn.ecommerce.auth.model.enums.Role;
+import org.robn.ecommerce.auth.model.request.EcoLoginRequest;
+import org.robn.ecommerce.auth.port.EcoUserReadPort;
+import org.robn.ecommerce.auth.port.PasswordHashReadPort;
 import org.robn.ecommerce.auth.service.EcoAuthService;
 import org.robn.ecommerce.auth.service.EcoTokenService;
-import org.robn.ecommerce.parameter.port.EcoParameterReadPort;
+import org.robn.ecommerce.auth.service.RegistrationDomainService;
+import org.robn.ecommerce.customer.model.Customer;
+import org.robn.ecommerce.customer.model.mapper.CustomerRegisterRequestToDomainMapper;
+import org.robn.ecommerce.customer.model.request.CustomerRegisterRequest;
+import org.robn.ecommerce.customer.port.CustomerSavePort;
+import org.robn.ecommerce.seller.model.Seller;
+import org.robn.ecommerce.seller.model.mapper.SellerRegisterRequestToDomainMapper;
+import org.robn.ecommerce.seller.model.request.SellerRegisterRequest;
+import org.robn.ecommerce.seller.port.SellerSavePort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,51 +28,43 @@ import java.util.List;
 public class EcoAuthServiceImpl implements EcoAuthService {
 
     private final PasswordHashReadPort passwordHashReadPort;
-    private final PasswordHashSavePort passwordHashSavePort;
-    private final EcoTokenService ecoTokenService;
     private final EcoUserReadPort ecoUserReadPort;
-    private final EcoUserSavePort ecoUserSavePort;
-    private final EcoParameterReadPort ecoParameterReadPort;
-    private final EcoRoleReadPort ecoRoleReadPort;
+    private final CustomerSavePort customerSavePort;
+    private final SellerSavePort sellerSavePort;
+    private final RegistrationDomainService registrationDomainService;
+    private final EcoTokenService ecoTokenService;
+    private final CustomerRegisterRequestToDomainMapper customerRegisterRequestToDomainMapper;
+    private final SellerRegisterRequestToDomainMapper sellerRegisterRequestToDomainMapper;
 
     @Override
     @Transactional
-    public EcoToken register(final EcoUserCreateRequest ecoUserCreateRequest) {
-        validateEmail(ecoUserCreateRequest.email());
+    public EcoToken register(final CustomerRegisterRequest customerRegisterRequest) {
+        final Customer customer = customerRegisterRequestToDomainMapper.map(customerRegisterRequest);
+        registrationDomainService.prepareForRegistration(customer, Role.CUSTOMER);
+        final Customer savedCustomer = customerSavePort.save(customer);
 
-        final EcoUser user = EcoUser.builder()
-                .email(ecoUserCreateRequest.email())
-                .password(passwordHashSavePort.hashPassword(ecoUserCreateRequest.password()))
-                .ecoUserStatus(EcoUserStatus.ACTIVE)
-                .roles(getDefaultRoles())
-                .build();
-
-        final EcoUser savedUser = ecoUserSavePort.save(user);
-
-        return ecoTokenService.generateToken(savedUser.getClaims());
+        return ecoTokenService.generateToken(savedCustomer.getClaims());
     }
 
     @Override
-    public EcoToken login(final EcoUserLoginRequest ecoUserLoginRequest) {
-        final EcoUser user = ecoUserReadPort.findByEmail(ecoUserLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
+    @Transactional
+    public EcoToken register(final SellerRegisterRequest sellerRegisterRequest) {
+        final Seller seller = sellerRegisterRequestToDomainMapper.map(sellerRegisterRequest);
+        registrationDomainService.prepareForRegistration(seller, Role.SELLER);
+        final Seller savedSeller = sellerSavePort.save(seller);
 
-        if (!passwordHashReadPort.matches(ecoUserLoginRequest.password(), user.getPassword())) {
+        return ecoTokenService.generateToken(savedSeller.getClaims());
+    }
+
+    @Override
+    public EcoToken login(final EcoLoginRequest ecoLoginRequest) {
+        final EcoUser user = ecoUserReadPort.findByEmail(ecoLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
+
+        if (!passwordHashReadPort.matches(ecoLoginRequest.password(), user.getPassword())) {
             throw EcoInvalidEmailOrPasswordException.of();
         }
 
         return ecoTokenService.generateToken(user.getClaims());
-    }
-
-    private void validateEmail(final String email) {
-        if (ecoUserReadPort.emailExists(email)) {
-            throw EcoUserAlreadyExistsByEmailException.of(email);
-        }
-    }
-
-    private List<EcoRole> getDefaultRoles() {
-        final String defaultRoleName = ecoParameterReadPort.findByName("DEFAULT_ROLE_NAME").getDefinition();
-
-        return List.of(ecoRoleReadPort.findByName(defaultRoleName).orElseThrow(() -> EcoRoleNotFoundException.of(defaultRoleName)));
     }
 
 }

@@ -8,6 +8,4 @@ public interface EcoUserReadPort {
 
     Optional<EcoUser> findByEmail(String email);
 
-    boolean emailExists(String email);
-
 }

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.robn.ecommerce.common.util.validation.EmailAddress;
 import org.robn.ecommerce.common.util.validation.Password;
 
-public record EcoUserLoginRequest(
+public record EcoLoginRequest(
 
         @NotBlank
         @EmailAddress

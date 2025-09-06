@@ -35,9 +35,4 @@ public class EcoUserAdapter implements EcoUserReadPort, EcoUserSavePort {
         return user.map(userEntityToEcoUserMapper::map);
     }
 
-    @Override
-    public boolean emailExists(final String email) {
-        return ecoUserRepository.existsByEmail(email);
-    }
-
 }
