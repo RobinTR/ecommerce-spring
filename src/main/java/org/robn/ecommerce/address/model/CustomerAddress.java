@@ -11,19 +11,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-public class CustomerAddress extends BaseDomainModel {
+public class CustomerAddress extends Address {
 
-    private UUID id;
     private UUID customerId;
-    private String title;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String city;
-    private String district;
-    private String neighborhood;
-    private String fullAddress;
-    private Boolean isDefault;
 
     public boolean isOwnedBy(final UUID targetCustomerId) {
         return this.customerId != null && this.customerId.equals(targetCustomerId);

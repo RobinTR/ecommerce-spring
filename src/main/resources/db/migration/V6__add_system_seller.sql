@@ -17,7 +17,7 @@ $$
         INSERT INTO eco_user_role (user_id, role_id)
         VALUES (user_id, (SELECT id FROM eco_role WHERE name = 'ROLE_USER'));
 
-        INSERT INTO eco_seller (id, store_name, mersis_number, contact_number, seller_status, created_at)
-        VALUES (user_id, 'Ecommerce Official Store', '0123456789000015', '05554442222', 'APPROVED', CURRENT_TIMESTAMP);
+        INSERT INTO eco_seller (id, store_name, mersis_number, contact_number, seller_status)
+        VALUES (user_id, 'Ecommerce Official Store', '0123456789000015', '05554442222', 'APPROVED');
     END
 $$;

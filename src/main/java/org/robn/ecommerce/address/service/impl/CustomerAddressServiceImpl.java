@@ -48,6 +48,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Transactional
     public void create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
+        customerAddress.setIsDefault(Boolean.FALSE);
         customerAddress.setCustomerId(securityReadPort.getCurrentUserId());
         customerAddressSavePort.save(customerAddress);
     }

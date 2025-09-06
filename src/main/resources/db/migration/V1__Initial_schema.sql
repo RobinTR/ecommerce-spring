@@ -21,14 +21,7 @@ CREATE TABLE IF NOT EXISTS eco_customer
     id           UUID PRIMARY KEY REFERENCES eco_user (id),
     first_name   VARCHAR(200) NOT NULL,
     last_name    VARCHAR(200) NOT NULL,
-    phone_number VARCHAR(11)  NOT NULL,
-    created_at   TIMESTAMP(0) NOT NULL,
-    updated_at   TIMESTAMP(0),
-    created_by   VARCHAR(255) NOT NULL DEFAULT 'ECO',
-    updated_by   VARCHAR(255),
-    deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
-    deleted_at   TIMESTAMP(0),
-    deleted_by   VARCHAR(255)
+    phone_number VARCHAR(11)  NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS eco_seller
@@ -38,13 +31,6 @@ CREATE TABLE IF NOT EXISTS eco_seller
     mersis_number  VARCHAR(16)  NOT NULL,
     contact_number VARCHAR(11)  NOT NULL,
     seller_status  VARCHAR(50)  NOT NULL,
-    created_at     TIMESTAMP(0) NOT NULL,
-    updated_at     TIMESTAMP(0),
-    created_by     VARCHAR(255) NOT NULL DEFAULT 'ECO',
-    updated_by     VARCHAR(255),
-    deleted        BOOLEAN      NOT NULL DEFAULT FALSE,
-    deleted_at     TIMESTAMP(0),
-    deleted_by     VARCHAR(255),
     CONSTRAINT eco_seller_mersis_number_unique UNIQUE (mersis_number)
 );
 

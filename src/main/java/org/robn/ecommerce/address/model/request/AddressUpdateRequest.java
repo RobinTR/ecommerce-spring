@@ -43,6 +43,4 @@ public class AddressUpdateRequest {
     @Size(min = 2, max = 1000)
     private String fullAddress;
 
-    private Boolean isDefault = false;
-
 }

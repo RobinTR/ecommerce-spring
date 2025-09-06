@@ -16,7 +16,7 @@ public class Address extends BaseDomainModel {
     private String title;
     private String firstName;
     private String lastName;
-    private String phone;
+    private String phoneNumber;
     private String city;
     private String district;
     private String neighborhood;

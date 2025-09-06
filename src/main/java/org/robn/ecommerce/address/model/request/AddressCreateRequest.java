@@ -14,18 +14,18 @@ import org.robn.ecommerce.common.util.validation.name.ValidAddress;
 @Setter
 public class AddressCreateRequest {
 
-    @NameWithNumber
     @NotBlank
+    @NameWithNumber
     @Size(min = 2, max = 200)
     private String title;
 
-    @Name
     @NotBlank
+    @Name
     @Size(min = 2, max = 200)
     private String firstName;
 
-    @Name
     @NotBlank
+    @Name
     @Size(min = 2, max = 200)
     private String lastName;
 
@@ -33,26 +33,24 @@ public class AddressCreateRequest {
     @PhoneNumber
     private String phoneNumber;
 
-    @Name
     @NotBlank
+    @Name
     @Size(min = 2, max = 200)
     private String city;
 
-    @Name
     @NotBlank
+    @Name
     @Size(min = 2, max = 200)
     private String district;
 
-    @Name
     @NotBlank
+    @Name
     @Size(min = 2, max = 200)
     private String neighborhood;
 
-    @ValidAddress
     @NotBlank
+    @ValidAddress
     @Size(min = 2, max = 1000)
     private String fullAddress;
-
-    private Boolean isDefault = false;
 
 }
