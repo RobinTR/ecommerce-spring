@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS eco_user
 (
     id          UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     email       VARCHAR(255) NOT NULL,
-    password    VARCHAR(255) NOT NULL,
+    password    VARCHAR(256) NOT NULL,
     user_status VARCHAR(50)  NOT NULL,
     created_at  TIMESTAMP(0) NOT NULL,
     updated_at  TIMESTAMP(0),
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS eco_customer_address
 CREATE TABLE IF NOT EXISTS eco_guest_address
 (
     id         UUID PRIMARY KEY REFERENCES eco_address (id),
-    session_id VARCHAR(100) NOT NULL
+    session_id VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS eco_seller_address
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS eco_product_category
 CREATE TABLE IF NOT EXISTS eco_cart
 (
     id              UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
-    session_id      UUID           NOT NULL,
+    session_id      varchar(255)   NOT NULL,
     subtotal        NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
     tax_amount      NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
     shipping_amount NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS eco_customer_order
 CREATE TABLE IF NOT EXISTS eco_guest_order
 (
     id         UUID PRIMARY KEY REFERENCES eco_order (id),
-    session_id VARCHAR(100) NOT NULL,
+    session_id VARCHAR(255) NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TIMESTAMP(0)
 );
