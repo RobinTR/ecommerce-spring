@@ -2,18 +2,20 @@ package org.robn.ecommerce.cart.model.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class AddToCartRequest {
+public record AddToCartRequest(
 
-    @NotNull
-    @Positive
-    private Long productId;
+        @NotNull
+        @Positive
+        Long productId,
 
-    @Positive
-    private Integer quantity = 1;
+        @Positive
+        Integer quantity
+
+) {
+
+    public AddToCartRequest {
+        quantity = (quantity == null) ? 1 : quantity;
+    }
 
 }

@@ -12,16 +12,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-public class CustomerCart extends BaseDomainModel {
+public class CustomerCart extends Cart {
 
-    private UUID id;
     private UUID customerId;
-    private BigDecimal subtotal;
-    private BigDecimal taxAmount;
-    private BigDecimal shippingAmount;
-    private BigDecimal discountAmount;
-    private BigDecimal grandTotal;
-    private String currency;
-    private CartStatus cartStatus;
 
 }
