@@ -1,13 +1,9 @@
 package org.robn.ecommerce.brand.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
+public record BrandListResponse(
 
-@Getter
-@Setter
-public class BrandListResponse {
+        Long id,
+        String name
 
-    private Long id;
-    private String name;
-
+) {
 }

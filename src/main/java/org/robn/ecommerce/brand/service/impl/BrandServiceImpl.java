@@ -44,7 +44,7 @@ public class BrandServiceImpl implements BrandService {
     @Transactional
     public void update(final Long id, final BrandUpdateRequest brandUpdateRequest) {
         final Brand brand = getExistingBrand(id);
-        brand.setName(brandUpdateRequest.getName());
+        brand.setName(brandUpdateRequest.name());
         brandSavePort.save(brand);
     }
 
