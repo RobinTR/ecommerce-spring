@@ -2,26 +2,23 @@ package org.robn.ecommerce.warehouse.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
 import org.robn.ecommerce.common.util.validation.name.ValidAddress;
 
-@Getter
-@Setter
-public class WarehouseCreateRequest {
+public record WarehouseCreateRequest(
 
-    @Size(max = 50)
-    @NotBlank
-    private String code;
+        @NotBlank
+        @Size(max = 50)
+        String code,
 
-    @Size(max = 200)
-    @NotBlank
-    @NameWithNumber
-    private String name;
+        @NotBlank
+        @Size(max = 200)
+        @NameWithNumber
+        String name,
 
-    @Size(max = 1000)
-    @ValidAddress
-    private String fullAddress;
+        @Size(max = 1000)
+        @ValidAddress
+        String fullAddress
 
+) {
 }

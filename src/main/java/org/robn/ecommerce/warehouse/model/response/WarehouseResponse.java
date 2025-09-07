@@ -1,15 +1,11 @@
 package org.robn.ecommerce.warehouse.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
+public record WarehouseResponse(
 
-@Getter
-@Setter
-public class WarehouseResponse {
+        Long id,
+        String code,
+        String name,
+        String fullAddress
 
-    private Long id;
-    private String code;
-    private String name;
-    private String fullAddress;
-
+) {
 }
