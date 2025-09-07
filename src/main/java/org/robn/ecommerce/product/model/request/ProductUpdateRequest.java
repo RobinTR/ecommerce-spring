@@ -4,32 +4,29 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-public class ProductUpdateRequest {
+public record ProductUpdateRequest(
 
-    @Positive
-    private Long brandId;
+        @Positive
+        Long brandId,
 
-    @NameWithNumber
-    @Size(max = 100)
-    private String name;
+        @NameWithNumber
+        @Size(max = 100)
+        String name,
 
-    @Size(max = 2000)
-    private String description;
+        @Size(max = 2000)
+        String description,
 
-    @DecimalMin(value = "10")
-    @Digits(integer = 17, fraction = 2)
-    private BigDecimal price;
+        @DecimalMin(value = "10")
+        @Digits(integer = 17, fraction = 2)
+        BigDecimal price,
 
-    private Boolean isActive;
+        Boolean isActive,
 
-    private Boolean isVerified;
+        Boolean isVerified
 
+) {
 }

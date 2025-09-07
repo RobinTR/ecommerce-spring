@@ -47,11 +47,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void create(final ProductCreateRequest productCreateRequest) {
-        ensureBrandExists(productCreateRequest.getBrandId());
+        ensureBrandExists(productCreateRequest.brandId());
         final Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
         product.setSellerId(securityReadPort.getCurrentUserId());
         final Product savedProduct = productSavePort.save(product);
-        productImageService.uploadImages(savedProduct.getId(), productCreateRequest.getImageFiles(), productCreateRequest.getAltTexts());
+        productImageService.uploadImages(savedProduct.getId(), productCreateRequest.imageFiles(), productCreateRequest.altTexts());
     }
 
     @Override
@@ -59,8 +59,8 @@ public class ProductServiceImpl implements ProductService {
     public void update(final Long id, final ProductUpdateRequest productUpdateRequest) {
         productSecurityService.checkAccessByProductId(id);
 
-        if (productUpdateRequest.getBrandId() != null) {
-            ensureBrandExists(productUpdateRequest.getBrandId());
+        if (productUpdateRequest.brandId() != null) {
+            ensureBrandExists(productUpdateRequest.brandId());
         }
 
         final Product product = getProductById(id);

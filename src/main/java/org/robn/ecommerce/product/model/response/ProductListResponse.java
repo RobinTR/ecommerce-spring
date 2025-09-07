@@ -1,27 +1,23 @@
 package org.robn.ecommerce.product.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
-public class ProductListResponse {
+public record ProductListResponse(
 
-    private Long id;
-    private UUID sellerId;
-    private Long brandId;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Boolean isActive;
-    private Boolean isVerified;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String createdBy;
-    private String updatedBy;
+        Long id,
+        UUID sellerId,
+        Long brandId,
+        String name,
+        String description,
+        BigDecimal price,
+        Boolean isActive,
+        Boolean isVerified,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        String createdBy,
+        String updatedBy
 
+) {
 }

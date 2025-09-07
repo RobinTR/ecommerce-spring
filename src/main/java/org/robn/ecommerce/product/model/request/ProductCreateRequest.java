@@ -1,8 +1,6 @@
 package org.robn.ecommerce.product.model.request;
 
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
 import org.robn.ecommerce.product.util.validation.ImageList;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,37 +8,36 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter
-@Setter
-public class ProductCreateRequest {
+public record ProductCreateRequest(
 
-    @NotNull
-    @Positive
-    private Long brandId;
+        @NotNull
+        @Positive
+        Long brandId,
 
-    @NameWithNumber
-    @NotBlank
-    @Size(max = 100)
-    private String name;
+        @NotBlank
+        @NameWithNumber
+        @Size(max = 100)
+        String name,
 
-    @NotBlank
-    @Size(max = 2000)
-    private String description;
+        @NotBlank
+        @Size(max = 2000)
+        String description,
 
-    @DecimalMin(value = "10")
-    @Digits(integer = 17, fraction = 2)
-    private BigDecimal price;
+        @DecimalMin(value = "10")
+        @Digits(integer = 17, fraction = 2)
+        BigDecimal price,
 
-    @NotNull
-    private Boolean isActive;
+        @NotNull
+        Boolean isActive,
 
-    @NotNull
-    private Boolean isVerified;
+        @NotNull
+        Boolean isVerified,
 
-    @ImageList
-    private List<MultipartFile> imageFiles;
+        @ImageList
+        List<MultipartFile> imageFiles,
 
-    @Size(max = 10)
-    private List<String> altTexts;
+        @Size(max = 10)
+        List<String> altTexts
 
+) {
 }

@@ -35,7 +35,7 @@ public class ProductImageController {
             @PathVariable final Long productId,
             @ModelAttribute @Valid final ProductImageUploadRequest request
     ) {
-        productImageService.uploadImages(productId, request.getImageFiles(), request.getAltTexts());
+        productImageService.uploadImages(productId, request.imageFiles(), request.altTexts());
 
         return EcoBaseResponse.success();
     }
