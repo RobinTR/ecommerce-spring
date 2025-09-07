@@ -5,18 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SellerAddressListResponse {
+public class SellerAddressListResponse extends AddressResponse {
 
     private String sellerId;
-    private String addressId;
-    private String title;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String city;
-    private String district;
-    private String neighborhood;
-    private String fullAddress;
-    private Boolean isDefault;
 
 }
