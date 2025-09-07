@@ -1,13 +1,9 @@
 package org.robn.ecommerce.category.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
+public record CategoryListResponse(
 
-@Getter
-@Setter
-public class CategoryListResponse {
+        Long id,
+        String name
 
-    private Long id;
-    private String name;
-
+) {
 }

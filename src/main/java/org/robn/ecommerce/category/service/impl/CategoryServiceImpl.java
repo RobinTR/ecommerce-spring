@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void update(final Long id, final CategoryUpdateRequest categoryUpdateRequest) {
         final Category categoryToUpdate = getExistingCategory(id);
-        categoryToUpdate.setName(categoryUpdateRequest.getName());
+        categoryToUpdate.setName(categoryUpdateRequest.name());
         categorySavePort.save(categoryToUpdate);
     }
 

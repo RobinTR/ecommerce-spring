@@ -2,17 +2,14 @@ package org.robn.ecommerce.category.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.robn.ecommerce.common.util.validation.name.NameWithNumber;
 
-@Getter
-@Setter
-public class CategoryUpdateRequest {
+public record CategoryUpdateRequest(
 
-    @NameWithNumber
-    @NotBlank
-    @Size(min = 1, max = 100)
-    private String name;
+        @NotBlank
+        @NameWithNumber
+        @Size(min = 1, max = 100)
+        String name
 
+) {
 }
