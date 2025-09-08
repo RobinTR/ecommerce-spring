@@ -1,5 +1,6 @@
 package org.robn.ecommerce.auth.service.impl;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.exception.EcoInvalidEmailOrPasswordException;
 import org.robn.ecommerce.auth.model.EcoToken;
@@ -11,6 +12,7 @@ import org.robn.ecommerce.auth.port.PasswordHashReadPort;
 import org.robn.ecommerce.auth.service.EcoAuthService;
 import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.auth.service.RegistrationDomainService;
+import org.robn.ecommerce.auth.util.TokenClaimBuilder;
 import org.robn.ecommerce.customer.model.Customer;
 import org.robn.ecommerce.customer.model.mapper.CustomerRegisterRequestToDomainMapper;
 import org.robn.ecommerce.customer.model.request.CustomerRegisterRequest;
@@ -42,8 +44,9 @@ public class EcoAuthServiceImpl implements EcoAuthService {
         final Customer customer = customerRegisterRequestToDomainMapper.map(customerRegisterRequest);
         registrationDomainService.prepareForRegistration(customer, Role.CUSTOMER);
         final Customer savedCustomer = customerSavePort.save(customer);
+        final Claims claims = TokenClaimBuilder.buildClaims(savedCustomer, customerRegisterRequest.deviceId());
 
-        return ecoTokenService.generateToken(savedCustomer.getClaims());
+        return ecoTokenService.generateToken(claims, customerRegisterRequest.deviceId());
     }
 
     @Override
@@ -52,8 +55,9 @@ public class EcoAuthServiceImpl implements EcoAuthService {
         final Seller seller = sellerRegisterRequestToDomainMapper.map(sellerRegisterRequest);
         registrationDomainService.prepareForRegistration(seller, Role.SELLER);
         final Seller savedSeller = sellerSavePort.save(seller);
+        final Claims claims = TokenClaimBuilder.buildClaims(savedSeller, sellerRegisterRequest.deviceId());
 
-        return ecoTokenService.generateToken(savedSeller.getClaims());
+        return ecoTokenService.generateToken(claims, sellerRegisterRequest.deviceId());
     }
 
     @Override
@@ -64,7 +68,9 @@ public class EcoAuthServiceImpl implements EcoAuthService {
             throw EcoInvalidEmailOrPasswordException.of();
         }
 
-        return ecoTokenService.generateToken(user.getClaims());
+        final Claims claims = TokenClaimBuilder.buildClaims(user, ecoLoginRequest.deviceId());
+
+        return ecoTokenService.generateToken(claims, ecoLoginRequest.deviceId());
     }
 
 }

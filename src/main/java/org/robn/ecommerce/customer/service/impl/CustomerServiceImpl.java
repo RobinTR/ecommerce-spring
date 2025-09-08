@@ -5,6 +5,7 @@ import org.robn.ecommerce.auth.model.EcoToken;
 import org.robn.ecommerce.auth.model.enums.Role;
 import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.auth.service.RegistrationDomainService;
+import org.robn.ecommerce.auth.util.TokenClaimBuilder;
 import org.robn.ecommerce.customer.model.Customer;
 import org.robn.ecommerce.customer.model.mapper.CustomerRegisterRequestToDomainMapper;
 import org.robn.ecommerce.customer.model.request.CustomerRegisterRequest;
@@ -32,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         final Customer savedCustomer = customerSavePort.save(customer);
 
-        return ecoTokenService.generateToken(savedCustomer.getClaims());
+        return ecoTokenService.generateToken(TokenClaimBuilder.buildClaims(savedCustomer, request.deviceId()), request.deviceId());
     }
 
 }

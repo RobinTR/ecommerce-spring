@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface EcoTokenService {
 
-    EcoToken generateToken(Claims claims);
+    EcoToken generateToken(Claims claims, String deviceId);
 
-    EcoToken generateToken(Claims claims, String refreshToken);
+    EcoToken generateToken(Claims claims, String refreshToken, String deviceId);
 
     Claims getPayload(String jwt);
 
@@ -19,4 +19,5 @@ public interface EcoTokenService {
     void verifyAndValidate(String token);
 
     UsernamePasswordAuthenticationToken getAuthentication(String token);
+
 }

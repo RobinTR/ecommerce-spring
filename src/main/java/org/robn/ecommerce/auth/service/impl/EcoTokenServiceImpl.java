@@ -4,14 +4,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.robn.ecommerce.auth.config.EcoAuthConfiguration;
-import org.robn.ecommerce.auth.exception.EcoTokenInvalidException;
+import org.robn.ecommerce.auth.exception.EcoInvalidTokenException;
 import org.robn.ecommerce.auth.model.EcoToken;
+import org.robn.ecommerce.auth.model.RefreshToken;
 import org.robn.ecommerce.auth.service.EcoTokenService;
+import org.robn.ecommerce.auth.service.RefreshTokenService;
+import org.robn.ecommerce.auth.util.CryptoUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -26,28 +27,28 @@ import java.util.UUID;
 public class EcoTokenServiceImpl implements EcoTokenService {
 
     private final EcoAuthConfiguration ecoAuthConfiguration;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
-    public EcoToken generateToken(final Claims claims) {
-        final long currentTimeMillis = System.currentTimeMillis();
-
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(), ecoAuthConfiguration.getAccessTokenExpireMinute());
-
-        final String accessToken = createJwtBuilder(currentTimeMillis)
-                .claims(claims)
-                .id(UUID.randomUUID().toString())
-                .subject(claims.getSubject())
-                .expiration(accessTokenExpiresAt)
-                .compact();
+    public EcoToken generateToken(final Claims claims, String deviceId) {
+        final String accessToken = initializeToken(claims);
+        final RefreshToken refreshToken = refreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken.getToken())
                 .build();
     }
 
     @Override
-    public EcoToken generateToken(final Claims claims, final String refreshToken) {
-        return null;
+    public EcoToken generateToken(final Claims claims, final String refreshToken, String deviceId) {
+        final String accessToken = initializeToken(claims);
+        final RefreshToken newRefreshToken = refreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
+
+        return EcoToken.builder()
+                .accessToken(accessToken)
+                .refreshToken(newRefreshToken.getToken())
+                .build();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (JwtException exception) {
-            throw EcoTokenInvalidException.of(token, exception);
+            throw EcoInvalidTokenException.of(token, exception);
         }
 
     }
@@ -75,7 +76,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     @Override
     public void verifyAndValidate(final String token) {
         if (token == null || token.isBlank()) {
-            throw EcoTokenInvalidException.of(token);
+            throw EcoInvalidTokenException.of(token);
         }
 
         try {
@@ -84,7 +85,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
                     .build()
                     .parseSignedClaims(token);
         } catch (JwtException exception) {
-            throw EcoTokenInvalidException.of(token, exception);
+            throw EcoInvalidTokenException.of(token, exception);
         }
 
     }
@@ -102,9 +103,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     }
 
     private SecretKey getKey() {
-        final byte[] keyBytes = Decoders.BASE64.decode(ecoAuthConfiguration.getSecretKey());
-
-        return Keys.hmacShaKeyFor(keyBytes);
+        return CryptoUtil.getSecretKey(ecoAuthConfiguration.getSecretKey());
     }
 
     private JwtBuilder createJwtBuilder(final long currentTimeMillis) {
@@ -112,6 +111,18 @@ public class EcoTokenServiceImpl implements EcoTokenService {
                 .issuer(ecoAuthConfiguration.getTokenIssuer())
                 .issuedAt(new Date(currentTimeMillis))
                 .signWith(getKey());
+    }
+
+    private String initializeToken(final Claims claims) {
+        final long currentTimeMillis = System.currentTimeMillis();
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(), ecoAuthConfiguration.getAccessTokenExpireMinute());
+
+        return createJwtBuilder(currentTimeMillis)
+                .id(UUID.randomUUID().toString())
+                .claims(claims)
+                .subject(claims.getSubject())
+                .expiration(accessTokenExpiresAt)
+                .compact();
     }
 
 }

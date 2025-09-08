@@ -26,14 +26,4 @@ public class EcoUser extends BaseDomainModel {
     private EcoUserStatus ecoUserStatus;
     private List<EcoRole> roles;
 
-    public Claims getClaims() {
-        final ClaimsBuilder claimsBuilder = Jwts.claims();
-        claimsBuilder.add(EcoTokenClaims.SUBJECT.getValue(), this.email);
-        claimsBuilder.add(EcoTokenClaims.USER_ID.getValue(), this.id.toString());
-        claimsBuilder.add(EcoTokenClaims.USER_EMAIL.getValue(), this.email);
-        claimsBuilder.add(EcoTokenClaims.USER_ROLES.getValue(), this.roles.stream().map(EcoRole::getName).toList());
-
-        return claimsBuilder.build();
-    }
-
 }

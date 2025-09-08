@@ -11,6 +11,7 @@ import org.robn.ecommerce.auth.repository.EcoUserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,13 @@ public class EcoUserAdapter implements EcoUserReadPort, EcoUserSavePort {
         final EcoUserEntity savedEntity = ecoUserRepository.save(ecoUserEntity);
 
         return userEntityToEcoUserMapper.map(savedEntity);
+    }
+
+    @Override
+    public Optional<EcoUser> findById(final UUID id) {
+        final Optional<EcoUserEntity> user = ecoUserRepository.findById(id);
+
+        return user.map(userEntityToEcoUserMapper::map);
     }
 
     @Override
