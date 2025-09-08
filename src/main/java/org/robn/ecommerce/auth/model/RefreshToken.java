@@ -15,9 +15,9 @@ public class RefreshToken extends BaseDomainModel {
 
     private UUID id;
     private UUID userId;
-    private String sessionId;
-    private Boolean revoked;
-    private String tokenHash;
+    private String token;
+    private String deviceId;
+    private boolean revoked;
     private LocalDateTime expiresAt;
 
 }

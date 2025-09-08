@@ -10,7 +10,9 @@ import org.robn.ecommerce.auth.port.RefreshTokenSavePort;
 import org.robn.ecommerce.auth.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -21,10 +23,17 @@ public class RefreshTokenAdapter implements RefreshTokenReadPort, RefreshTokenSa
     private final RefreshTokenDomainToEntityMapper domainToEntityMapper;
 
     @Override
-    public Optional<RefreshToken> findByTokenHash(final String tokenHash) {
-        final Optional<RefreshTokenEntity> entity = refreshTokenRepository.findByTokenHash(tokenHash);
+    public Optional<RefreshToken> findByToken(final String token) {
+        final Optional<RefreshTokenEntity> entity = refreshTokenRepository.findByTokenHash(token);
 
         return entity.map(entityToDomainMapper::map);
+    }
+
+    @Override
+    public List<RefreshToken> findAllByUserIdAndDeviceId(final UUID userId, final String deviceId) {
+        final List<RefreshTokenEntity> entities = refreshTokenRepository.findAllByUserIdAndDeviceId(userId, deviceId);
+
+        return entityToDomainMapper.map(entities);
     }
 
     @Override

@@ -32,14 +32,14 @@ public class RefreshTokenEntity extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private EcoUserEntity user;
 
-    @Column(name = "session_id")
-    private String sessionId;
+    @Column(name = "token")
+    private String token;
+
+    @Column(name = "device_id")
+    private String deviceId;
 
     @Column(name = "revoked")
-    private Boolean revoked;
-
-    @Column(name = "token_hash")
-    private String tokenHash;
+    private boolean revoked;
 
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
