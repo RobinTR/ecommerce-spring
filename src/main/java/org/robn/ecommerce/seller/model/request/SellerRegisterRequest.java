@@ -30,7 +30,10 @@ public record SellerRegisterRequest(
 
         @NotBlank
         @Password
-        String password
+        String password,
+
+        @NotBlank
+        String deviceId
 
 ) {
 }

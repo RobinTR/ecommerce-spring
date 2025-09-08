@@ -12,7 +12,10 @@ public record EcoUserCreateRequest(
 
         @NotBlank
         @Password
-        String password
+        String password,
+
+        @NotBlank
+        String deviceId
 
 ) {
 }
