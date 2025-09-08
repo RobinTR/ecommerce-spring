@@ -12,6 +12,7 @@ public enum EcoTokenClaims {
     USER_ID("userId"),
     USER_EMAIL("userEmail"),
     USER_ROLES("roles"),
+    DEVICE_ID("deviceId"),
     ISSUED_AT("iat"),
     EXPIRES_AT("exp"),
     ALGORITHM("alg");
