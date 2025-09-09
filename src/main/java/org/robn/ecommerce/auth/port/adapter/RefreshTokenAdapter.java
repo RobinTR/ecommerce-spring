@@ -44,4 +44,12 @@ public class RefreshTokenAdapter implements RefreshTokenReadPort, RefreshTokenSa
         return entityToDomainMapper.map(savedEntity);
     }
 
+    @Override
+    public List<RefreshToken> saveAll(final List<RefreshToken> tokens) {
+        final List<RefreshTokenEntity> entities = domainToEntityMapper.map(tokens);
+        final List<RefreshTokenEntity> savedEntities = refreshTokenRepository.saveAll(entities);
+
+        return entityToDomainMapper.map(savedEntities);
+    }
+
 }

@@ -49,36 +49,41 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
 
         if (!existingToken.getDeviceId().equals(deviceId)) {
-            refreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
-            throw EcoInvalidRefreshTokenException.of();
+            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
         }
 
         // Token reuse detection
         if (existingToken.isRevoked()) {
-            refreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
-            throw EcoInvalidRefreshTokenException.of();
+            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
         }
 
         // Token expired
         if (existingToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            refreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
-            throw EcoInvalidRefreshTokenException.of();
+            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
         }
 
         existingToken.setRevoked(true);
         refreshTokenSavePort.save(existingToken);
 
-        return buildRefreshToken(userId, deviceId);
+        final RefreshToken newToken = buildRefreshToken(userId, deviceId);
+
+        return refreshTokenSavePort.save(newToken);
     }
 
     @Override
     @Transactional
     public void revokeAllTokensForUserDevice(final UUID userId, final String deviceId) {
-        List<RefreshToken> tokens = refreshTokenReadPort.findAllByUserIdAndDeviceId(userId, deviceId);
-        tokens.forEach(r -> {
-            r.setRevoked(true);
-            refreshTokenSavePort.save(r);
-        });
+        final List<RefreshToken> tokens = refreshTokenReadPort.findAllByUserIdAndDeviceId(userId, deviceId);
+        final List<RefreshToken> revokedTokens = tokens.stream().map(token -> {
+            token.setRevoked(true);
+            return token;
+        }).toList();
+        refreshTokenSavePort.saveAll(revokedTokens);
+    }
+
+    private void revokeTokensForDeviceAndThrow(final UUID userId, final String deviceId) {
+        refreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, deviceId);
+        throw EcoInvalidRefreshTokenException.of();
     }
 
     private LocalDateTime getRefreshTokenExpireAt() {
