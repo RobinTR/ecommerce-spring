@@ -8,7 +8,7 @@ import org.robn.ecommerce.auth.model.RefreshToken;
 import org.robn.ecommerce.auth.port.EcoUserReadPort;
 import org.robn.ecommerce.auth.port.RefreshTokenReadPort;
 import org.robn.ecommerce.auth.port.RefreshTokenSavePort;
-import org.robn.ecommerce.auth.service.RefreshTokenService;
+import org.robn.ecommerce.auth.service.EcoRefreshTokenService;
 import org.robn.ecommerce.common.model.enums.EcoConfigParameter;
 import org.robn.ecommerce.parameter.port.EcoParameterReadPort;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RefreshTokenServiceImpl implements RefreshTokenService {
+public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
 
-    private final RefreshTokenService refreshTokenServiceProxy;
+    private final EcoRefreshTokenService ecoRefreshTokenServiceProxy;
     private final EcoUserReadPort ecoUserReadPort;
     private final RefreshTokenReadPort refreshTokenReadPort;
     private final RefreshTokenSavePort refreshTokenSavePort;
@@ -82,7 +82,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     private void revokeTokensForDeviceAndThrow(final UUID userId, final String deviceId) {
-        refreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, deviceId);
+        ecoRefreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, deviceId);
         throw EcoInvalidRefreshTokenException.of();
     }
 

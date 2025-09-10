@@ -4,7 +4,7 @@ import org.robn.ecommerce.auth.model.RefreshToken;
 
 import java.util.UUID;
 
-public interface RefreshTokenService {
+public interface EcoRefreshTokenService {
 
     RefreshToken generateRefreshToken(UUID userId, String deviceId);
 

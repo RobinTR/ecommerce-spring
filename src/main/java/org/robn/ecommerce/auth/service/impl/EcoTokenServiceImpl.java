@@ -11,7 +11,7 @@ import org.robn.ecommerce.auth.exception.EcoInvalidTokenException;
 import org.robn.ecommerce.auth.model.EcoToken;
 import org.robn.ecommerce.auth.model.RefreshToken;
 import org.robn.ecommerce.auth.service.EcoTokenService;
-import org.robn.ecommerce.auth.service.RefreshTokenService;
+import org.robn.ecommerce.auth.service.EcoRefreshTokenService;
 import org.robn.ecommerce.auth.util.CryptoUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,12 +27,12 @@ import java.util.UUID;
 public class EcoTokenServiceImpl implements EcoTokenService {
 
     private final EcoAuthConfiguration ecoAuthConfiguration;
-    private final RefreshTokenService refreshTokenService;
+    private final EcoRefreshTokenService ecoRefreshTokenService;
 
     @Override
     public EcoToken generateToken(final Claims claims, String deviceId) {
         final String accessToken = initializeToken(claims);
-        final RefreshToken refreshToken = refreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
+        final RefreshToken refreshToken = ecoRefreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
                 .accessToken(accessToken)
@@ -43,7 +43,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     @Override
     public EcoToken generateToken(final Claims claims, final String refreshToken, String deviceId) {
         final String accessToken = initializeToken(claims);
-        final RefreshToken newRefreshToken = refreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
+        final RefreshToken newRefreshToken = ecoRefreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
                 .accessToken(accessToken)

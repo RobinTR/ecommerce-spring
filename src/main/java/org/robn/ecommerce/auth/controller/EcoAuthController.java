@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.mapper.EcoTokenToResponseMapper;
 import org.robn.ecommerce.auth.model.EcoToken;
 import org.robn.ecommerce.auth.model.request.EcoLoginRequest;
+import org.robn.ecommerce.auth.model.request.EcoLogoutRequest;
 import org.robn.ecommerce.auth.model.response.EcoTokenResponse;
 import org.robn.ecommerce.auth.service.EcoAuthService;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
@@ -45,6 +46,12 @@ public class EcoAuthController {
         final EcoTokenResponse response = ecoTokenToResponseMapper.map(ecoToken);
 
         return EcoBaseResponse.successOf(response);
+    }
+
+    @PostMapping("/logout")
+    public EcoBaseResponse<Void> logout(@RequestBody @Valid final EcoLogoutRequest ecoLogoutRequest) {
+        ecoAuthService.logout(ecoLogoutRequest);
+        return EcoBaseResponse.success();
     }
 
 }
