@@ -51,6 +51,7 @@ public class EcoAuthController {
     @PostMapping("/logout")
     public EcoBaseResponse<Void> logout(@RequestBody @Valid final EcoLogoutRequest ecoLogoutRequest) {
         ecoAuthService.logout(ecoLogoutRequest);
+
         return EcoBaseResponse.success();
     }
 
