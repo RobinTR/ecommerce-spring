@@ -32,6 +32,7 @@ public record CustomerRegisterRequest(
         String password,
 
         @NotBlank
+        @Size(max = 255)
         String deviceId
 
 ) {
