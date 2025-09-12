@@ -43,6 +43,12 @@ public class NameValidator extends BaseNameValidator implements ConstraintValida
             return true;
         }
 
+        // Length check is performed here to prevent processing very long strings
+        // for performance and security reasons, even if @Size is also used elsewhere.
+        if (value.length() > 1000) {
+            return false;
+        }
+
         if (hasInvalidSpaces(value, context)) {
             return false;
         }
