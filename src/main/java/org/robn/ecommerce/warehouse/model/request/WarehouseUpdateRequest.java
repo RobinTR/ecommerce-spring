@@ -9,12 +9,12 @@ public record WarehouseUpdateRequest(
         @Size(max = 50)
         String code,
 
-        @Size(max = 200)
         @NameWithNumber
+        @Size(max = 200)
         String name,
 
-        @Size(max = 1000)
         @ValidAddress
+        @Size(max = 1000)
         String fullAddress
 
 ) {

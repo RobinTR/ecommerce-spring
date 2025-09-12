@@ -12,12 +12,13 @@ public record WarehouseCreateRequest(
         String code,
 
         @NotBlank
-        @Size(max = 200)
         @NameWithNumber
+        @Size(max = 200)
         String name,
 
-        @Size(max = 1000)
+        @NotBlank
         @ValidAddress
+        @Size(max = 1000)
         String fullAddress
 
 ) {
