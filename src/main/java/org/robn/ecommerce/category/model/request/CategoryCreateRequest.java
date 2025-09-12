@@ -8,7 +8,7 @@ public record CategoryCreateRequest(
 
         @NotBlank
         @NameWithNumber
-        @Size(min = 1, max = 100)
+        @Size(min = 1, max = 200)
         String name
 
 ) {
