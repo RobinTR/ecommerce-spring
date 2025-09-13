@@ -1,15 +1,11 @@
 package org.robn.ecommerce.auth.model;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ClaimsBuilder;
-import io.jsonwebtoken.Jwts;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.robn.ecommerce.auth.model.enums.EcoTokenClaims;
-import org.robn.ecommerce.common.model.BaseDomainModel;
 import org.robn.ecommerce.auth.model.enums.EcoUserStatus;
+import org.robn.ecommerce.common.model.BaseDomainModel;
 
 import java.util.List;
 import java.util.UUID;
