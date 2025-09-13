@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.address.model.entity.GuestAddressEntity;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.guest.model.entity.GuestEntity;
 
 import java.util.UUID;
 
@@ -17,7 +18,11 @@ import java.util.UUID;
 @Table(name = "eco_guest_order")
 public class GuestOrderEntity extends BaseOrderEntity {
 
-    @Column(name = "session_id")
-    private String sessionId;
+    @Column(name = "guest_id")
+    private UUID guestId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_id", insertable = false, updatable = false)
+    private GuestEntity guest;
 
 }
