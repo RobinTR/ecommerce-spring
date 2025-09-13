@@ -34,6 +34,17 @@ CREATE TABLE IF NOT EXISTS eco_seller
     CONSTRAINT eco_seller_mersis_number_unique UNIQUE (mersis_number)
 );
 
+CREATE TABLE IF NOT EXISTS eco_guest
+(
+    id         UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
+    device_id  VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP(0) NOT NULL,
+    updated_at TIMESTAMP(0),
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
+    updated_by VARCHAR(255),
+    CONSTRAINT eco_guest_device_id_unique UNIQUE (device_id)
+);
+
 CREATE TABLE IF NOT EXISTS eco_address
 (
     id           UUID PRIMARY KEY       DEFAULT gen_random_uuid(),
@@ -65,8 +76,9 @@ CREATE TABLE IF NOT EXISTS eco_customer_address
 
 CREATE TABLE IF NOT EXISTS eco_guest_address
 (
-    id         UUID PRIMARY KEY REFERENCES eco_address (id),
-    session_id VARCHAR(255) NOT NULL
+    id       UUID PRIMARY KEY REFERENCES eco_address (id),
+    guest_id UUID NOT NULL,
+    CONSTRAINT fk_eco_guest_address_eco_guest_guest_id FOREIGN KEY (guest_id) REFERENCES eco_guest (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_seller_address
@@ -157,7 +169,6 @@ CREATE TABLE IF NOT EXISTS eco_product_category
 CREATE TABLE IF NOT EXISTS eco_cart
 (
     id              UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
-    session_id      varchar(255)   NOT NULL,
     subtotal        NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
     tax_amount      NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
     shipping_amount NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
@@ -166,7 +177,9 @@ CREATE TABLE IF NOT EXISTS eco_cart
     currency        VARCHAR(10)    NOT NULL DEFAULT 'TRY',
     cart_status     VARCHAR(50)    NOT NULL,
     created_at      TIMESTAMP(0)   NOT NULL,
-    updated_at      TIMESTAMP(0)
+    updated_at      TIMESTAMP(0),
+    created_by      VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by      VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS eco_customer_cart
@@ -178,12 +191,14 @@ CREATE TABLE IF NOT EXISTS eco_customer_cart
 
 CREATE TABLE IF NOT EXISTS eco_guest_cart
 (
-    id UUID PRIMARY KEY REFERENCES eco_cart (id)
+    id       UUID PRIMARY KEY REFERENCES eco_cart (id),
+    guest_id UUID NOT NULL,
+    CONSTRAINT fk_eco_guest_cart_eco_guest_guest_id FOREIGN KEY (guest_id) REFERENCES eco_guest (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_cart_item
 (
-    id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id               UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
     cart_id          UUID           NOT NULL,
     product_id       BIGINT         NOT NULL,
     price            NUMERIC(19, 2) NOT NULL,
@@ -192,13 +207,15 @@ CREATE TABLE IF NOT EXISTS eco_cart_item
     cart_item_status VARCHAR(50)    NOT NULL,
     created_at       TIMESTAMP(0)   NOT NULL,
     updated_at       TIMESTAMP(0),
+    created_by       VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by       VARCHAR(255),
     CONSTRAINT fk_eco_cart_item_eco_cart_id FOREIGN KEY (cart_id) REFERENCES eco_cart (id),
     CONSTRAINT fk_eco_cart_item_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_order
 (
-    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id              UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
     first_name      VARCHAR(200)   NOT NULL,
     last_name       VARCHAR(200)   NOT NULL,
     email           VARCHAR(255)   NOT NULL,
@@ -217,7 +234,9 @@ CREATE TABLE IF NOT EXISTS eco_order
     note            varchar(1000),
     order_status    VARCHAR(50)    NOT NULL,
     created_at      TIMESTAMP(0)   NOT NULL,
-    updated_at      TIMESTAMP(0)
+    updated_at      TIMESTAMP(0),
+    created_by      VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by      VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS eco_customer_order
@@ -226,20 +245,25 @@ CREATE TABLE IF NOT EXISTS eco_customer_order
     customer_id UUID         NOT NULL,
     created_at  TIMESTAMP(0) NOT NULL,
     updated_at  TIMESTAMP(0),
+    created_by  VARCHAR(255) NOT NULL DEFAULT 'ECO',
+    updated_by  VARCHAR(255),
     CONSTRAINT eco_customer_order_eco_customer_id FOREIGN KEY (customer_id) REFERENCES eco_customer (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_guest_order
 (
     id         UUID PRIMARY KEY REFERENCES eco_order (id),
-    session_id VARCHAR(255) NOT NULL,
+    guest_id   UUID         NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0)
+    updated_at TIMESTAMP(0),
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
+    updated_by VARCHAR(255),
+    CONSTRAINT eco_guest_order_eco_guest_guest_id FOREIGN KEY (guest_id) REFERENCES eco_guest (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_order_item
 (
-    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id                UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
     order_id          UUID           NOT NULL,
     product_id        BIGINT         NOT NULL,
     price             NUMERIC(19, 2) NOT NULL,
@@ -248,13 +272,15 @@ CREATE TABLE IF NOT EXISTS eco_order_item
     order_item_status VARCHAR(50)    NOT NULL,
     created_at        TIMESTAMP(0)   NOT NULL,
     updated_at        TIMESTAMP(0),
+    created_by        VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by        VARCHAR(255),
     CONSTRAINT fk_eco_order_item_eco_order_id FOREIGN KEY (order_id) REFERENCES eco_order (id),
     CONSTRAINT fk_eco_order_item_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_payment
 (
-    id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id               UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
     order_id         UUID           NOT NULL,
     payment_method   VARCHAR(50)    NOT NULL,
     payment_provider VARCHAR(100)   NOT NULL,
@@ -266,6 +292,8 @@ CREATE TABLE IF NOT EXISTS eco_payment
     payment_status   VARCHAR(50)    NOT NULL,
     created_at       TIMESTAMP(0)   NOT NULL,
     updated_at       TIMESTAMP(0),
+    created_by       VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by       VARCHAR(255),
     CONSTRAINT fk_eco_payment_eco_order_id FOREIGN KEY (order_id) REFERENCES eco_order (id)
 );
 
