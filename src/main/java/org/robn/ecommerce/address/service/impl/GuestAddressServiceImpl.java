@@ -40,7 +40,7 @@ public class GuestAddressServiceImpl implements GuestAddressService {
     @Transactional
     public void create(final String sessionId, final GuestAddressCreateRequest guestAddressCreateRequest) {
         final GuestAddress guestAddress = guestAddressCreateRequestToDomainMapper.map(guestAddressCreateRequest);
-        guestAddress.setSessionId(sessionId);
+
         guestAddressSavePort.save(guestAddress);
     }
 
