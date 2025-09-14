@@ -9,11 +9,11 @@ public record ProductImageCreateRequest(
         Long productId,
 
         @NotBlank
-        @Size(max = 100)
+        @Size(max = 255)
         String publicId,
 
         @NotBlank
-        @Size(max = 500)
+        @Size(max = 2000)
         String imageUrl,
 
         @NotNull
@@ -31,7 +31,7 @@ public record ProductImageCreateRequest(
         @Max(value = 5242880)
         Long sizeBytes,
 
-        @Size(max = 200)
+        @Size(max = 255)
         String altText
 
 ) {

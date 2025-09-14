@@ -16,7 +16,7 @@ public record ProductCreateRequest(
 
         @NotBlank
         @NameWithNumber
-        @Size(max = 100)
+        @Size(max = 200)
         String name,
 
         @NotBlank

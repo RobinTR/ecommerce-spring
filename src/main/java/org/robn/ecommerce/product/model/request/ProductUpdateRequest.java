@@ -14,7 +14,7 @@ public record ProductUpdateRequest(
         Long brandId,
 
         @NameWithNumber
-        @Size(max = 100)
+        @Size(max = 200)
         String name,
 
         @Size(max = 2000)
