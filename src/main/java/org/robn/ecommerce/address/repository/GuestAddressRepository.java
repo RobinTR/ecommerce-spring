@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface GuestAddressRepository extends JpaRepository<GuestAddressEntity, UUID> {
 
-    List<GuestAddressEntity> findAllBySessionId(String sessionId);
+    List<GuestAddressEntity> findAllByGuestDeviceId(String deviceId);
 
 }

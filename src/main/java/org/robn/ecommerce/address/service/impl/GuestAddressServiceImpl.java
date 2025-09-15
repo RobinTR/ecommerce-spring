@@ -10,6 +10,9 @@ import org.robn.ecommerce.address.model.request.GuestAddressUpdateRequest;
 import org.robn.ecommerce.address.port.GuestAddressReadPort;
 import org.robn.ecommerce.address.port.GuestAddressSavePort;
 import org.robn.ecommerce.address.service.GuestAddressService;
+import org.robn.ecommerce.guest.model.Guest;
+import org.robn.ecommerce.guest.model.request.GuestCreateRequest;
+import org.robn.ecommerce.guest.service.GuestService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class GuestAddressServiceImpl implements GuestAddressService {
 
+    private final GuestService guestService;
     private final GuestAddressReadPort guestAddressReadPort;
     private final GuestAddressSavePort guestAddressSavePort;
     private final GuestAddressCreateRequestToDomainMapper guestAddressCreateRequestToDomainMapper;
@@ -38,18 +42,23 @@ public class GuestAddressServiceImpl implements GuestAddressService {
 
     @Override
     @Transactional
-    public void create(final String sessionId, final GuestAddressCreateRequest guestAddressCreateRequest) {
+    public GuestAddress create(final GuestCreateRequest guestCreateRequest, final GuestAddressCreateRequest guestAddressCreateRequest) {
         final GuestAddress guestAddress = guestAddressCreateRequestToDomainMapper.map(guestAddressCreateRequest);
+        final Guest guest = guestService.findByDeviceId(guestCreateRequest.deviceId())
+                .orElseGet(() ->
+                        guestService.create(guestCreateRequest));
+        guestAddress.setGuestId(guest.getId());
 
-        guestAddressSavePort.save(guestAddress);
+        return guestAddressSavePort.save(guestAddress);
     }
 
     @Override
     @Transactional
-    public void update(final UUID addressId, final GuestAddressUpdateRequest guestAddressUpdateRequest) {
+    public GuestAddress update(final UUID addressId, final GuestAddressUpdateRequest guestAddressUpdateRequest) {
         final GuestAddress guestAddress = getGuestAddress(addressId);
         guestAddressUpdateMapper.update(guestAddress, guestAddressUpdateRequest);
-        guestAddressSavePort.save(guestAddress);
+
+        return guestAddressSavePort.save(guestAddress);
     }
 
     private GuestAddress getGuestAddress(final UUID addressId) {

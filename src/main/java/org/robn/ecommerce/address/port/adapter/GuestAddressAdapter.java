@@ -24,7 +24,7 @@ public class GuestAddressAdapter implements GuestAddressReadPort, GuestAddressSa
 
     @Override
     public List<GuestAddress> findAllBySessionId(final String sessionId) {
-        final List<GuestAddressEntity> guestAddressEntities = guestAddressRepository.findAllBySessionId(sessionId);
+        final List<GuestAddressEntity> guestAddressEntities = guestAddressRepository.findAllByGuestDeviceId(sessionId);
 
         return guestAddressEntityToDomainMapper.map(guestAddressEntities);
     }
