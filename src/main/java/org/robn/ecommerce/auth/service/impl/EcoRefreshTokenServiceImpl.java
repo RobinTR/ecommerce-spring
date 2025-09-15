@@ -3,8 +3,8 @@ package org.robn.ecommerce.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.exception.EcoInvalidRefreshTokenException;
 import org.robn.ecommerce.auth.exception.EcoUserNotFoundException;
+import org.robn.ecommerce.auth.model.EcoRefreshToken;
 import org.robn.ecommerce.auth.model.EcoUser;
-import org.robn.ecommerce.auth.model.RefreshToken;
 import org.robn.ecommerce.auth.port.EcoUserReadPort;
 import org.robn.ecommerce.auth.port.RefreshTokenReadPort;
 import org.robn.ecommerce.auth.port.RefreshTokenSavePort;
@@ -23,7 +23,6 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
 
-    private final EcoRefreshTokenService ecoRefreshTokenServiceProxy;
     private final EcoUserReadPort ecoUserReadPort;
     private final RefreshTokenReadPort refreshTokenReadPort;
     private final RefreshTokenSavePort refreshTokenSavePort;
@@ -31,41 +30,44 @@ public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
 
     @Override
     @Transactional
-    public RefreshToken generateRefreshToken(final UUID userId, final String deviceId) {
+    public EcoRefreshToken generateRefreshToken(final UUID userId, final String deviceId) {
         final EcoUser user = ecoUserReadPort.findById(userId).orElseThrow(() -> EcoUserNotFoundException.of(userId));
 
-        final RefreshToken refreshToken = buildRefreshToken(user.getId(), deviceId);
+        final EcoRefreshToken ecoRefreshToken = buildRefreshToken(user.getId(), deviceId);
 
-        return refreshTokenSavePort.save(refreshToken);
+        return refreshTokenSavePort.save(ecoRefreshToken);
     }
 
     @Override
     @Transactional
-    public RefreshToken rotate(final String oldToken, final UUID userId, final String deviceId) {
-        final RefreshToken existingToken = refreshTokenReadPort.findByToken(oldToken).orElseThrow(EcoInvalidRefreshTokenException::of);
+    public EcoRefreshToken rotate(final String oldToken, final UUID userId, final String deviceId) {
+        final EcoRefreshToken existingToken = refreshTokenReadPort.findByToken(oldToken).orElseThrow(EcoInvalidRefreshTokenException::of);
 
         if (!existingToken.getUserId().equals(userId)) {
             throw EcoInvalidRefreshTokenException.of();
         }
 
         if (!existingToken.getDeviceId().equals(deviceId)) {
-            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
+            this.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
+            throw EcoInvalidRefreshTokenException.of();
         }
 
         // Token reuse detection
         if (existingToken.isRevoked()) {
-            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
+            this.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
+            throw EcoInvalidRefreshTokenException.of();
         }
 
         // Token expired
         if (existingToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            revokeTokensForDeviceAndThrow(userId, existingToken.getDeviceId());
+            this.revokeAllTokensForUserDevice(userId, existingToken.getDeviceId());
+            throw EcoInvalidRefreshTokenException.of();
         }
 
         existingToken.setRevoked(true);
         refreshTokenSavePort.save(existingToken);
 
-        final RefreshToken newToken = buildRefreshToken(userId, deviceId);
+        final EcoRefreshToken newToken = buildRefreshToken(userId, deviceId);
 
         return refreshTokenSavePort.save(newToken);
     }
@@ -73,17 +75,12 @@ public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
     @Override
     @Transactional
     public void revokeAllTokensForUserDevice(final UUID userId, final String deviceId) {
-        final List<RefreshToken> tokens = refreshTokenReadPort.findAllByUserIdAndDeviceId(userId, deviceId);
-        final List<RefreshToken> revokedTokens = tokens.stream().map(token -> {
+        final List<EcoRefreshToken> tokens = refreshTokenReadPort.findAllByUserIdAndDeviceId(userId, deviceId);
+        final List<EcoRefreshToken> revokedTokens = tokens.stream().map(token -> {
             token.setRevoked(true);
             return token;
         }).toList();
         refreshTokenSavePort.saveAll(revokedTokens);
-    }
-
-    private void revokeTokensForDeviceAndThrow(final UUID userId, final String deviceId) {
-        ecoRefreshTokenServiceProxy.revokeAllTokensForUserDevice(userId, deviceId);
-        throw EcoInvalidRefreshTokenException.of();
     }
 
     private LocalDateTime getRefreshTokenExpireAt() {
@@ -92,8 +89,8 @@ public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
         return LocalDateTime.now().plusDays(Integer.parseInt(expireDays));
     }
 
-    private RefreshToken buildRefreshToken(final UUID userId, final String deviceId) {
-        return RefreshToken.builder()
+    private EcoRefreshToken buildRefreshToken(final UUID userId, final String deviceId) {
+        return EcoRefreshToken.builder()
                 .userId(userId)
                 .token(UUID.randomUUID().toString())
                 .deviceId(deviceId)

@@ -1,13 +1,13 @@
 package org.robn.ecommerce.auth.port;
 
-import org.robn.ecommerce.auth.model.RefreshToken;
+import org.robn.ecommerce.auth.model.EcoRefreshToken;
 
 import java.util.List;
 
 public interface RefreshTokenSavePort {
 
-    RefreshToken save(RefreshToken refreshToken);
+    EcoRefreshToken save(EcoRefreshToken ecoRefreshToken);
 
-    List<RefreshToken> saveAll(List<RefreshToken> tokens);
+    List<EcoRefreshToken> saveAll(List<EcoRefreshToken> tokens);
 
 }

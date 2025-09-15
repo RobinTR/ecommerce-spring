@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.robn.ecommerce.auth.config.EcoAuthConfiguration;
 import org.robn.ecommerce.auth.exception.EcoInvalidTokenException;
+import org.robn.ecommerce.auth.model.EcoRefreshToken;
 import org.robn.ecommerce.auth.model.EcoToken;
-import org.robn.ecommerce.auth.model.RefreshToken;
 import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.auth.service.EcoRefreshTokenService;
 import org.robn.ecommerce.auth.util.CryptoUtil;
@@ -32,22 +32,22 @@ public class EcoTokenServiceImpl implements EcoTokenService {
     @Override
     public EcoToken generateToken(final Claims claims, String deviceId) {
         final String accessToken = initializeToken(claims);
-        final RefreshToken refreshToken = ecoRefreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
+        final EcoRefreshToken ecoRefreshToken = ecoRefreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(ecoRefreshToken.getToken())
                 .build();
     }
 
     @Override
     public EcoToken generateToken(final Claims claims, final String refreshToken, String deviceId) {
         final String accessToken = initializeToken(claims);
-        final RefreshToken newRefreshToken = ecoRefreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
+        final EcoRefreshToken newEcoRefreshToken = ecoRefreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
                 .accessToken(accessToken)
-                .refreshToken(newRefreshToken.getToken())
+                .refreshToken(newEcoRefreshToken.getToken())
                 .build();
     }
 

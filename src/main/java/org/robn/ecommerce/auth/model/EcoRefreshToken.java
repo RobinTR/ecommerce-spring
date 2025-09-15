@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-public class RefreshToken extends BaseDomainModel {
+public class EcoRefreshToken extends BaseDomainModel {
 
     private UUID id;
     private UUID userId;

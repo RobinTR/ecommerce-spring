@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, UUID> {
+public interface EcoRefreshTokenRepository extends JpaRepository<RefreshTokenEntity, UUID> {
 
-    Optional<RefreshTokenEntity> findByTokenHash(String tokenHash);
+    Optional<RefreshTokenEntity> findByToken(String token);
 
     List<RefreshTokenEntity> findAllByUserIdAndDeviceId(UUID userId, String deviceId);
 
