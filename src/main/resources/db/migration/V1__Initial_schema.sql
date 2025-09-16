@@ -198,17 +198,21 @@ CREATE TABLE IF NOT EXISTS eco_guest_cart
 
 CREATE TABLE IF NOT EXISTS eco_cart_item
 (
-    id               UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
-    cart_id          UUID           NOT NULL,
-    product_id       BIGINT         NOT NULL,
-    price            NUMERIC(19, 2) NOT NULL,
-    quantity         INTEGER        NOT NULL,
-    discount_amount  NUMERIC(19, 2) NOT NULL,
-    cart_item_status VARCHAR(50)    NOT NULL,
-    created_at       TIMESTAMP(0)   NOT NULL,
-    updated_at       TIMESTAMP(0),
-    created_by       VARCHAR(255)   NOT NULL DEFAULT 'ECO',
-    updated_by       VARCHAR(255),
+    id                  UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
+    cart_id             UUID           NOT NULL,
+    product_id          BIGINT         NOT NULL,
+    product_brand_id    BIGINT         NOT NULL,
+    product_seller_id   UUID           NOT NULL,
+    product_name        VARCHAR(200)   NOT NULL,
+    product_description TEXT           NOT NULL,
+    product_price       NUMERIC(19, 2) NOT NULL,
+    quantity            INTEGER        NOT NULL,
+    discount_amount     NUMERIC(19, 2) NOT NULL,
+    cart_item_status    VARCHAR(50)    NOT NULL,
+    created_at          TIMESTAMP(0)   NOT NULL,
+    updated_at          TIMESTAMP(0),
+    created_by          VARCHAR(255)   NOT NULL DEFAULT 'ECO',
+    updated_by          VARCHAR(255),
     CONSTRAINT fk_eco_cart_item_eco_cart_id FOREIGN KEY (cart_id) REFERENCES eco_cart (id),
     CONSTRAINT fk_eco_cart_item_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id)
 );

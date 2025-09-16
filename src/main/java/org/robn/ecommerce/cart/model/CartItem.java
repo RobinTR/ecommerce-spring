@@ -17,7 +17,11 @@ public class CartItem extends BaseDomainModel {
     private UUID id;
     private UUID cartId;
     private Long productId;
-    private BigDecimal price;
+    private String productName;
+    private String productDescription;
+    private Long productBrandId;
+    private UUID productSellerId;
+    private BigDecimal productPrice;
     private Integer quantity;
     private BigDecimal discountAmount;
     private CartItemStatus cartItemStatus;
