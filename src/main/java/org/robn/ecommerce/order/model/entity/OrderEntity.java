@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eco_order")
-public abstract class BaseOrderEntity extends BaseEntity {
+public class OrderEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
