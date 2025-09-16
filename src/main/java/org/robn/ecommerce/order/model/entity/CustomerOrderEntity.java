@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_customer_order")
-public class CustomerOrderEntity extends BaseOrderEntity {
+public class CustomerOrderEntity extends OrderEntity {
 
     @Column(name = "customer_id")
     private UUID customerId;
