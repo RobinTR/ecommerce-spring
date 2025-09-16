@@ -28,7 +28,6 @@ public class Order extends BaseDomainModel {
     private BigDecimal shippingAmount;
     private BigDecimal discountAmount;
     private BigDecimal grandTotal;
-    private String currency;
     private String promoCode;
     private String note;
     private OrderStatus orderStatus;

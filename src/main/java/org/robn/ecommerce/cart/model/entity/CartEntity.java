@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -26,24 +25,6 @@ public class CartEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
-
-    @Column(name = "subtotal")
-    private BigDecimal subtotal;
-
-    @Column(name = "tax_amount")
-    private BigDecimal taxAmount;
-
-    @Column(name = "shipping_amount")
-    private BigDecimal shippingAmount;
-
-    @Column(name = "discount_amount")
-    private BigDecimal discountAmount;
-
-    @Column(name = "grand_total")
-    private BigDecimal grandTotal;
-
-    @Column(name = "currency")
-    private String currency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "cart_status")

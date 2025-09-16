@@ -66,9 +66,6 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "grand_total")
     private BigDecimal grandTotal;
 
-    @Column(name = "currency")
-    private String currency;
-
     @Column(name = "promo_code")
     private String promoCode;
 
