@@ -27,9 +27,6 @@ public class CartEntity extends BaseEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "session_id")
-    private UUID sessionId;
-
     @Column(name = "subtotal")
     private BigDecimal subtotal;
 
