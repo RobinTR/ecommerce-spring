@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public interface GuestCartRepository extends JpaRepository<GuestCartEntity, UUID> {
 
-    List<GuestCartEntity> findAllBySessionId(UUID sessionId);
+    List<GuestCartEntity> findAllByGuestId(UUID guestId);
 
-    Optional<GuestCartEntity> findBySessionIdAndCartStatus(UUID sessionId, CartStatus cartStatus);
+    Optional<GuestCartEntity> findByGuestIdAndCartStatus(UUID guestId, CartStatus cartStatus);
 
 }

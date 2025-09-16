@@ -5,7 +5,6 @@ import org.robn.ecommerce.cart.exception.GuestCartBySessionIdAndCartStatusNotFou
 import org.robn.ecommerce.cart.model.GuestCart;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.cart.port.GuestCartReadPort;
-import org.robn.ecommerce.cart.port.GuestCartSavePort;
 import org.robn.ecommerce.cart.service.GuestCartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,16 +18,15 @@ import java.util.UUID;
 public class GuestCartServiceImpl implements GuestCartService {
 
     private final GuestCartReadPort guestCartReadPort;
-    private final GuestCartSavePort guestCartSavePort;
 
     @Override
-    public List<GuestCart> findAllBySessionId(final UUID sessionId) {
-        return guestCartReadPort.findAllBySessionId(sessionId);
+    public List<GuestCart> findAllByGuestId(final UUID guestId) {
+        return guestCartReadPort.findAllByGuestId(guestId);
     }
 
     @Override
-    public GuestCart findBySessionIdAndCartStatus(final UUID sessionId, final CartStatus cartStatus) {
-        return guestCartReadPort.findBySessionIdAndCartStatus(sessionId, cartStatus).orElseThrow(() -> GuestCartBySessionIdAndCartStatusNotFoundException.of(sessionId, cartStatus));
+    public GuestCart findByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
+        return guestCartReadPort.findByGuestIdAndCartStatus(guestId, cartStatus).orElseThrow(() -> GuestCartBySessionIdAndCartStatusNotFoundException.of(guestId, cartStatus));
     }
 
 }

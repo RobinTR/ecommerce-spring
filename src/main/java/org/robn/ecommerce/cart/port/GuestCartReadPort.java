@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public interface GuestCartReadPort {
 
-    List<GuestCart> findAllBySessionId(UUID sessionId);
+    List<GuestCart> findAllByGuestId(UUID guestId);
 
-    Optional<GuestCart> findBySessionIdAndCartStatus(UUID sessionId, CartStatus cartStatus);
+    Optional<GuestCart> findByGuestIdAndCartStatus(UUID guestId, CartStatus cartStatus);
 
 }

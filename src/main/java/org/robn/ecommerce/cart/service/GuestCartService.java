@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface GuestCartService {
 
-    List<GuestCart> findAllBySessionId(UUID sessionId);
+    List<GuestCart> findAllByGuestId(UUID guestId);
 
-    GuestCart findBySessionIdAndCartStatus(UUID sessionId, CartStatus cartStatus);
+    GuestCart findByGuestIdAndCartStatus(UUID guestId, CartStatus cartStatus);
 
 }

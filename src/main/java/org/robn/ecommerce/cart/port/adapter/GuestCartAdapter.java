@@ -24,15 +24,15 @@ public class GuestCartAdapter implements GuestCartReadPort, GuestCartSavePort {
     private final GuestCartDomainToEntityMapper guestCartDomainToEntityMapper;
 
     @Override
-    public List<GuestCart> findAllBySessionId(final UUID sessionId) {
-        final List<GuestCartEntity> guestCartEntities = guestCartRepository.findAllBySessionId(sessionId);
+    public List<GuestCart> findAllByGuestId(final UUID guestId) {
+        final List<GuestCartEntity> guestCartEntities = guestCartRepository.findAllByGuestId(guestId);
 
         return guestCartEntityToDomainMapper.map(guestCartEntities);
     }
 
     @Override
-    public Optional<GuestCart> findBySessionIdAndCartStatus(final UUID sessionId, final CartStatus cartStatus) {
-        final Optional<GuestCartEntity> guestCartEntity = guestCartRepository.findBySessionIdAndCartStatus(sessionId, cartStatus);
+    public Optional<GuestCart> findByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
+        final Optional<GuestCartEntity> guestCartEntity = guestCartRepository.findByGuestIdAndCartStatus(guestId, cartStatus);
 
         return guestCartEntity.map(guestCartEntityToDomainMapper::map);
     }
