@@ -1,7 +1,6 @@
 package org.robn.ecommerce.cart.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.robn.ecommerce.cart.exception.GuestCartBySessionIdAndCartStatusNotFoundException;
 import org.robn.ecommerce.cart.model.GuestCart;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.cart.port.GuestCartReadPort;
@@ -25,8 +24,8 @@ public class GuestCartServiceImpl implements GuestCartService {
     }
 
     @Override
-    public GuestCart findByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
-        return guestCartReadPort.findByGuestIdAndCartStatus(guestId, cartStatus).orElseThrow(() -> GuestCartBySessionIdAndCartStatusNotFoundException.of(guestId, cartStatus));
+    public List<GuestCart> findAllByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
+        return guestCartReadPort.findAllByGuestIdAndCartStatus(guestId, cartStatus);
     }
 
 }

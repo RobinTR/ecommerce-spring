@@ -10,6 +10,6 @@ public interface GuestCartService {
 
     List<GuestCart> findAllByGuestId(UUID guestId);
 
-    GuestCart findByGuestIdAndCartStatus(UUID guestId, CartStatus cartStatus);
+    List<GuestCart> findAllByGuestIdAndCartStatus(UUID guestId, CartStatus cartStatus);
 
 }

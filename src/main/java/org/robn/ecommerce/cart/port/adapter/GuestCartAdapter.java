@@ -12,7 +12,6 @@ import org.robn.ecommerce.cart.repository.GuestCartRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -31,10 +30,10 @@ public class GuestCartAdapter implements GuestCartReadPort, GuestCartSavePort {
     }
 
     @Override
-    public Optional<GuestCart> findByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
-        final Optional<GuestCartEntity> guestCartEntity = guestCartRepository.findByGuestIdAndCartStatus(guestId, cartStatus);
+    public List<GuestCart> findAllByGuestIdAndCartStatus(final UUID guestId, final CartStatus cartStatus) {
+        final List<GuestCartEntity> guestCartEntity = guestCartRepository.findAllByGuestIdAndCartStatus(guestId, cartStatus);
 
-        return guestCartEntity.map(guestCartEntityToDomainMapper::map);
+        return guestCartEntityToDomainMapper.map(guestCartEntity);
     }
 
     @Override
