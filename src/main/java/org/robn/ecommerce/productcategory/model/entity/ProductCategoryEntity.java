@@ -1,7 +1,11 @@
 package org.robn.ecommerce.productcategory.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.category.model.entity.CategoryEntity;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
@@ -9,7 +13,7 @@ import org.robn.ecommerce.product.model.entity.ProductEntity;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_product_category")

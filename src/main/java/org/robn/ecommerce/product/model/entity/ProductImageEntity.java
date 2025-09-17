@@ -1,7 +1,11 @@
 package org.robn.ecommerce.product.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.SoftDeletableEntity;
 
 import java.util.UUID;
@@ -9,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "eco_product_image")
