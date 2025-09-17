@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,9 @@ public class CartEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
+
+    @Column(name = "discount_amount")
+    private BigDecimal discountAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "cart_status")
