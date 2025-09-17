@@ -26,14 +26,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public EcoToken register(final CustomerRegisterRequest request) {
-
+    public EcoToken register(final CustomerRegisterRequest request, final String deviceId) {
         final Customer customer = customerRegisterRequestToDomainMapper.map(request);
         registrationDomainService.prepareForRegistration(customer, Role.CUSTOMER);
-
         final Customer savedCustomer = customerSavePort.save(customer);
 
-        return ecoTokenService.generateToken(TokenClaimBuilder.buildClaims(savedCustomer, request.deviceId()), request.deviceId());
+        return ecoTokenService.generateToken(TokenClaimBuilder.buildClaims(savedCustomer, deviceId), deviceId);
     }
 
 }

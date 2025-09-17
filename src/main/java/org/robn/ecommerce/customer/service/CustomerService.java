@@ -5,6 +5,6 @@ import org.robn.ecommerce.customer.model.request.CustomerRegisterRequest;
 
 public interface CustomerService {
 
-    EcoToken register(CustomerRegisterRequest request);
+    EcoToken register(CustomerRegisterRequest request, String deviceId);
 
 }

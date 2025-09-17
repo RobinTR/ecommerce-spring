@@ -8,12 +8,12 @@ import org.robn.ecommerce.seller.model.request.SellerRegisterRequest;
 
 public interface EcoAuthService {
 
-    EcoToken register(CustomerRegisterRequest customerRegisterRequest);
+    EcoToken register(CustomerRegisterRequest customerRegisterRequest, String deviceId);
 
-    EcoToken register(SellerRegisterRequest sellerRegisterRequest);
+    EcoToken register(SellerRegisterRequest sellerRegisterRequest, String deviceId);
 
-    EcoToken login(EcoLoginRequest ecoLoginRequest);
+    EcoToken login(EcoLoginRequest ecoLoginRequest, String deviceId);
 
-    void logout(EcoLogoutRequest ecoLogoutRequest);
+    void logout(EcoLogoutRequest ecoLogoutRequest, String deviceId);
 
 }

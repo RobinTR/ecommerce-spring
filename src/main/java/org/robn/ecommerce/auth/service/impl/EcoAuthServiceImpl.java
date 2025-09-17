@@ -46,50 +46,50 @@ public class EcoAuthServiceImpl implements EcoAuthService {
 
     @Override
     @Transactional
-    public EcoToken register(final CustomerRegisterRequest customerRegisterRequest) {
+    public EcoToken register(final CustomerRegisterRequest customerRegisterRequest, final String deviceId) {
         final Customer customer = customerRegisterRequestToDomainMapper.map(customerRegisterRequest);
         registrationDomainService.prepareForRegistration(customer, Role.CUSTOMER);
         final Customer savedCustomer = customerSavePort.save(customer);
-        final Claims claims = TokenClaimBuilder.buildClaims(savedCustomer, customerRegisterRequest.deviceId());
+        final Claims claims = TokenClaimBuilder.buildClaims(savedCustomer, deviceId);
 
-        return ecoTokenService.generateToken(claims, customerRegisterRequest.deviceId());
+        return ecoTokenService.generateToken(claims, deviceId);
     }
 
     @Override
     @Transactional
-    public EcoToken register(final SellerRegisterRequest sellerRegisterRequest) {
+    public EcoToken register(final SellerRegisterRequest sellerRegisterRequest, final String deviceId) {
         final Seller seller = sellerRegisterRequestToDomainMapper.map(sellerRegisterRequest);
         registrationDomainService.prepareForRegistration(seller, Role.SELLER);
         final Seller savedSeller = sellerSavePort.save(seller);
-        final Claims claims = TokenClaimBuilder.buildClaims(savedSeller, sellerRegisterRequest.deviceId());
+        final Claims claims = TokenClaimBuilder.buildClaims(savedSeller, deviceId);
 
-        return ecoTokenService.generateToken(claims, sellerRegisterRequest.deviceId());
+        return ecoTokenService.generateToken(claims, deviceId);
     }
 
     @Override
     @Transactional
-    public EcoToken login(final EcoLoginRequest ecoLoginRequest) {
+    public EcoToken login(final EcoLoginRequest ecoLoginRequest, final String deviceId) {
         final EcoUser user = ecoUserReadPort.findByEmail(ecoLoginRequest.email()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
 
         if (!passwordHashReadPort.matches(ecoLoginRequest.password(), user.getPassword())) {
             throw EcoInvalidEmailOrPasswordException.of();
         }
 
-        final Claims claims = TokenClaimBuilder.buildClaims(user, ecoLoginRequest.deviceId());
+        final Claims claims = TokenClaimBuilder.buildClaims(user, deviceId);
 
-        return ecoTokenService.generateToken(claims, ecoLoginRequest.deviceId());
+        return ecoTokenService.generateToken(claims, deviceId);
     }
 
     @Override
     @Transactional
-    public void logout(final EcoLogoutRequest ecoLogoutRequest) {
+    public void logout(final EcoLogoutRequest ecoLogoutRequest, final String deviceId) {
         final EcoUser user = ecoUserReadPort.findById(ecoLogoutRequest.userId()).orElseThrow(EcoInvalidEmailOrPasswordException::of);
 
         if (!user.getId().equals(securityReadPort.getCurrentUserId())) {
             throw EcoInvalidLogoutException.of();
         }
 
-        ecoRefreshTokenService.revokeAllTokensForUserDevice(ecoLogoutRequest.userId(), ecoLogoutRequest.deviceId());
+        ecoRefreshTokenService.revokeAllTokensForUserDevice(ecoLogoutRequest.userId(), deviceId);
     }
 
 }

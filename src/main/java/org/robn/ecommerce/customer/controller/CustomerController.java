@@ -8,10 +8,7 @@ import org.robn.ecommerce.auth.model.response.EcoTokenResponse;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
 import org.robn.ecommerce.customer.model.request.CustomerRegisterRequest;
 import org.robn.ecommerce.customer.service.CustomerService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +19,8 @@ public class CustomerController {
     private final EcoTokenToResponseMapper ecoTokenToResponseMapper;
 
     @PostMapping("/register")
-    public EcoBaseResponse<EcoTokenResponse> create(@RequestBody @Valid final CustomerRegisterRequest request) {
-        final EcoToken ecoToken = customerService.register(request);
+    public EcoBaseResponse<EcoTokenResponse> create(@RequestBody @Valid final CustomerRegisterRequest request, @RequestHeader("X-DEVICE-ID") final String deviceId) {
+        final EcoToken ecoToken = customerService.register(request, deviceId);
         final EcoTokenResponse response = ecoTokenToResponseMapper.map(ecoToken);
 
         return EcoBaseResponse.successOf(response);
