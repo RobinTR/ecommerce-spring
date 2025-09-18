@@ -1,6 +1,7 @@
 package org.robn.ecommerce.cart.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "eco_guest_cart")
 public class GuestCartEntity extends CartEntity {
 
