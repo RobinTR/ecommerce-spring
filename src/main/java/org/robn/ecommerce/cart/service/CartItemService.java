@@ -2,7 +2,6 @@ package org.robn.ecommerce.cart.service;
 
 import org.robn.ecommerce.cart.model.CartItem;
 import org.robn.ecommerce.cart.model.enums.CartItemStatus;
-import org.robn.ecommerce.cart.model.request.AddToCartRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +16,8 @@ public interface CartItemService {
 
     int getTotalItemCount(UUID cartId);
 
-    CartItem addToCart(AddToCartRequest addToCartRequest);
+    CartItem create(UUID cartId, Long productId, int quantity);
+
+    CartItem updateQuantity(UUID cartId, Long productId, int quantity);
 
 }

@@ -15,6 +15,7 @@ import java.util.UUID;
 public class Cart extends BaseDomainModel {
 
     private UUID id;
+    private BigDecimal totalPrice;
     private BigDecimal discountAmount;
     private CartStatus cartStatus;
 

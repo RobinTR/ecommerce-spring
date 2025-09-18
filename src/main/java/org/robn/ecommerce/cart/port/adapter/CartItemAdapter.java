@@ -25,7 +25,7 @@ public class CartItemAdapter implements CartItemReadPort, CartItemSavePort {
 
     @Override
     public List<CartItem> findAllByCartId(final UUID cartId) {
-        final List<CartItemEntity> cartItemEntities = cartItemRepository.findAllById(cartId);
+        final List<CartItemEntity> cartItemEntities = cartItemRepository.findAllByCartId(cartId);
 
         return entityToDomainMapper.map(cartItemEntities);
     }
@@ -50,7 +50,7 @@ public class CartItemAdapter implements CartItemReadPort, CartItemSavePort {
     }
 
     @Override
-    public CartItem addToCart(final CartItem cartItem) {
+    public CartItem save(final CartItem cartItem) {
         final CartItemEntity cartItemEntity = domainToEntityMapper.map(cartItem);
         final CartItemEntity savedCartItemEntity = cartItemRepository.save(cartItemEntity);
 

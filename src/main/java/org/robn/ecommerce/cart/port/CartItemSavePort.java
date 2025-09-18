@@ -4,6 +4,6 @@ import org.robn.ecommerce.cart.model.CartItem;
 
 public interface CartItemSavePort {
 
-    CartItem addToCart(CartItem cartItem);
+    CartItem save(CartItem cartItem);
 
 }

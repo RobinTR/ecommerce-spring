@@ -5,6 +5,7 @@ import org.robn.ecommerce.cart.mapper.CustomerCartDomainToEntityMapper;
 import org.robn.ecommerce.cart.mapper.CustomerCartEntityToDomainMapper;
 import org.robn.ecommerce.cart.model.CustomerCart;
 import org.robn.ecommerce.cart.model.entity.CustomerCartEntity;
+import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.cart.port.CustomerCartReadPort;
 import org.robn.ecommerce.cart.port.CustomerCartSavePort;
 import org.robn.ecommerce.cart.repository.CustomerCartRepository;
@@ -25,6 +26,13 @@ public class CustomerCartAdapter implements CustomerCartReadPort, CustomerCartSa
     @Override
     public List<CustomerCart> findAllByCustomerId(final UUID customerId) {
         final List<CustomerCartEntity> customerCartEntities = customerCartRepository.findAllByCustomerId(customerId);
+
+        return entityToDomainMapper.map(customerCartEntities);
+    }
+
+    @Override
+    public List<CustomerCart> findAllByCustomerIdAndCartStatus(final UUID customerId, final CartStatus cartStatus) {
+        final List<CustomerCartEntity> customerCartEntities = customerCartRepository.findAllByCustomerIdAndCartStatus(customerId, cartStatus);
 
         return entityToDomainMapper.map(customerCartEntities);
     }
