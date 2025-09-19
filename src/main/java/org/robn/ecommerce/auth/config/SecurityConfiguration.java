@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(BASE_URL + "/auth/**").anonymous()
                         .requestMatchers(HttpMethod.POST, BASE_URL + "/customers/register").anonymous()
+                        .requestMatchers(BASE_URL + "/carts/**").permitAll()
                         .requestMatchers(BASE_URL + "/guest-addresses/**").permitAll()
                         .requestMatchers(HttpMethod.GET, BASE_URL + "/brands/**").permitAll()
                         .requestMatchers(HttpMethod.GET, BASE_URL + "/categories/**").permitAll()
