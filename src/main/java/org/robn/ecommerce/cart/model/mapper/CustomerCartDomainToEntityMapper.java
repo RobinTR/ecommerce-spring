@@ -1,4 +1,4 @@
-package org.robn.ecommerce.cart.mapper;
+package org.robn.ecommerce.cart.model.mapper;
 
 import org.mapstruct.Mapper;
 import org.robn.ecommerce.cart.model.CustomerCart;

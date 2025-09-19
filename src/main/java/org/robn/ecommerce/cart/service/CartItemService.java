@@ -4,6 +4,7 @@ import org.robn.ecommerce.cart.model.CartItem;
 import org.robn.ecommerce.cart.model.enums.CartItemStatus;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CartItemService {
@@ -12,7 +13,7 @@ public interface CartItemService {
 
     List<CartItem> findAllByCartIdAndStatus(UUID cartId, CartItemStatus status);
 
-    CartItem findByCartIdAndProductId(UUID cartId, Long productId);
+    Optional<CartItem> findByCartIdAndProductId(UUID cartId, Long productId);
 
     int getTotalItemCount(UUID cartId);
 

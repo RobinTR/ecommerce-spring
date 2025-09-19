@@ -3,7 +3,7 @@ package org.robn.ecommerce.cart.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.robn.ecommerce.cart.exception.CustomerCartNotFoundException;
-import org.robn.ecommerce.cart.model.CartItem;
+import org.robn.ecommerce.cart.model.Cart;
 import org.robn.ecommerce.cart.model.CustomerCart;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
 import org.robn.ecommerce.cart.model.request.AddToCartRequest;
@@ -47,29 +47,22 @@ public class CustomerCartServiceImpl implements CustomerCartService {
 
         if (!existingCarts.isEmpty()) {
             final CustomerCart existingCart = existingCarts.getFirst();
-            final CartItem cartItem = cartItemService.findByCartIdAndProductId(existingCart.getId(), addToCartRequest.productId());
-
-            if (cartItem != null) {
-                cartItemService.updateQuantity(existingCart.getId(), addToCartRequest.productId(), addToCartRequest.quantity());
-            } else {
-                cartItemService.create(existingCart.getId(), addToCartRequest.productId(), addToCartRequest.quantity());
-            }
-
-            existingCart.setTotalPrice(cartService.calculateCartTotalPrice(existingCart.getId()));
+            final Cart cart = cartService.update(existingCart.getId(), addToCartRequest);
+            existingCart.setTotalPrice(cart.getTotalPrice());
 
             return existingCart;
         }
 
-        final CustomerCart cart = CustomerCart.builder()
+        final Cart cart = cartService.create(addToCartRequest);
+        final CustomerCart customerCart = CustomerCart.builder()
+                .id(cart.getId())
                 .customerId(securityReadPort.getCurrentUserId())
                 .discountAmount(BigDecimal.ZERO)
                 .cartStatus(CartStatus.ACTIVE)
+                .totalPrice(cart.getTotalPrice())
                 .build();
-        final CustomerCart savedCart = customerCartSavePort.save(cart);
-        cartItemService.create(savedCart.getId(), addToCartRequest.productId(), addToCartRequest.quantity());
-        savedCart.setTotalPrice(cartService.calculateCartTotalPrice(savedCart.getId()));
 
-        return savedCart;
+        return customerCartSavePort.save(customerCart);
     }
 
 }

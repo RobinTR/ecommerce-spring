@@ -14,4 +14,6 @@ public interface CartService {
 
     Cart create(AddToCartRequest addToCartRequest);
 
+    Cart update(UUID id, AddToCartRequest addToCartRequest);
+
 }

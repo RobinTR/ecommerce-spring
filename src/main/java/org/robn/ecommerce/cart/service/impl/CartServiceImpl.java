@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -51,13 +52,32 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public Cart create(final AddToCartRequest addToCartRequest) {
         final Cart cart = Cart.builder()
-                .id(UUID.randomUUID())
+                .discountAmount(BigDecimal.ZERO)
                 .cartStatus(CartStatus.ACTIVE)
                 .build();
         final Cart savedCart = cartSavePort.save(cart);
+
         cartItemService.create(savedCart.getId(), addToCartRequest.productId(), addToCartRequest.quantity());
+        savedCart.setTotalPrice(this.calculateCartTotalPrice(savedCart.getId()));
 
         return savedCart;
+    }
+
+    @Override
+    @Transactional
+    public Cart update(final UUID id, final AddToCartRequest addToCartRequest) {
+        final Cart cart = cartReadPort.findById(id).orElseThrow(() -> CartNotFoundException.of(id));
+        final Optional<CartItem> cartItem = cartItemService.findByCartIdAndProductId(id, addToCartRequest.productId());
+
+        if (cartItem.isPresent()) {
+            cartItemService.updateQuantity(id, addToCartRequest.productId(), addToCartRequest.quantity());
+        } else {
+            cartItemService.create(id, addToCartRequest.productId(), addToCartRequest.quantity());
+        }
+
+        cart.setTotalPrice(this.calculateCartTotalPrice(id));
+
+        return cart;
     }
 
 }

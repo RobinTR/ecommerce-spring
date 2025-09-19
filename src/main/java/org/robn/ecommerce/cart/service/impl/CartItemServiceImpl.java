@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,8 +37,8 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem findByCartIdAndProductId(final UUID cartId, final Long productId) {
-        return cartItemReadPort.findByCartIdAndProductId(cartId, productId).orElseThrow(() -> CartItemByIdAndProductNotFoundException.of(cartId, productId));
+    public Optional<CartItem> findByCartIdAndProductId(final UUID cartId, final Long productId) {
+        return cartItemReadPort.findByCartIdAndProductId(cartId, productId);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public CartItem updateQuantity(final UUID cartId, final Long productId, final int quantity) {
-        final CartItem cartItem = this.findByCartIdAndProductId(cartId, productId);
+        final CartItem cartItem = this.findByCartIdAndProductId(cartId, productId).orElseThrow(() -> CartItemByIdAndProductNotFoundException.of(cartId, productId));
         cartItem.setQuantity(cartItem.getQuantity() + quantity);
 
         return cartItemSavePort.save(cartItem);

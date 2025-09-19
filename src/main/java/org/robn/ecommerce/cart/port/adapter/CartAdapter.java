@@ -1,8 +1,8 @@
 package org.robn.ecommerce.cart.port.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.robn.ecommerce.cart.mapper.CartDomainToEntityMapper;
-import org.robn.ecommerce.cart.mapper.CartEntityToDomainMapper;
+import org.robn.ecommerce.cart.model.mapper.CartDomainToEntityMapper;
+import org.robn.ecommerce.cart.model.mapper.CartEntityToDomainMapper;
 import org.robn.ecommerce.cart.model.Cart;
 import org.robn.ecommerce.cart.model.entity.CartEntity;
 import org.robn.ecommerce.cart.model.enums.CartStatus;
