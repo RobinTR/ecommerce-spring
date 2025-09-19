@@ -11,7 +11,6 @@ import org.robn.ecommerce.address.port.GuestAddressReadPort;
 import org.robn.ecommerce.address.port.GuestAddressSavePort;
 import org.robn.ecommerce.address.service.GuestAddressService;
 import org.robn.ecommerce.guest.model.Guest;
-import org.robn.ecommerce.guest.model.request.GuestCreateRequest;
 import org.robn.ecommerce.guest.service.GuestService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,11 +41,11 @@ public class GuestAddressServiceImpl implements GuestAddressService {
 
     @Override
     @Transactional
-    public GuestAddress create(final GuestCreateRequest guestCreateRequest, final GuestAddressCreateRequest guestAddressCreateRequest) {
+    public GuestAddress create(final String deviceId, final GuestAddressCreateRequest guestAddressCreateRequest) {
         final GuestAddress guestAddress = guestAddressCreateRequestToDomainMapper.map(guestAddressCreateRequest);
-        final Guest guest = guestService.findByDeviceId(guestCreateRequest.deviceId())
+        final Guest guest = guestService.findByDeviceId(deviceId)
                 .orElseGet(() ->
-                        guestService.create(guestCreateRequest));
+                        guestService.create(deviceId));
         guestAddress.setGuestId(guest.getId());
 
         return guestAddressSavePort.save(guestAddress);

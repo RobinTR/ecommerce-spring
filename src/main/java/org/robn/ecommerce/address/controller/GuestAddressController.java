@@ -11,7 +11,6 @@ import org.robn.ecommerce.address.model.response.GuestAddressListResponse;
 import org.robn.ecommerce.address.model.response.GuestAddressResponse;
 import org.robn.ecommerce.address.service.GuestAddressService;
 import org.robn.ecommerce.common.model.response.EcoBaseResponse;
-import org.robn.ecommerce.guest.model.request.GuestCreateRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,10 +45,9 @@ public class GuestAddressController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('ADMIN') or isAnonymous()")
+    @PreAuthorize("isAnonymous()")
     public EcoBaseResponse<Void> create(@RequestHeader("X-Device-ID") final String deviceId, @RequestBody @Valid final GuestAddressCreateRequest guestAddressCreateRequest) {
-        final GuestCreateRequest guestCreateRequest = GuestCreateRequest.builder().deviceId(deviceId).build();
-        guestAddressService.create(guestCreateRequest, guestAddressCreateRequest);
+        guestAddressService.create(deviceId, guestAddressCreateRequest);
 
         return EcoBaseResponse.success();
     }

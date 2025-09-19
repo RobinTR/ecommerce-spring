@@ -2,8 +2,6 @@ package org.robn.ecommerce.guest.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.guest.model.Guest;
-import org.robn.ecommerce.guest.model.mapper.GuestCreateRequestToDomainMapper;
-import org.robn.ecommerce.guest.model.request.GuestCreateRequest;
 import org.robn.ecommerce.guest.port.GuestReadPort;
 import org.robn.ecommerce.guest.port.GuestSavePort;
 import org.robn.ecommerce.guest.service.GuestService;
@@ -19,7 +17,6 @@ public class GuestServiceImpl implements GuestService {
 
     private final GuestReadPort guestReadPort;
     private final GuestSavePort guestSavePort;
-    private final GuestCreateRequestToDomainMapper createRequestToDomainMapper;
 
     @Override
     public Optional<Guest> findByDeviceId(final String deviceId) {
@@ -28,8 +25,8 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     @Transactional
-    public Guest create(final GuestCreateRequest guestCreateRequest) {
-        final Guest guest = createRequestToDomainMapper.map(guestCreateRequest);
+    public Guest create(final String deviceId) {
+        final Guest guest = Guest.builder().deviceId(deviceId).build();
 
         return guestSavePort.save(guest);
     }
