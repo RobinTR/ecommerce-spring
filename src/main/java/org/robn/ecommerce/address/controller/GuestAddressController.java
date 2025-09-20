@@ -46,7 +46,7 @@ public class GuestAddressController {
 
     @PostMapping()
     @PreAuthorize("isAnonymous()")
-    public EcoBaseResponse<Void> create(@RequestHeader("X-Device-ID") final String deviceId, @RequestBody @Valid final GuestAddressCreateRequest guestAddressCreateRequest) {
+    public EcoBaseResponse<Void> create(@RequestHeader("Device-ID") final String deviceId, @RequestBody @Valid final GuestAddressCreateRequest guestAddressCreateRequest) {
         guestAddressService.create(deviceId, guestAddressCreateRequest);
 
         return EcoBaseResponse.success();
