@@ -46,23 +46,30 @@ public class CustomerCartServiceImpl implements CustomerCartService {
         final List<CustomerCart> existingCarts = customerCartReadPort.findAllByCustomerIdAndCartStatus(securityReadPort.getCurrentUserId(), CartStatus.ACTIVE);
 
         if (!existingCarts.isEmpty()) {
-            final CustomerCart existingCart = existingCarts.getFirst();
-            final Cart cart = cartService.update(existingCart.getId(), addToCartRequest);
-            existingCart.setTotalPrice(cart.getTotalPrice());
-
-            return existingCart;
+            return updateExistingCart(existingCarts.getFirst(), addToCartRequest);
         }
 
-        final Cart cart = cartService.create(addToCartRequest);
+        return createNewCart(addToCartRequest);
+    }
+
+    private CustomerCart createNewCart(final AddToCartRequest request) {
         final CustomerCart customerCart = CustomerCart.builder()
-                .id(cart.getId())
                 .customerId(securityReadPort.getCurrentUserId())
                 .discountAmount(BigDecimal.ZERO)
                 .cartStatus(CartStatus.ACTIVE)
-                .totalPrice(cart.getTotalPrice())
                 .build();
+        final CustomerCart savedCart = customerCartSavePort.save(customerCart);
+        cartItemService.create(customerCart.getId(), request.productId(), request.quantity());
+        savedCart.setTotalPrice(cartService.calculateCartTotalPrice(savedCart.getId()));
 
-        return customerCartSavePort.save(customerCart);
+        return savedCart;
+    }
+
+    private CustomerCart updateExistingCart(final CustomerCart existingCart, final AddToCartRequest request) {
+        final Cart cart = cartService.update(existingCart.getId(), request);
+        existingCart.setTotalPrice(cart.getTotalPrice());
+
+        return existingCart;
     }
 
 }
