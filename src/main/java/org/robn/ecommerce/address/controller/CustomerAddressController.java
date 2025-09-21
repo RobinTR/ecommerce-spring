@@ -46,18 +46,20 @@ public class CustomerAddressController {
 
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
-    public EcoBaseResponse<Void> create(@RequestBody @Valid final CustomerAddressCreateRequest customerAddressCreateRequest) {
-        customerAddressService.create(customerAddressCreateRequest);
+    public EcoBaseResponse<CustomerAddressResponse> create(@RequestBody @Valid final CustomerAddressCreateRequest customerAddressCreateRequest) {
+        final CustomerAddress customerAddress = customerAddressService.create(customerAddressCreateRequest);
+        final CustomerAddressResponse response = customerAddressDomainToResponseMapper.map(customerAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
     @PutMapping("/{addressId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
-    public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
-        customerAddressService.update(addressId, customerAddressUpdateRequest);
+    public EcoBaseResponse<CustomerAddressResponse> update(@PathVariable final UUID addressId, @RequestBody @Valid final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
+        final CustomerAddress customerAddress = customerAddressService.update(addressId, customerAddressUpdateRequest);
+        final CustomerAddressResponse response = customerAddressDomainToResponseMapper.map(customerAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
 }

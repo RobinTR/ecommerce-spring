@@ -13,8 +13,8 @@ public interface CustomerAddressService {
 
     CustomerAddress findByAddressId(UUID addressId);
 
-    void create(CustomerAddressCreateRequest customerAddressCreateRequest);
+    CustomerAddress create(CustomerAddressCreateRequest customerAddressCreateRequest);
 
-    void update(UUID addressId, CustomerAddressUpdateRequest customerAddressUpdateRequest);
+    CustomerAddress update(UUID addressId, CustomerAddressUpdateRequest customerAddressUpdateRequest);
 
 }

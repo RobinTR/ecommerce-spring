@@ -46,20 +46,22 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     @Transactional
-    public void create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
+    public CustomerAddress create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
         customerAddress.setIsDefault(Boolean.FALSE);
         customerAddress.setCustomerId(securityReadPort.getCurrentUserId());
-        customerAddressSavePort.save(customerAddress);
+
+        return customerAddressSavePort.save(customerAddress);
     }
 
     @Override
     @Transactional
-    public void update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
+    public CustomerAddress update(final UUID addressId, final CustomerAddressUpdateRequest customerAddressUpdateRequest) {
         securityService.checkAccessByAddressId(addressId);
         final CustomerAddress customerAddress = getCustomerAddress(addressId);
         customerAddressUpdateMapper.update(customerAddress, customerAddressUpdateRequest);
-        customerAddressSavePort.save(customerAddress);
+
+        return customerAddressSavePort.save(customerAddress);
     }
 
     private CustomerAddress getCustomerAddress(final UUID addressId) {
