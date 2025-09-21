@@ -46,18 +46,20 @@ public class GuestAddressController {
 
     @PostMapping()
     @PreAuthorize("isAnonymous()")
-    public EcoBaseResponse<Void> create(@RequestHeader("Device-ID") final String deviceId, @RequestBody @Valid final GuestAddressCreateRequest guestAddressCreateRequest) {
-        guestAddressService.create(deviceId, guestAddressCreateRequest);
+    public EcoBaseResponse<GuestAddressResponse> create(@RequestHeader("Device-ID") final String deviceId, @RequestBody @Valid final GuestAddressCreateRequest guestAddressCreateRequest) {
+        final GuestAddress guestAddress = guestAddressService.create(deviceId, guestAddressCreateRequest);
+        final GuestAddressResponse response = guestAddressDomainToResponseMapper.map(guestAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
     @PutMapping("/{addressId}")
     @PreAuthorize("hasRole('ADMIN') or isAnonymous()")
-    public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final GuestAddressUpdateRequest guestAddressUpdateRequest) {
-        guestAddressService.update(addressId, guestAddressUpdateRequest);
+    public EcoBaseResponse<GuestAddressResponse> update(@PathVariable final UUID addressId, @RequestBody @Valid final GuestAddressUpdateRequest guestAddressUpdateRequest) {
+        final GuestAddress guestAddress = guestAddressService.update(addressId, guestAddressUpdateRequest);
+        final GuestAddressResponse response = guestAddressDomainToResponseMapper.map(guestAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
 }
