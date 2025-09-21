@@ -27,17 +27,19 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public void create(final AddressCreateRequest addressCreateRequest) {
+    public Address create(final AddressCreateRequest addressCreateRequest) {
         final Address address = addressCreateRequestToDomainMapper.map(addressCreateRequest);
-        addressSavePort.save(address);
+
+        return addressSavePort.save(address);
     }
 
     @Override
     @Transactional
-    public void update(final UUID addressId, final AddressUpdateRequest addressUpdateRequest) {
+    public Address update(final UUID addressId, final AddressUpdateRequest addressUpdateRequest) {
         final Address address = getExistingAddress(addressId);
         addressUpdateMapper.update(address, addressUpdateRequest);
-        addressSavePort.save(address);
+
+        return addressSavePort.save(address);
     }
 
     private Address getExistingAddress(final UUID id) {
