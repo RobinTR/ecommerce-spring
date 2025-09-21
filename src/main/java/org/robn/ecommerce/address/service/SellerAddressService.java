@@ -13,8 +13,8 @@ public interface SellerAddressService {
 
     SellerAddress findByAddressId(UUID addressId);
 
-    void create(SellerAddressCreateRequest sellerAddressCreateRequest);
+    SellerAddress create(SellerAddressCreateRequest sellerAddressCreateRequest);
 
-    void update(UUID addressId, SellerAddressUpdateRequest sellerAddressUpdateRequest);
+    SellerAddress update(UUID addressId, SellerAddressUpdateRequest sellerAddressUpdateRequest);
 
 }

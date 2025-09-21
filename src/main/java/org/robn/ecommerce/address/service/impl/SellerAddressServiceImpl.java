@@ -46,19 +46,21 @@ public class SellerAddressServiceImpl implements SellerAddressService {
 
     @Override
     @Transactional
-    public void create(final SellerAddressCreateRequest sellerAddressCreateRequest) {
+    public SellerAddress create(final SellerAddressCreateRequest sellerAddressCreateRequest) {
         final SellerAddress sellerAddress = sellerAddressCreateRequestToDomainMapper.map(sellerAddressCreateRequest);
         sellerAddress.setSellerId(securityReadPort.getCurrentUserId());
-        sellerAddressSavePort.save(sellerAddress);
+
+        return sellerAddressSavePort.save(sellerAddress);
     }
 
     @Override
     @Transactional
-    public void update(final UUID addressId, final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
+    public SellerAddress update(final UUID addressId, final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
         securityService.checkAccessByAddressId(addressId);
         final SellerAddress existingAddress = getSellerAddressById(addressId);
         sellerAddressUpdateMapper.update(existingAddress, sellerAddressUpdateRequest);
-        sellerAddressSavePort.save(existingAddress);
+
+        return sellerAddressSavePort.save(existingAddress);
     }
 
     private SellerAddress getSellerAddressById(final UUID addressId) {

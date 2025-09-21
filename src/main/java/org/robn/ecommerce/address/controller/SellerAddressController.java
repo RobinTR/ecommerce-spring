@@ -46,18 +46,20 @@ public class SellerAddressController {
 
     @PostMapping
     @PreAuthorize("hasRole('SELLER')")
-    public EcoBaseResponse<Void> create(@RequestBody @Valid final SellerAddressCreateRequest sellerAddressCreateRequest) {
-        sellerAddressService.create(sellerAddressCreateRequest);
+    public EcoBaseResponse<SellerAddressResponse> create(@RequestBody @Valid final SellerAddressCreateRequest sellerAddressCreateRequest) {
+        final SellerAddress sellerAddress = sellerAddressService.create(sellerAddressCreateRequest);
+        final SellerAddressResponse response = sellerAddressDomainToResponseMapper.map(sellerAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
     @PutMapping("/{addressId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SELLER')")
-    public EcoBaseResponse<Void> update(@PathVariable final UUID addressId, @RequestBody @Valid final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
-        sellerAddressService.update(addressId, sellerAddressUpdateRequest);
+    public EcoBaseResponse<SellerAddressResponse> update(@PathVariable final UUID addressId, @RequestBody @Valid final SellerAddressUpdateRequest sellerAddressUpdateRequest) {
+        final SellerAddress sellerAddress = sellerAddressService.update(addressId, sellerAddressUpdateRequest);
+        final SellerAddressResponse response = sellerAddressDomainToResponseMapper.map(sellerAddress);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
 }
