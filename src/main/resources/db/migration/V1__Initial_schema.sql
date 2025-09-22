@@ -181,7 +181,8 @@ CREATE TABLE IF NOT EXISTS eco_cart_snapshot
 (
     id              UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
     cart_id         UUID           NOT NULL,
-    discount_amount NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
+    discount_amount NUMERIC(19, 2) NOT NULL,
+    total_price     NUMERIC(19, 2) NOT NULL,
     cart_status     VARCHAR(50)    NOT NULL,
     created_at      TIMESTAMP(0)   NOT NULL,
     updated_at      TIMESTAMP(0),

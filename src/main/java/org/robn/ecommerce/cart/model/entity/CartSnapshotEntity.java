@@ -36,6 +36,9 @@ public class CartSnapshotEntity extends BaseEntity {
     @Column(name = "discount_amount", updatable = false)
     private BigDecimal discountAmount;
 
+    @Column(name = "total_price", updatable = false)
+    private BigDecimal totalPrice;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "cart_status")
     private CartStatus cartStatus;
