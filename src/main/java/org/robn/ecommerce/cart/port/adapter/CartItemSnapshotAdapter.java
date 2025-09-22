@@ -36,4 +36,12 @@ public class CartItemSnapshotAdapter implements CartItemSnapshotReadPort, CartIt
         return entityToDomainMapper.map(savedEntity);
     }
 
+    @Override
+    public List<CartItemSnapshot> saveAll(final List<CartItemSnapshot> cartItemSnapshots) {
+        final List<CartItemSnapshotEntity> entities = domainToEntityMapper.map(cartItemSnapshots);
+        final List<CartItemSnapshotEntity> savedEntities = cartItemSnapshotRepository.saveAll(entities);
+
+        return entityToDomainMapper.map(savedEntities);
+    }
+
 }
