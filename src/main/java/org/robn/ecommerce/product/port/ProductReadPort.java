@@ -9,6 +9,8 @@ public interface ProductReadPort {
 
     List<Product> findAll();
 
+    List<Product> findAllByIds(List<Long> ids);
+
     Optional<Product> findById(Long id);
 
 }

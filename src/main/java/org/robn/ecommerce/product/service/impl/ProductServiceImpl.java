@@ -40,6 +40,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAllByIds(final List<Long> ids) {
+        return productReadPort.findAllByIds(ids);
+    }
+
+    @Override
     public Product findById(final Long id) {
         return getProductById(id);
     }

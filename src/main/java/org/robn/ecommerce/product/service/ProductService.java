@@ -10,6 +10,8 @@ public interface ProductService {
 
     List<Product> findAll();
 
+    List<Product> findAllByIds(List<Long> ids);
+
     Product findById(Long id);
 
     void create(ProductCreateRequest productCreateRequest);

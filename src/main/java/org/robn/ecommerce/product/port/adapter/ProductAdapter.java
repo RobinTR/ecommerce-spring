@@ -30,6 +30,13 @@ public class ProductAdapter implements ProductReadPort, ProductSavePort, Product
     }
 
     @Override
+    public List<Product> findAllByIds(final List<Long> ids) {
+        final List<ProductEntity> productEntities = productRepository.findAllById(ids);
+
+        return productEntityToDomainMapper.map(productEntities);
+    }
+
+    @Override
     public Optional<Product> findById(final Long id) {
         final Optional<ProductEntity> productEntity = productRepository.findById(id);
 
