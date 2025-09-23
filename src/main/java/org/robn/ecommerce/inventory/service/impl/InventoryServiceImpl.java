@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public List<Inventory> findAllByWarehouseId(final Long warehouseId) {
+    public List<Inventory> findAllByWarehouseId(final UUID warehouseId) {
         return readPort.findAllByWarehouseId(warehouseId);
     }
 
@@ -43,7 +44,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory findByProductIdAndWarehouseId(final Long productId, final Long warehouseId) {
+    public Inventory findByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
         return readPort.findByProductIdAndWarehouseId(productId, warehouseId).orElseThrow(() -> InventoryByProductAndWarehouseNotFoundException.of(productId, warehouseId));
     }
 
@@ -51,7 +52,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional
     public Inventory create(final InventoryCreateRequest inventoryCreateRequest) {
         final Long productId = inventoryCreateRequest.productId();
-        final Long warehouseId = inventoryCreateRequest.warehouseId();
+        final UUID warehouseId = inventoryCreateRequest.warehouseId();
 
         if (existsByProductIdAndWarehouseId(productId, warehouseId)) {
             throw InventoryAlreadyExistsException.of(
@@ -78,7 +79,7 @@ public class InventoryServiceImpl implements InventoryService {
         return readPort.findById(id).orElseThrow(() -> InventoryNotFoundException.of(id));
     }
 
-    private boolean existsByProductIdAndWarehouseId(final Long productId, final Long warehouseId) {
+    private boolean existsByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
         return readPort.findByProductIdAndWarehouseId(productId, warehouseId).isPresent();
     }
 

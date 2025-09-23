@@ -14,6 +14,7 @@ import org.robn.ecommerce.inventory.service.InventoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class InventoryController {
     }
 
     @GetMapping("/by-warehouse/{warehouseId}")
-    public EcoBaseResponse<List<InventoryListResponse>> findAllByWarehouseId(@PathVariable final Long warehouseId) {
+    public EcoBaseResponse<List<InventoryListResponse>> findAllByWarehouseId(@PathVariable final UUID warehouseId) {
         final List<Inventory> inventories = inventoryService.findAllByWarehouseId(warehouseId);
 
         return EcoBaseResponse.successOf(domainToListResponseMapper.map(inventories));
@@ -46,7 +47,7 @@ public class InventoryController {
     }
 
     @GetMapping("/by-product-warehouse")
-    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(@RequestParam final Long productId, @RequestParam final Long warehouseId) {
+    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(@RequestParam final Long productId, @RequestParam final UUID warehouseId) {
         final Inventory inventory = inventoryService.findByProductIdAndWarehouseId(productId, warehouseId);
 
         return EcoBaseResponse.successOf(domainToResponseMapper.map(inventory));

@@ -1,6 +1,7 @@
 package org.robn.ecommerce.inventory.exception;
 
 import java.io.Serial;
+import java.util.UUID;
 
 /**
  * Exception thrown when an inventory already exists for a given product and warehouse.
@@ -10,7 +11,7 @@ import java.io.Serial;
 public class InventoryAlreadyExistsException extends RuntimeException {
 
     @Serial
-    private  static final long serialVersionUID = -7478866117758568108L;
+    private static final long serialVersionUID = 6651126916958365265L;
 
     /**
      * Constructs a new {@link InventoryAlreadyExistsException} with the specified productId and warehouseId.
@@ -18,8 +19,8 @@ public class InventoryAlreadyExistsException extends RuntimeException {
      * @param productId   the ID of the product.
      * @param warehouseId the ID of the warehouse.
      */
-    private InventoryAlreadyExistsException(final Long productId, final Long warehouseId) {
-        super(String.format("Inventory already exists for productId: %d and warehouseId: %d", productId, warehouseId));
+    private InventoryAlreadyExistsException(final Long productId, final UUID warehouseId) {
+        super(String.format("Inventory already exists for productId: %d and warehouseId: %s", productId, warehouseId));
     }
 
     /**
@@ -29,7 +30,7 @@ public class InventoryAlreadyExistsException extends RuntimeException {
      * @param warehouseId the ID of the warehouse.
      * @return a new instance of {@link InventoryAlreadyExistsException}.
      */
-    public static InventoryAlreadyExistsException of(final Long productId, final Long warehouseId) {
+    public static InventoryAlreadyExistsException of(final Long productId, final UUID warehouseId) {
         return new InventoryAlreadyExistsException(productId, warehouseId);
     }
 

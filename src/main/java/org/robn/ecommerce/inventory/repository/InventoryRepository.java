@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface InventoryRepository extends JpaRepository<InventoryEntity, Long> {
 
     List<InventoryEntity> findAllByProductId(Long productId);
 
-    List<InventoryEntity> findAllByWarehouseId(Long warehouseId);
+    List<InventoryEntity> findAllByWarehouseId(UUID warehouseId);
 
-    Optional<InventoryEntity> findByProductIdAndWarehouseId(Long productId, Long warehouseId);
+    Optional<InventoryEntity> findByProductIdAndWarehouseId(Long productId, UUID warehouseId);
 
 }

@@ -1,8 +1,10 @@
 package org.robn.ecommerce.warehouse.model.response;
 
+import java.util.UUID;
+
 public record WarehouseResponse(
 
-        Long id,
+        UUID id,
         String code,
         String name,
         String fullAddress

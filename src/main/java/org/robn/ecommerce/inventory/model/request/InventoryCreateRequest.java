@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.util.UUID;
+
 public record InventoryCreateRequest(
 
         @NotNull
@@ -11,12 +13,11 @@ public record InventoryCreateRequest(
         Long productId,
 
         @NotNull
-        @Positive
-        Long warehouseId,
+        UUID warehouseId,
 
         @NotNull
         @PositiveOrZero
-        Integer stockQuantity
+        Integer quantity
 
 ) {
 }

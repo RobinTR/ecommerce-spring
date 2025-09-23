@@ -1,10 +1,12 @@
 package org.robn.ecommerce.inventory.model.response;
 
+import java.util.UUID;
+
 public record InventoryListResponse(
 
         Long id,
         Long productId,
-        Long warehouseId,
+        UUID warehouseId,
         Integer stockQuantity
 
 ) {

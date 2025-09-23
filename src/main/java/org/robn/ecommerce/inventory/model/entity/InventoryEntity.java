@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.common.model.entity.BaseEntity;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 import org.robn.ecommerce.product.model.entity.ProductEntity;
 import org.robn.ecommerce.warehouse.model.entity.WarehouseEntity;
+
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -32,13 +35,17 @@ public class InventoryEntity extends BaseEntity {
     private ProductEntity product;
 
     @Column(name = "warehouse_id")
-    private Long warehouseId;
+    private UUID warehouseId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
     private WarehouseEntity warehouse;
 
-    @Column(name = "stock_quantity")
-    private Integer stockQuantity;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stock_type")
+    private StockType stockType;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
 }

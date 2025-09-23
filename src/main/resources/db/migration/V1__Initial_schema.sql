@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS eco_seller
     store_name     VARCHAR(200) NOT NULL,
     mersis_number  VARCHAR(16)  NOT NULL,
     contact_number VARCHAR(11)  NOT NULL,
+    seller_type    VARCHAR(50)  NOT NULL,
     seller_status  VARCHAR(50)  NOT NULL,
     CONSTRAINT eco_seller_mersis_number_unique UNIQUE (mersis_number)
 );
@@ -43,6 +44,22 @@ CREATE TABLE IF NOT EXISTS eco_guest
     created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
     updated_by VARCHAR(255),
     CONSTRAINT eco_guest_device_id_unique UNIQUE (device_id)
+);
+
+CREATE TABLE IF NOT EXISTS eco_warehouse
+(
+    id         UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
+    seller_id  UUID         NOT NULL,
+    code       VARCHAR(50)  NOT NULL UNIQUE,
+    name       VARCHAR(200) NOT NULL,
+    created_at TIMESTAMP(0) NOT NULL,
+    updated_at TIMESTAMP(0),
+    created_by VARCHAR(255) NOT NULL DEFAULT 'ECO',
+    updated_by VARCHAR(255),
+    deleted    BOOLEAN      NOT NULL DEFAULT FALSE,
+    deleted_at TIMESTAMP(0),
+    deleted_by VARCHAR(255),
+    CONSTRAINT fk_eco_warehouse_seller_id FOREIGN KEY (seller_id) REFERENCES eco_seller (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_address
@@ -63,10 +80,6 @@ CREATE TABLE IF NOT EXISTS eco_address
     updated_by   VARCHAR(255)
 );
 
-CREATE INDEX idx_address_city ON eco_address (city);
-CREATE INDEX idx_address_city_district ON eco_address (city, district);
-CREATE INDEX idx_address_city_district_neighborhood ON eco_address (city, district, neighborhood);
-
 CREATE TABLE IF NOT EXISTS eco_customer_address
 (
     id          UUID PRIMARY KEY REFERENCES eco_address (id),
@@ -86,6 +99,13 @@ CREATE TABLE IF NOT EXISTS eco_seller_address
     id        UUID PRIMARY KEY REFERENCES eco_address (id),
     seller_id UUID NOT NULL,
     CONSTRAINT fk_eco_seller_address_eco_seller_seller_id FOREIGN KEY (seller_id) REFERENCES eco_seller (id)
+);
+
+CREATE TABLE IF NOT EXISTS eco_warehouse_address
+(
+    id           UUID PRIMARY KEY REFERENCES eco_address (id),
+    warehouse_id UUID NOT NULL,
+    CONSTRAINT fk_eco_warehouse_address_eco_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES eco_warehouse (id)
 );
 
 CREATE TABLE IF NOT EXISTS eco_brand
@@ -141,7 +161,12 @@ CREATE TABLE IF NOT EXISTS eco_product_image
 (
     id         UUID PRIMARY KEY       DEFAULT gen_random_uuid(),
     product_id BIGINT        NOT NULL,
+    public_id  VARCHAR(255)  NOT NULL,
     image_url  VARCHAR(2000) NOT NULL,
+    format     VARCHAR(50),
+    width      INTEGER,
+    height     INTEGER,
+    size_bytes BIGINT,
     alt_text   VARCHAR(255),
     created_at TIMESTAMP(0)  NOT NULL,
     updated_at TIMESTAMP(0),
@@ -329,12 +354,16 @@ CREATE TABLE IF NOT EXISTS eco_payment
 
 CREATE TABLE IF NOT EXISTS eco_inventory
 (
-    id             BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    product_id     BIGINT       NOT NULL,
-    stock_quantity INTEGER      NOT NULL,
-    created_at     TIMESTAMP(0) NOT NULL,
-    updated_at     TIMESTAMP(0),
-    created_by     VARCHAR(255) NOT NULL DEFAULT 'ECO',
-    updated_by     VARCHAR(255),
-    CONSTRAINT fk_eco_inventory_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id)
+    id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    product_id   BIGINT       NOT NULL,
+    warehouse_id UUID         NOT NULL,
+    stock_type   VARCHAR(50)  NOT NULL,
+    quantity     INTEGER      NOT NULL,
+    created_at   TIMESTAMP(0) NOT NULL,
+    updated_at   TIMESTAMP(0),
+    created_by   VARCHAR(255) NOT NULL DEFAULT 'ECO',
+    updated_by   VARCHAR(255),
+    CONSTRAINT fk_eco_inventory_eco_product_id FOREIGN KEY (product_id) REFERENCES eco_product (id),
+    CONSTRAINT fk_eco_inventory_eco_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES eco_warehouse (id),
+    CONSTRAINT uq_eco_inventory_product_warehouse UNIQUE (product_id, warehouse_id, stock_type)
 );

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.auth.model.EcoUser;
 import org.robn.ecommerce.seller.model.enums.SellerStatus;
+import org.robn.ecommerce.seller.model.enums.SellerType;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class Seller extends EcoUser {
     private String storeName;
     private String mersisNumber;
     private String contactNumber;
+    private SellerType sellerType;
     private SellerStatus sellerStatus;
 
 }

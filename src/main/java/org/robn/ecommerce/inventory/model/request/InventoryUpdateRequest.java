@@ -7,7 +7,7 @@ public record InventoryUpdateRequest(
 
         @NotNull
         @PositiveOrZero
-        Integer stockQuantity
+        Integer quantity
 
 ) {
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class InventoryAdapter implements InventoryReadPort, InventorySavePort {
     }
 
     @Override
-    public List<Inventory> findAllByWarehouseId(final Long warehouseId) {
+    public List<Inventory> findAllByWarehouseId(final UUID warehouseId) {
         final List<InventoryEntity> inventoryEntities = inventoryRepository.findAllByWarehouseId(warehouseId);
 
         return inventoryEntityToDomainMapper.map(inventoryEntities);
@@ -43,7 +44,7 @@ public class InventoryAdapter implements InventoryReadPort, InventorySavePort {
     }
 
     @Override
-    public Optional<Inventory> findByProductIdAndWarehouseId(final Long productId, final Long warehouseId) {
+    public Optional<Inventory> findByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
         final Optional<InventoryEntity> inventoryEntity = inventoryRepository.findByProductIdAndWarehouseId(productId, warehouseId);
 
         return inventoryEntity.map(inventoryEntityToDomainMapper::map);

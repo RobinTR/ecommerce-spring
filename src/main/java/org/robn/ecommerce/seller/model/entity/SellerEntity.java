@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.robn.ecommerce.auth.model.entity.EcoUserEntity;
 import org.robn.ecommerce.seller.model.enums.SellerStatus;
+import org.robn.ecommerce.seller.model.enums.SellerType;
 
 @Entity
 @Getter
@@ -26,6 +27,10 @@ public class SellerEntity extends EcoUserEntity {
 
     @Column(name = "contact_number")
     private String contactNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "seller_type")
+    private SellerType sellerType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seller_status")
