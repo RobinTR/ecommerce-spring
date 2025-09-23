@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface CartItemSnapshotService {
 
-    List<CartItemSnapshot> createCartItemSnapshotsFromCartSnapshotId(UUID cartSnapshotId);
+    List<CartItemSnapshot> createCartItemSnapshotsFromCartSnapshotId(UUID cartSnapshotId, UUID cartId);
 
 }

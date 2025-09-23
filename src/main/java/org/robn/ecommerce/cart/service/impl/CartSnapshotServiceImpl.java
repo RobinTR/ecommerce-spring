@@ -7,6 +7,7 @@ import org.robn.ecommerce.cart.model.CartSnapshot;
 import org.robn.ecommerce.cart.model.mapper.CartToCartSnapshotMapper;
 import org.robn.ecommerce.cart.port.CartSnapshotReadPort;
 import org.robn.ecommerce.cart.port.CartSnapshotSavePort;
+import org.robn.ecommerce.cart.service.CartItemSnapshotService;
 import org.robn.ecommerce.cart.service.CartSnapshotService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class CartSnapshotServiceImpl implements CartSnapshotService {
     final CartSnapshotReadPort cartSnapshotReadPort;
     final CartSnapshotSavePort cartSnapshotSavePort;
     final CartToCartSnapshotMapper cartToCartSnapshotMapper;
+    final CartItemSnapshotService cartItemSnapshotService;
 
     @Override
     public List<CartSnapshot> findAllByCartId(final UUID cartId) {
@@ -37,8 +39,10 @@ public class CartSnapshotServiceImpl implements CartSnapshotService {
     @Transactional
     public CartSnapshot create(final Cart cart) {
         final CartSnapshot cartSnapshot = cartToCartSnapshotMapper.map(cart);
+        final CartSnapshot savedCartSnapshot = cartSnapshotSavePort.save(cartSnapshot);
+        cartItemSnapshotService.createCartItemSnapshotsFromCartSnapshotId(savedCartSnapshot.getId(), savedCartSnapshot.getCartId());
 
-        return cartSnapshotSavePort.save(cartSnapshot);
+        return savedCartSnapshot;
     }
 
 }
