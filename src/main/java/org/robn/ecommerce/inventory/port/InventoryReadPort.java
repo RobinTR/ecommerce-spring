@@ -1,6 +1,7 @@
 package org.robn.ecommerce.inventory.port;
 
 import org.robn.ecommerce.inventory.model.Inventory;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ public interface InventoryReadPort {
 
     Optional<Inventory> findById(Long id);
 
-    Optional<Inventory> findByProductIdAndWarehouseId(Long productId, UUID warehouseId);
+    Optional<Inventory> findByProductIdAndWarehouseIdAndStockType(Long productId, UUID warehouseId, StockType stockType);
 
 }
+

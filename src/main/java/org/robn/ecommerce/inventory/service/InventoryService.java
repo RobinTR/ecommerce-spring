@@ -1,6 +1,7 @@
 package org.robn.ecommerce.inventory.service;
 
 import org.robn.ecommerce.inventory.model.Inventory;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 import org.robn.ecommerce.inventory.model.request.InventoryCreateRequest;
 import org.robn.ecommerce.inventory.model.request.InventoryUpdateRequest;
 
@@ -15,7 +16,7 @@ public interface InventoryService {
 
     Inventory findById(Long id);
 
-    Inventory findByProductIdAndWarehouseId(Long productId, UUID warehouseId);
+    Inventory findByProductIdAndWarehouseIdAndStockType(Long productId, UUID warehouseId, StockType stockType);
 
     Inventory create(InventoryCreateRequest inventoryCreateRequest);
 

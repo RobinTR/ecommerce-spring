@@ -1,17 +1,20 @@
 package org.robn.ecommerce.inventory.model.request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import org.robn.ecommerce.inventory.model.enums.StockType;
 
-public record InventoryUpdateRequest(
+import java.util.UUID;
+
+public record InventorySearchRequest(
 
         @NotNull
-        StockType stockType,
+        Long productId,
 
         @NotNull
-        @PositiveOrZero
-        Integer quantity
+        UUID warehouseId,
+
+        @NotNull
+        StockType stockType
 
 ) {
 }

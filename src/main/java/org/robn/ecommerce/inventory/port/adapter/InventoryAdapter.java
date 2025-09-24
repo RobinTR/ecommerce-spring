@@ -3,6 +3,7 @@ package org.robn.ecommerce.inventory.port.adapter;
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.inventory.model.Inventory;
 import org.robn.ecommerce.inventory.model.entity.InventoryEntity;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 import org.robn.ecommerce.inventory.model.mapper.InventoryDomainToEntityMapper;
 import org.robn.ecommerce.inventory.model.mapper.InventoryEntityToDomainMapper;
 import org.robn.ecommerce.inventory.port.InventoryReadPort;
@@ -44,8 +45,8 @@ public class InventoryAdapter implements InventoryReadPort, InventorySavePort {
     }
 
     @Override
-    public Optional<Inventory> findByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
-        final Optional<InventoryEntity> inventoryEntity = inventoryRepository.findByProductIdAndWarehouseId(productId, warehouseId);
+    public Optional<Inventory> findByProductIdAndWarehouseIdAndStockType(final Long productId, final UUID warehouseId, final StockType stockType) {
+        final Optional<InventoryEntity> inventoryEntity = inventoryRepository.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, stockType);
 
         return inventoryEntity.map(inventoryEntityToDomainMapper::map);
     }

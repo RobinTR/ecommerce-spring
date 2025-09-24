@@ -2,9 +2,10 @@ package org.robn.ecommerce.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.robn.ecommerce.inventory.exception.InventoryAlreadyExistsException;
-import org.robn.ecommerce.inventory.exception.InventoryByProductAndWarehouseNotFoundException;
+import org.robn.ecommerce.inventory.exception.InventoryByProductAndWarehouseAndStockTypeNotFoundException;
 import org.robn.ecommerce.inventory.exception.InventoryNotFoundException;
 import org.robn.ecommerce.inventory.model.Inventory;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 import org.robn.ecommerce.inventory.model.mapper.InventoryCreateRequestToDomainMapper;
 import org.robn.ecommerce.inventory.model.mapper.InventoryUpdateMapper;
 import org.robn.ecommerce.inventory.model.request.InventoryCreateRequest;
@@ -44,8 +45,8 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory findByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
-        return readPort.findByProductIdAndWarehouseId(productId, warehouseId).orElseThrow(() -> InventoryByProductAndWarehouseNotFoundException.of(productId, warehouseId));
+    public Inventory findByProductIdAndWarehouseIdAndStockType(final Long productId, final UUID warehouseId, final StockType stockType) {
+        return readPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, stockType).orElseThrow(() -> InventoryByProductAndWarehouseAndStockTypeNotFoundException.of(productId, warehouseId, stockType));
     }
 
     @Override
@@ -62,6 +63,7 @@ public class InventoryServiceImpl implements InventoryService {
         }
 
         final Inventory inventory = createRequestToDomainMapper.map(inventoryCreateRequest);
+        inventory.setStockType(StockType.AVAILABLE);
 
         return savePort.save(inventory);
     }
@@ -80,7 +82,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     private boolean existsByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
-        return readPort.findByProductIdAndWarehouseId(productId, warehouseId).isPresent();
+        return readPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, StockType.AVAILABLE).isPresent();
     }
 
 }

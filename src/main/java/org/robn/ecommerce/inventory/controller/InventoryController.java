@@ -7,6 +7,7 @@ import org.robn.ecommerce.inventory.model.Inventory;
 import org.robn.ecommerce.inventory.model.mapper.InventoryDomainToListResponseMapper;
 import org.robn.ecommerce.inventory.model.mapper.InventoryDomainToResponseMapper;
 import org.robn.ecommerce.inventory.model.request.InventoryCreateRequest;
+import org.robn.ecommerce.inventory.model.request.InventorySearchRequest;
 import org.robn.ecommerce.inventory.model.request.InventoryUpdateRequest;
 import org.robn.ecommerce.inventory.model.response.InventoryListResponse;
 import org.robn.ecommerce.inventory.model.response.InventoryResponse;
@@ -47,8 +48,8 @@ public class InventoryController {
     }
 
     @GetMapping("/by-product-warehouse")
-    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(@RequestParam final Long productId, @RequestParam final UUID warehouseId) {
-        final Inventory inventory = inventoryService.findByProductIdAndWarehouseId(productId, warehouseId);
+    public EcoBaseResponse<InventoryResponse> findByProductIdAndWarehouseId(@RequestBody @Valid final InventorySearchRequest request) {
+        final Inventory inventory = inventoryService.findByProductIdAndWarehouseIdAndStockType(request.productId(), request.warehouseId(), request.stockType());
 
         return EcoBaseResponse.successOf(domainToResponseMapper.map(inventory));
     }

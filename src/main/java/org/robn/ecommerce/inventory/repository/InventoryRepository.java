@@ -1,6 +1,7 @@
 package org.robn.ecommerce.inventory.repository;
 
 import org.robn.ecommerce.inventory.model.entity.InventoryEntity;
+import org.robn.ecommerce.inventory.model.enums.StockType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface InventoryRepository extends JpaRepository<InventoryEntity, Long
 
     List<InventoryEntity> findAllByWarehouseId(UUID warehouseId);
 
-    Optional<InventoryEntity> findByProductIdAndWarehouseId(Long productId, UUID warehouseId);
+    Optional<InventoryEntity> findByProductIdAndWarehouseIdAndStockType(Long productId, UUID warehouseId, StockType stockType);
 
 }
+
