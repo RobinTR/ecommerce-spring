@@ -5,15 +5,16 @@ import org.robn.ecommerce.warehouse.model.request.WarehouseCreateRequest;
 import org.robn.ecommerce.warehouse.model.request.WarehouseUpdateRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface WarehouseService {
 
     List<Warehouse> findAll();
 
-    Warehouse findById(Long id);
+    Warehouse findById(UUID id);
 
-    void save(WarehouseCreateRequest warehouseCreateRequest);
+    Warehouse save(WarehouseCreateRequest warehouseCreateRequest);
 
-    void update(Long id, WarehouseUpdateRequest warehouseUpdateRequest);
+    Warehouse update(UUID id, WarehouseUpdateRequest warehouseUpdateRequest);
 
 }

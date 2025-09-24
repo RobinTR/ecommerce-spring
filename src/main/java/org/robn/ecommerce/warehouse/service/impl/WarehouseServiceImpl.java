@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,26 +32,28 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public Warehouse findById(final Long id) {
+    public Warehouse findById(final UUID id) {
         return getWarehouseById(id);
     }
 
     @Override
     @Transactional
-    public void save(final WarehouseCreateRequest warehouseCreateRequest) {
+    public Warehouse save(final WarehouseCreateRequest warehouseCreateRequest) {
         final Warehouse warehouse = warehouseCreateRequestToDomainMapper.map(warehouseCreateRequest);
-        warehouseSavePort.save(warehouse);
+
+        return warehouseSavePort.save(warehouse);
     }
 
     @Override
     @Transactional
-    public void update(final Long id, final WarehouseUpdateRequest warehouseUpdateRequest) {
+    public Warehouse update(final UUID id, final WarehouseUpdateRequest warehouseUpdateRequest) {
         final Warehouse warehouse = getWarehouseById(id);
         warehouseUpdateMapper.update(warehouse, warehouseUpdateRequest);
-        warehouseSavePort.save(warehouse);
+
+        return warehouseSavePort.save(warehouse);
     }
 
-    private Warehouse getWarehouseById(final Long id) {
+    private Warehouse getWarehouseById(final UUID id) {
         return warehouseReadPort.findById(id)
                 .orElseThrow(() -> WarehouseNotFoundException.of(id));
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class WarehouseAdapter implements WarehouseReadPort, WarehouseSavePort {
     }
 
     @Override
-    public Optional<Warehouse> findById(final Long id) {
+    public Optional<Warehouse> findById(final UUID id) {
         final Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
 
         return warehouse.map(warehouseEntityToDomainMapper::map);

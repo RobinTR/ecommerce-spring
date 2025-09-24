@@ -3,6 +3,7 @@ package org.robn.ecommerce.warehouse.exception;
 import org.robn.ecommerce.common.exception.EcoNotFoundException;
 
 import java.io.Serial;
+import java.util.UUID;
 
 /**
  * Exception thrown when a warehouse is not found.
@@ -11,14 +12,14 @@ import java.io.Serial;
 public class WarehouseNotFoundException extends EcoNotFoundException {
 
     @Serial
-    private static final long serialVersionUID = 5840701181300112820L;
+    private static final long serialVersionUID = 8104642998642367424L;
 
     /**
      * Constructs a new {@link WarehouseNotFoundException} with the specified ID.
      *
      * @param id the ID of the warehouse that was not found.
      */
-    private WarehouseNotFoundException(final Long id) {
+    private WarehouseNotFoundException(final UUID id) {
         super(String.format("Warehouse with id %s not found.", id));
     }
 
@@ -28,7 +29,7 @@ public class WarehouseNotFoundException extends EcoNotFoundException {
      * @param id the ID of the warehouse that was not found.
      * @return a new instance of {@link WarehouseNotFoundException}.
      */
-    public static WarehouseNotFoundException of(final Long id) {
+    public static WarehouseNotFoundException of(final UUID id) {
         return new WarehouseNotFoundException(id);
     }
 

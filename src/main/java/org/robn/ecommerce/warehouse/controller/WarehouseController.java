@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}")
-    public EcoBaseResponse<WarehouseResponse> findById(@PathVariable final Long id) {
+    public EcoBaseResponse<WarehouseResponse> findById(@PathVariable final UUID id) {
         final Warehouse warehouse = warehouseService.findById(id);
         final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
 
@@ -42,19 +43,21 @@ public class WarehouseController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public EcoBaseResponse<Void> create(@RequestBody @Valid final WarehouseCreateRequest warehouseCreateRequest) {
-        warehouseService.save(warehouseCreateRequest);
+    @PreAuthorize("hasRole('SELLER')")
+    public EcoBaseResponse<WarehouseResponse> create(@RequestBody @Valid final WarehouseCreateRequest warehouseCreateRequest) {
+        final Warehouse warehouse = warehouseService.save(warehouseCreateRequest);
+        final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public EcoBaseResponse<Void> update(@PathVariable final Long id, @RequestBody @Valid final WarehouseUpdateRequest warehouseUpdateRequest) {
-        warehouseService.update(id, warehouseUpdateRequest);
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    public EcoBaseResponse<WarehouseResponse> update(@PathVariable final UUID id, @RequestBody @Valid final WarehouseUpdateRequest warehouseUpdateRequest) {
+        final Warehouse warehouse = warehouseService.update(id, warehouseUpdateRequest);
+        final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
 
-        return EcoBaseResponse.success();
+        return EcoBaseResponse.successOf(response);
     }
 
 }
