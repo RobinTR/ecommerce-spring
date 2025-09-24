@@ -9,13 +9,11 @@ import org.robn.ecommerce.warehouse.model.Warehouse;
 import org.robn.ecommerce.warehouse.port.WarehouseReadPort;
 import org.robn.ecommerce.warehouse.service.WarehouseSecurityService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class WarehouseSecurityServiceImpl implements WarehouseSecurityService {
 
     private final WarehouseReadPort warehouseReadPort;
