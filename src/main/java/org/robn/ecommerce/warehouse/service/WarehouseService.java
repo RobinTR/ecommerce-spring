@@ -13,7 +13,7 @@ public interface WarehouseService {
 
     Warehouse findById(UUID id);
 
-    Warehouse save(WarehouseCreateRequest warehouseCreateRequest);
+    Warehouse create(WarehouseCreateRequest warehouseCreateRequest);
 
     Warehouse update(UUID id, WarehouseUpdateRequest warehouseUpdateRequest);
 

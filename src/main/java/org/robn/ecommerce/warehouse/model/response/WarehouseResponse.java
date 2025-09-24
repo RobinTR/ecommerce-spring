@@ -6,8 +6,7 @@ public record WarehouseResponse(
 
         UUID id,
         String code,
-        String name,
-        String fullAddress
+        String name
 
 ) {
 }

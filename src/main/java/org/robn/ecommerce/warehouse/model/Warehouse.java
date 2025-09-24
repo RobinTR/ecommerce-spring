@@ -17,4 +17,8 @@ public class Warehouse extends BaseDomainModel {
     private String code;
     private String name;
 
+    public boolean isOwnedBy(final UUID targetSellerId) {
+        return this.sellerId != null && this.sellerId.equals(targetSellerId);
+    }
+
 }

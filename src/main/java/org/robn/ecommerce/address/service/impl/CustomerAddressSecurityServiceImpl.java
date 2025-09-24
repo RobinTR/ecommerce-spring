@@ -9,11 +9,13 @@ import org.robn.ecommerce.auth.exception.EcoAccessDeniedException;
 import org.robn.ecommerce.auth.model.enums.Role;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecurityService {
 
     private final CustomerAddressReadPort customerAddressReadPort;

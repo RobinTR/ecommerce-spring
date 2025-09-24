@@ -27,6 +27,7 @@ public class WarehouseController {
     private final WarehouseDomainToResponseMapper warehouseDomainToResponseMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public EcoBaseResponse<List<WarehouseListResponse>> findAll() {
         final List<Warehouse> warehouses = warehouseService.findAll();
         final List<WarehouseListResponse> response = warehouseDomainToListResponseMapper.map(warehouses);
@@ -45,7 +46,7 @@ public class WarehouseController {
     @PostMapping
     @PreAuthorize("hasRole('SELLER')")
     public EcoBaseResponse<WarehouseResponse> create(@RequestBody @Valid final WarehouseCreateRequest warehouseCreateRequest) {
-        final Warehouse warehouse = warehouseService.save(warehouseCreateRequest);
+        final Warehouse warehouse = warehouseService.create(warehouseCreateRequest);
         final WarehouseResponse response = warehouseDomainToResponseMapper.map(warehouse);
 
         return EcoBaseResponse.successOf(response);
