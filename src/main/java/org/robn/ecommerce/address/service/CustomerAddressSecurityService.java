@@ -8,4 +8,6 @@ public interface CustomerAddressSecurityService {
 
     void checkAccessByCustomerId(UUID customerId);
 
+    void requireCustomerAuthentication();
+
 }

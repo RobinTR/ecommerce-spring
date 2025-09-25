@@ -36,6 +36,13 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
         }
     }
 
+    @Override
+    public void requireCustomerAuthentication() {
+        if (!securityReadPort.hasRole(Role.CUSTOMER)) {
+            throw EcoAccessDeniedException.of();
+        }
+    }
+
     private boolean isAdmin() {
         return securityReadPort.hasRole(Role.ADMIN);
     }

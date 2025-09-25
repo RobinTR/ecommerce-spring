@@ -47,6 +47,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Override
     @Transactional
     public CustomerAddress create(final CustomerAddressCreateRequest customerAddressCreateRequest) {
+        securityService.requireCustomerAuthentication();
         final CustomerAddress customerAddress = customerAddressCreateRequestToDomainMapper.map(customerAddressCreateRequest);
         customerAddress.setIsDefault(Boolean.FALSE);
         customerAddress.setCustomerId(securityReadPort.getCurrentUserId());
