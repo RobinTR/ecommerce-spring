@@ -8,4 +8,6 @@ public interface SellerAddressSecurityService {
 
     void checkAccessBySellerId(UUID sellerId);
 
+    void requireSellerAuthentication();
+
 }

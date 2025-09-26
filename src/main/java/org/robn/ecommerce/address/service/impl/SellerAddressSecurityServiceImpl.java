@@ -36,6 +36,13 @@ public class SellerAddressSecurityServiceImpl implements SellerAddressSecuritySe
         }
     }
 
+    @Override
+    public void requireSellerAuthentication() {
+        if (!securityReadPort.hasRole(Role.SELLER)) {
+            throw EcoAccessDeniedException.of();
+        }
+    }
+
     private boolean isAdmin() {
         return securityReadPort.hasRole(Role.ADMIN);
     }

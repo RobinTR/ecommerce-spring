@@ -47,6 +47,7 @@ public class SellerAddressServiceImpl implements SellerAddressService {
     @Override
     @Transactional
     public SellerAddress create(final SellerAddressCreateRequest sellerAddressCreateRequest) {
+        securityService.requireSellerAuthentication();
         final SellerAddress sellerAddress = sellerAddressCreateRequestToDomainMapper.map(sellerAddressCreateRequest);
         sellerAddress.setSellerId(securityReadPort.getCurrentUserId());
 
