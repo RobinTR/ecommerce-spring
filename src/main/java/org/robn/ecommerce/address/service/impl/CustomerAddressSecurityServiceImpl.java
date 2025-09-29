@@ -6,8 +6,8 @@ import org.robn.ecommerce.address.model.CustomerAddress;
 import org.robn.ecommerce.address.port.CustomerAddressReadPort;
 import org.robn.ecommerce.address.service.CustomerAddressSecurityService;
 import org.robn.ecommerce.auth.exception.EcoAccessDeniedException;
-import org.robn.ecommerce.auth.model.enums.Role;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
+import org.robn.ecommerce.common.service.BaseSecurityService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,33 +18,30 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
 
     private final CustomerAddressReadPort customerAddressReadPort;
     private final SecurityReadPort securityReadPort;
+    private final BaseSecurityService baseSecurityService;
 
     @Override
     public void checkAccessByAddressId(final UUID addressId) {
         final CustomerAddress customerAddress = customerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> CustomerAddressNotFoundException.of(addressId));
 
-        if (!isAdmin() && !isOwner(customerAddress)) {
+        if (!baseSecurityService.isAdmin() && !isOwner(customerAddress)) {
             throw EcoAccessDeniedException.of();
         }
     }
 
     @Override
     public void checkAccessByCustomerId(final UUID customerId) {
-        if (!isAdmin() && !securityReadPort.getCurrentUserId().equals(customerId)) {
+        if (!baseSecurityService.isAdmin() && !baseSecurityService.isCurrentUser(customerId)) {
             throw EcoAccessDeniedException.of();
         }
     }
 
     @Override
     public void requireCustomerAuthentication() {
-        if (!securityReadPort.hasRole(Role.CUSTOMER)) {
+        if (!baseSecurityService.isCustomer()) {
             throw EcoAccessDeniedException.of();
         }
-    }
-
-    private boolean isAdmin() {
-        return securityReadPort.hasRole(Role.ADMIN);
     }
 
     private boolean isOwner(final CustomerAddress address) {
