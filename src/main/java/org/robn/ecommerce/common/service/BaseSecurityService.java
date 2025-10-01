@@ -12,4 +12,9 @@ public interface BaseSecurityService {
 
     boolean isCurrentUser(UUID userId);
 
+    void requireAdminAccess();
+
+    void requireSellerAuthentication();
+
 }
+

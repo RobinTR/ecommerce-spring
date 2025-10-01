@@ -1,6 +1,7 @@
 package org.robn.ecommerce.common.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.robn.ecommerce.auth.exception.EcoAccessDeniedException;
 import org.robn.ecommerce.auth.model.enums.Role;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.robn.ecommerce.common.service.BaseSecurityService;
@@ -36,4 +37,19 @@ public class BaseSecurityServiceImpl implements BaseSecurityService {
         return securityReadPort.getCurrentUserId().equals(userId);
     }
 
+    @Override
+    public void requireAdminAccess() {
+        if (!this.isAdmin()) {
+            throw EcoAccessDeniedException.of();
+        }
+    }
+
+    @Override
+    public void requireSellerAuthentication() {
+        if (!this.isSeller()) {
+            throw EcoAccessDeniedException.of();
+        }
+    }
+
 }
+
