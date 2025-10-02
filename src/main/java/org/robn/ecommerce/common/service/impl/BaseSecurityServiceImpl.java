@@ -45,6 +45,13 @@ public class BaseSecurityServiceImpl implements BaseSecurityService {
     }
 
     @Override
+    public void requireCustomerAuthentication() {
+        if (!this.isCustomer()) {
+            throw EcoAccessDeniedException.of();
+        }
+    }
+
+    @Override
     public void requireSellerAuthentication() {
         if (!this.isSeller()) {
             throw EcoAccessDeniedException.of();

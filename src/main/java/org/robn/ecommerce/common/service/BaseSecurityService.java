@@ -14,6 +14,8 @@ public interface BaseSecurityService {
 
     void requireAdminAccess();
 
+    void requireCustomerAuthentication();
+
     void requireSellerAuthentication();
 
 }

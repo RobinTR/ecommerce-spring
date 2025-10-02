@@ -9,11 +9,13 @@ import org.robn.ecommerce.auth.exception.EcoAccessDeniedException;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.robn.ecommerce.common.service.BaseSecurityService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecurityService {
 
     private final CustomerAddressReadPort customerAddressReadPort;
@@ -25,7 +27,7 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
         final CustomerAddress customerAddress = customerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> CustomerAddressNotFoundException.of(addressId));
 
-        if (!baseSecurityService.isAdmin() && !isOwner(customerAddress)) {
+        if (!baseSecurityService.isAdmin() && !this.isOwner(customerAddress)) {
             throw EcoAccessDeniedException.of();
         }
     }
@@ -39,9 +41,7 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
 
     @Override
     public void requireCustomerAuthentication() {
-        if (!baseSecurityService.isCustomer()) {
-            throw EcoAccessDeniedException.of();
-        }
+        baseSecurityService.requireCustomerAuthentication();
     }
 
     private boolean isOwner(final CustomerAddress address) {
