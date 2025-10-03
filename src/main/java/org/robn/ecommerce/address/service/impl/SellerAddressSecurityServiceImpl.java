@@ -9,11 +9,13 @@ import org.robn.ecommerce.auth.exception.EcoAccessDeniedException;
 import org.robn.ecommerce.auth.port.SecurityReadPort;
 import org.robn.ecommerce.common.service.BaseSecurityService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SellerAddressSecurityServiceImpl implements SellerAddressSecurityService {
 
     private final SellerAddressReadPort sellerAddressReadPort;
@@ -39,9 +41,7 @@ public class SellerAddressSecurityServiceImpl implements SellerAddressSecuritySe
 
     @Override
     public void requireSellerAuthentication() {
-        if (!baseSecurityService.isSeller()) {
-            throw EcoAccessDeniedException.of();
-        }
+        baseSecurityService.requireSellerAuthentication();
     }
 
     private boolean isOwner(final SellerAddress address) {
