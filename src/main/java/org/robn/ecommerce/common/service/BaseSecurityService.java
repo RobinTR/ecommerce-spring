@@ -12,7 +12,7 @@ public interface BaseSecurityService {
 
     boolean isCurrentUser(UUID userId);
 
-    void requireAdminAccess();
+    void requireAdminAuthentication();
 
     void requireCustomerAuthentication();
 

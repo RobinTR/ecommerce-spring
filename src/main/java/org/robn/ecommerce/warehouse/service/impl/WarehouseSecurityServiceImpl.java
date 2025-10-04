@@ -40,7 +40,7 @@ public class WarehouseSecurityServiceImpl implements WarehouseSecurityService {
 
     @Override
     public void requireAdminAccess() {
-        baseSecurityService.requireAdminAccess();
+        baseSecurityService.requireAdminAuthentication();
     }
 
     @Override

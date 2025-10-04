@@ -38,7 +38,7 @@ public class BaseSecurityServiceImpl implements BaseSecurityService {
     }
 
     @Override
-    public void requireAdminAccess() {
+    public void requireAdminAuthentication() {
         if (!this.isAdmin()) {
             throw EcoAccessDeniedException.of();
         }
