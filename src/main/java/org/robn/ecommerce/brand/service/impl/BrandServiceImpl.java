@@ -8,6 +8,7 @@ import org.robn.ecommerce.brand.model.request.BrandCreateRequest;
 import org.robn.ecommerce.brand.model.request.BrandUpdateRequest;
 import org.robn.ecommerce.brand.port.BrandReadPort;
 import org.robn.ecommerce.brand.port.BrandSavePort;
+import org.robn.ecommerce.brand.service.BrandSecurityService;
 import org.robn.ecommerce.brand.service.BrandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class BrandServiceImpl implements BrandService {
     private final BrandReadPort brandReadPort;
     private final BrandSavePort brandSavePort;
     private final BrandCreateRequestToDomainMapper brandCreateRequestToDomainMapper;
+    private final BrandSecurityService securityService;
 
     @Override
     public List<Brand> findAll() {
@@ -36,6 +38,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public void create(final BrandCreateRequest brandCreateRequest) {
+        securityService.requireAdminAuthentication();
         final Brand brand = brandCreateRequestToDomainMapper.map(brandCreateRequest);
         brandSavePort.save(brand);
     }
@@ -43,6 +46,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public void update(final Long id, final BrandUpdateRequest brandUpdateRequest) {
+        securityService.requireAdminAuthentication();
         final Brand brand = getExistingBrand(id);
         brand.setName(brandUpdateRequest.name());
         brandSavePort.save(brand);
