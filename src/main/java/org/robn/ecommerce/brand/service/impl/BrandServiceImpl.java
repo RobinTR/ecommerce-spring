@@ -8,8 +8,8 @@ import org.robn.ecommerce.brand.model.request.BrandCreateRequest;
 import org.robn.ecommerce.brand.model.request.BrandUpdateRequest;
 import org.robn.ecommerce.brand.port.BrandReadPort;
 import org.robn.ecommerce.brand.port.BrandSavePort;
-import org.robn.ecommerce.brand.service.BrandSecurityService;
 import org.robn.ecommerce.brand.service.BrandService;
+import org.robn.ecommerce.common.service.BaseSecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ public class BrandServiceImpl implements BrandService {
     private final BrandReadPort brandReadPort;
     private final BrandSavePort brandSavePort;
     private final BrandCreateRequestToDomainMapper brandCreateRequestToDomainMapper;
-    private final BrandSecurityService securityService;
+    private final BaseSecurityService securityService;
 
     @Override
     public List<Brand> findAll() {
