@@ -9,6 +9,7 @@ import org.robn.ecommerce.category.model.request.CategoryUpdateRequest;
 import org.robn.ecommerce.category.port.CategoryReadPort;
 import org.robn.ecommerce.category.port.CategorySavePort;
 import org.robn.ecommerce.category.service.CategoryService;
+import org.robn.ecommerce.common.service.BaseSecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryCreateRequestToDomainMapper categoryCreateRequestToDomainMapper;
     private final CategoryReadPort categoryReadPort;
     private final CategorySavePort categorySavePort;
+    private final BaseSecurityService baseSecurityService;
 
     @Override
     public List<Category> findAll() {
@@ -36,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void create(final CategoryCreateRequest categoryCreateRequest) {
+        baseSecurityService.requireAdminAuthentication();
         final Category category = categoryCreateRequestToDomainMapper.map(categoryCreateRequest);
         categorySavePort.save(category);
     }
@@ -43,6 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void update(final Long id, final CategoryUpdateRequest categoryUpdateRequest) {
+        baseSecurityService.requireAdminAuthentication();
         final Category categoryToUpdate = getExistingCategory(id);
         categoryToUpdate.setName(categoryUpdateRequest.name());
         categorySavePort.save(categoryToUpdate);
