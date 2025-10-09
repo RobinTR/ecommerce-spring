@@ -15,6 +15,8 @@ public interface InventoryReadPort {
 
     Optional<Inventory> findById(Long id);
 
+    Optional<Inventory> findByIdAndStockType(Long id, StockType stockType);
+
     Optional<Inventory> findByProductIdAndWarehouseIdAndStockType(Long productId, UUID warehouseId, StockType stockType);
 
 }

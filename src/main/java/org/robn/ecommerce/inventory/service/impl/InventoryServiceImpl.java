@@ -12,6 +12,7 @@ import org.robn.ecommerce.inventory.model.request.InventoryCreateRequest;
 import org.robn.ecommerce.inventory.model.request.InventoryUpdateRequest;
 import org.robn.ecommerce.inventory.port.InventoryReadPort;
 import org.robn.ecommerce.inventory.port.InventorySavePort;
+import org.robn.ecommerce.inventory.service.InventorySecurityService;
 import org.robn.ecommerce.inventory.service.InventoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,34 +25,37 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class InventoryServiceImpl implements InventoryService {
 
-    private final InventoryReadPort readPort;
-    private final InventorySavePort savePort;
+    private final InventoryReadPort inventoryReadPort;
+    private final InventorySavePort inventorySavePort;
     private final InventoryCreateRequestToDomainMapper createRequestToDomainMapper;
     private final InventoryUpdateMapper updateMapper;
-
-    @Override
-    public List<Inventory> findAllByProductId(final Long productId) {
-        return readPort.findAllByProductId(productId);
-    }
+    private final InventorySecurityService securityService;
 
     @Override
     public List<Inventory> findAllByWarehouseId(final UUID warehouseId) {
-        return readPort.findAllByWarehouseId(warehouseId);
+        securityService.checkAccessByWarehouseId(warehouseId);
+
+        return inventoryReadPort.findAllByWarehouseId(warehouseId);
     }
 
     @Override
-    public Inventory findById(final Long id) {
-        return getInventoryOrThrow(id);
+    public List<Inventory> findAllByProductId(final Long productId) {
+        securityService.checkAccessByProductId(productId);
+
+        return inventoryReadPort.findAllByProductId(productId);
     }
 
+    // No security check - used for both administrative queries (via controller security)
+    // and customer checkout operations (public stock verification)
     @Override
-    public Inventory findByProductIdAndWarehouseIdAndStockType(final Long productId, final UUID warehouseId, final StockType stockType) {
-        return readPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, stockType).orElseThrow(() -> InventoryByProductAndWarehouseAndStockTypeNotFoundException.of(productId, warehouseId, stockType));
+    public Inventory findAvailableByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
+        return inventoryReadPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, StockType.AVAILABLE).orElseThrow(() -> InventoryByProductAndWarehouseAndStockTypeNotFoundException.of(productId, warehouseId, StockType.AVAILABLE));
     }
 
     @Override
     @Transactional
     public Inventory create(final InventoryCreateRequest inventoryCreateRequest) {
+        securityService.checkAccessBySellerAuthenticationAndProductOwnership(inventoryCreateRequest.productId());
         final Long productId = inventoryCreateRequest.productId();
         final UUID warehouseId = inventoryCreateRequest.warehouseId();
 
@@ -65,24 +69,25 @@ public class InventoryServiceImpl implements InventoryService {
         final Inventory inventory = createRequestToDomainMapper.map(inventoryCreateRequest);
         inventory.setStockType(StockType.AVAILABLE);
 
-        return savePort.save(inventory);
+        return inventorySavePort.save(inventory);
     }
 
     @Override
     @Transactional
     public Inventory update(final Long id, final InventoryUpdateRequest inventoryUpdateRequest) {
-        final Inventory inventory = getInventoryOrThrow(id);
+        final Inventory inventory = this.getInventoryOrThrow(id);
+        securityService.checkAccessByWarehouseId(inventory.getWarehouseId());
         updateMapper.update(inventory, inventoryUpdateRequest);
 
-        return savePort.save(inventory);
+        return inventorySavePort.save(inventory);
     }
 
     private Inventory getInventoryOrThrow(final Long id) {
-        return readPort.findById(id).orElseThrow(() -> InventoryNotFoundException.of(id));
+        return inventoryReadPort.findById(id).orElseThrow(() -> InventoryNotFoundException.of(id));
     }
 
     private boolean existsByProductIdAndWarehouseId(final Long productId, final UUID warehouseId) {
-        return readPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, StockType.AVAILABLE).isPresent();
+        return inventoryReadPort.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, StockType.AVAILABLE).isPresent();
     }
 
 }

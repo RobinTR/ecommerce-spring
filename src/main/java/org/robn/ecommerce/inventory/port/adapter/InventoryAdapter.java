@@ -45,6 +45,13 @@ public class InventoryAdapter implements InventoryReadPort, InventorySavePort {
     }
 
     @Override
+    public Optional<Inventory> findByIdAndStockType(final Long id, final StockType stockType) {
+        final Optional<InventoryEntity> inventoryEntity = inventoryRepository.findByIdAndStockType(id, stockType);
+
+        return inventoryEntity.map(inventoryEntityToDomainMapper::map);
+    }
+
+    @Override
     public Optional<Inventory> findByProductIdAndWarehouseIdAndStockType(final Long productId, final UUID warehouseId, final StockType stockType) {
         final Optional<InventoryEntity> inventoryEntity = inventoryRepository.findByProductIdAndWarehouseIdAndStockType(productId, warehouseId, stockType);
 

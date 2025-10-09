@@ -14,7 +14,8 @@ public interface InventoryRepository extends JpaRepository<InventoryEntity, Long
 
     List<InventoryEntity> findAllByWarehouseId(UUID warehouseId);
 
+    Optional<InventoryEntity> findByIdAndStockType(Long id, StockType stockType);
+
     Optional<InventoryEntity> findByProductIdAndWarehouseIdAndStockType(Long productId, UUID warehouseId, StockType stockType);
 
 }
-
