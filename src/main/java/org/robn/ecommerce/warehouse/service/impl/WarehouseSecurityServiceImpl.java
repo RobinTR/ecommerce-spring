@@ -26,7 +26,7 @@ public class WarehouseSecurityServiceImpl implements WarehouseSecurityService {
     public void checkAccessByWarehouseId(final UUID warehouseId) {
         final Warehouse warehouse = warehouseReadPort.findById(warehouseId).orElseThrow(() -> WarehouseNotFoundException.of(warehouseId));
 
-        if (!baseSecurityService.isAdmin() && !isOwner(warehouse)) {
+        if (!baseSecurityService.isAdmin() && !this.isOwner(warehouse)) {
             throw EcoAccessDeniedException.of();
         }
     }

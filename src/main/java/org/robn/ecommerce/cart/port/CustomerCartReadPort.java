@@ -15,4 +15,6 @@ public interface CustomerCartReadPort {
 
     Optional<CustomerCart> findByCartId(UUID cartId);
 
+    boolean existsByIdAndCustomerId(UUID cartId, UUID customerId);
+
 }

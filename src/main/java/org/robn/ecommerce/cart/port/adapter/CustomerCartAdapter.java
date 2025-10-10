@@ -45,6 +45,11 @@ public class CustomerCartAdapter implements CustomerCartReadPort, CustomerCartSa
     }
 
     @Override
+    public boolean existsByIdAndCustomerId(final UUID cartId, final UUID customerId) {
+        return customerCartRepository.existsByIdAndCustomerId(cartId, customerId);
+    }
+
+    @Override
     public CustomerCart save(final CustomerCart customerCart) {
         final CustomerCartEntity customerCartEntity = domainToEntityMapper.map(customerCart);
         final CustomerCartEntity savedEntity = customerCartRepository.save(customerCartEntity);

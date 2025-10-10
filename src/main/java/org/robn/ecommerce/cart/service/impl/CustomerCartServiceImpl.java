@@ -10,6 +10,7 @@ import org.robn.ecommerce.cart.model.request.AddToCartRequest;
 import org.robn.ecommerce.cart.port.CustomerCartReadPort;
 import org.robn.ecommerce.cart.port.CustomerCartSavePort;
 import org.robn.ecommerce.cart.service.CartItemService;
+import org.robn.ecommerce.cart.service.CartSecurityService;
 import org.robn.ecommerce.cart.service.CartService;
 import org.robn.ecommerce.cart.service.CustomerCartService;
 import org.springframework.stereotype.Service;
@@ -29,20 +30,26 @@ public class CustomerCartServiceImpl implements CustomerCartService {
     private final SecurityReadPort securityReadPort;
     private final CartService cartService;
     private final CartItemService cartItemService;
+    private final CartSecurityService cartSecurityService;
 
     @Override
     public List<CustomerCart> findAllByCustomerId(final UUID customerId) {
+        cartSecurityService.requireAdminAuthentication();
+
         return customerCartReadPort.findAllByCustomerId(customerId);
     }
 
     @Override
     public CustomerCart findByCartId(final UUID cartId) {
+        cartSecurityService.checkAccessByCartId(cartId);
+
         return customerCartReadPort.findByCartId(cartId).orElseThrow(() -> CustomerCartNotFoundException.of(cartId));
     }
 
     @Override
     @Transactional
     public CustomerCart create(final AddToCartRequest addToCartRequest) {
+        cartSecurityService.requireCustomerAuthentication();
         final List<CustomerCart> existingCarts = customerCartReadPort.findAllByCustomerIdAndCartStatus(securityReadPort.getCurrentUserId(), CartStatus.ACTIVE);
 
         if (!existingCarts.isEmpty()) {
@@ -53,6 +60,7 @@ public class CustomerCartServiceImpl implements CustomerCartService {
     }
 
     private CustomerCart createNewCart(final AddToCartRequest request) {
+        cartSecurityService.requireCustomerAuthentication();
         final CustomerCart customerCart = CustomerCart.builder()
                 .customerId(securityReadPort.getCurrentUserId())
                 .discountAmount(BigDecimal.ZERO)

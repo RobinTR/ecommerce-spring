@@ -13,4 +13,6 @@ public interface CustomerCartRepository extends JpaRepository<CustomerCartEntity
 
     List<CustomerCartEntity> findAllByCustomerIdAndCartStatus(UUID customerId, CartStatus cartStatus);
 
+    boolean existsByIdAndCustomerId(UUID cartId, UUID customerId);
+
 }
