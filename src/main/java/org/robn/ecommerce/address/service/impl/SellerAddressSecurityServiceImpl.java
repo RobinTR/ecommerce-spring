@@ -24,10 +24,14 @@ public class SellerAddressSecurityServiceImpl implements SellerAddressSecuritySe
 
     @Override
     public void checkAccessByAddressId(final UUID addressId) {
+        if (baseSecurityService.isAdmin()) {
+            return;
+        }
+
         final SellerAddress sellerAddress = sellerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> SellerAddressNotFoundException.of(addressId));
 
-        if (!baseSecurityService.isAdmin() && !isOwner(sellerAddress)) {
+        if (!this.isOwner(sellerAddress)) {
             throw EcoAccessDeniedException.of();
         }
     }

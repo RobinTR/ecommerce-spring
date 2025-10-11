@@ -14,12 +14,12 @@ public class SecurityAdapter implements SecurityReadPort {
 
     @Override
     public UUID getCurrentUserId() {
-        return (UUID) getAuthentication().getPrincipal();
+        return (UUID) this.getAuthentication().getPrincipal();
     }
 
     @Override
     public boolean hasRole(final Role role) {
-        return getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role.getAuthority()));
+        return this.getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role.getAuthority()));
     }
 
     private Authentication getAuthentication() {

@@ -24,10 +24,14 @@ public class CustomerAddressSecurityServiceImpl implements CustomerAddressSecuri
 
     @Override
     public void checkAccessByAddressId(final UUID addressId) {
+        if (baseSecurityService.isAdmin()) {
+            return;
+        }
+
         final CustomerAddress customerAddress = customerAddressReadPort.findByAddressId(addressId)
                 .orElseThrow(() -> CustomerAddressNotFoundException.of(addressId));
 
-        if (!baseSecurityService.isAdmin() && !this.isOwner(customerAddress)) {
+        if (!this.isOwner(customerAddress)) {
             throw EcoAccessDeniedException.of();
         }
     }
