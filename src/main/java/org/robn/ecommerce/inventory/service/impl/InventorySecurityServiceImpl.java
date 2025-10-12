@@ -26,18 +26,26 @@ public class InventorySecurityServiceImpl implements InventorySecurityService {
 
     @Override
     public void checkAccessByProductId(final Long productId) {
+        if (baseSecurityService.isAdmin()) {
+            return;
+        }
+
         final Product product = productService.findById(productId);
 
-        if (!baseSecurityService.isAdmin() && !product.isOwnedBy(securityReadPort.getCurrentUserId())) {
+        if (!product.isOwnedBy(securityReadPort.getCurrentUserId())) {
             throw EcoAccessDeniedException.of();
         }
     }
 
     @Override
     public void checkAccessByWarehouseId(final UUID warehouseId) {
+        if (baseSecurityService.isAdmin()) {
+            return;
+        }
+
         final Warehouse warehouse = warehouseService.findById(warehouseId);
 
-        if (!baseSecurityService.isAdmin() && !warehouse.isOwnedBy(securityReadPort.getCurrentUserId())) {
+        if (!warehouse.isOwnedBy(securityReadPort.getCurrentUserId())) {
             throw EcoAccessDeniedException.of();
         }
     }
