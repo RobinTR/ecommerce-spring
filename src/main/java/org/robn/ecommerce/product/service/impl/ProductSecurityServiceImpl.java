@@ -22,9 +22,13 @@ public class ProductSecurityServiceImpl implements ProductSecurityService {
 
     @Override
     public void checkAccessByProductId(final Long productId) {
+        if (baseSecurityService.isAdmin()) {
+            return;
+        }
+
         final Product product = productReadPort.findById(productId).orElseThrow(() -> ProductNotFoundException.of(productId));
 
-        if (!baseSecurityService.isAdmin() && !this.isOwner(product)) {
+        if (!this.isOwner(product)) {
             throw EcoAccessDeniedException.of();
         }
     }
