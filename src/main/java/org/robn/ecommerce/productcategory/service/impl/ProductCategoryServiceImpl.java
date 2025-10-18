@@ -9,6 +9,7 @@ import org.robn.ecommerce.productcategory.model.request.ProductCategoryCreateReq
 import org.robn.ecommerce.productcategory.port.ProductCategoryDeletePort;
 import org.robn.ecommerce.productcategory.port.ProductCategoryReadPort;
 import org.robn.ecommerce.productcategory.port.ProductCategorySavePort;
+import org.robn.ecommerce.productcategory.service.ProductCategorySecurityService;
 import org.robn.ecommerce.productcategory.service.ProductCategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     private final ProductCategorySavePort productCategorySavePort;
     private final ProductCategoryDeletePort productCategoryDeletePort;
     private final ProductCategoryCreateRequestToDomainMapper productCategoryCreateRequestToDomainMapper;
+    private final ProductCategorySecurityService productCategorySecurityService;
 
     @Override
     public List<Category> findAllCategoriesByProductId(final Long productId) {
@@ -38,6 +40,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional
     public void create(final ProductCategoryCreateRequest productCategoryCreateRequest) {
+        productCategorySecurityService.checkAccessByProductId(productCategoryCreateRequest.productId());
         final ProductCategory productCategory = productCategoryCreateRequestToDomainMapper.map(productCategoryCreateRequest);
         productCategorySavePort.save(productCategory);
     }
@@ -45,6 +48,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional
     public void delete(final Long productId, final Long categoryId) {
+        productCategorySecurityService.checkAccessByProductId(productId);
         productCategoryDeletePort.delete(productId, categoryId);
     }
 
