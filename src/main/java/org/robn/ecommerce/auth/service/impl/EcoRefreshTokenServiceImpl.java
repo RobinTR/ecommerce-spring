@@ -32,8 +32,7 @@ public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
     @Transactional
     public EcoRefreshToken generateRefreshToken(final UUID userId, final String deviceId) {
         final EcoUser user = ecoUserReadPort.findById(userId).orElseThrow(() -> EcoUserNotFoundException.of(userId));
-
-        final EcoRefreshToken ecoRefreshToken = buildRefreshToken(user.getId(), deviceId);
+        final EcoRefreshToken ecoRefreshToken = this.buildRefreshToken(user.getId(), deviceId);
 
         return refreshTokenSavePort.save(ecoRefreshToken);
     }
@@ -67,7 +66,7 @@ public class EcoRefreshTokenServiceImpl implements EcoRefreshTokenService {
         existingToken.setRevoked(true);
         refreshTokenSavePort.save(existingToken);
 
-        final EcoRefreshToken newToken = buildRefreshToken(userId, deviceId);
+        final EcoRefreshToken newToken = this.buildRefreshToken(userId, deviceId);
 
         return refreshTokenSavePort.save(newToken);
     }
