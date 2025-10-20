@@ -10,8 +10,8 @@ import org.robn.ecommerce.auth.config.EcoAuthConfiguration;
 import org.robn.ecommerce.auth.exception.EcoInvalidTokenException;
 import org.robn.ecommerce.auth.model.EcoRefreshToken;
 import org.robn.ecommerce.auth.model.EcoToken;
-import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.auth.service.EcoRefreshTokenService;
+import org.robn.ecommerce.auth.service.EcoTokenService;
 import org.robn.ecommerce.auth.util.CryptoUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +31,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
 
     @Override
     public EcoToken generateToken(final Claims claims, String deviceId) {
-        final String accessToken = initializeToken(claims);
+        final String accessToken = this.initializeToken(claims);
         final EcoRefreshToken ecoRefreshToken = ecoRefreshTokenService.generateRefreshToken(getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
@@ -42,7 +42,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
 
     @Override
     public EcoToken generateToken(final Claims claims, final String refreshToken, String deviceId) {
-        final String accessToken = initializeToken(claims);
+        final String accessToken = this.initializeToken(claims);
         final EcoRefreshToken newEcoRefreshToken = ecoRefreshTokenService.rotate(refreshToken, getUserId(accessToken), deviceId);
 
         return EcoToken.builder()
@@ -67,7 +67,7 @@ public class EcoTokenServiceImpl implements EcoTokenService {
 
     @Override
     public UUID getUserId(final String token) {
-        final Claims claims = getPayload(token);
+        final Claims claims = this.getPayload(token);
         final String userId = claims.get("userId", String.class);
 
         return UUID.fromString(userId);
@@ -92,8 +92,8 @@ public class EcoTokenServiceImpl implements EcoTokenService {
 
     @Override
     public UsernamePasswordAuthenticationToken getAuthentication(final String token) {
-        final Claims claims = getPayload(token);
-        final UUID userId = getUserId(token);
+        final Claims claims = this.getPayload(token);
+        final UUID userId = this.getUserId(token);
         final List<String> roles = claims.get("roles", List.class);
         final List<SimpleGrantedAuthority> authorities = roles == null
                 ? List.of()
