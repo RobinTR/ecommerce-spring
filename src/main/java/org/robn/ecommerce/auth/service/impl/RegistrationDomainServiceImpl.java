@@ -27,7 +27,7 @@ public class RegistrationDomainServiceImpl implements RegistrationDomainService 
 
     @Override
     public void prepareForRegistration(final EcoUser user, final Role role) {
-        ensureEmailIsUnique(user.getEmail());
+        this.ensureEmailIsUnique(user.getEmail());
         user.setEcoUserStatus(EcoUserStatus.ACTIVE);
         user.setPassword(passwordHashSavePort.hashPassword(user.getPassword()));
         user.setRoles(getRoles(role));
