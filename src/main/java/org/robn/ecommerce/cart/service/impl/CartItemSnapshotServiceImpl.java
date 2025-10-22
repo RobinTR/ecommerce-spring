@@ -30,9 +30,9 @@ public class CartItemSnapshotServiceImpl implements CartItemSnapshotService {
 
     @Override
     @Transactional
-    public List<CartItemSnapshot> createCartItemSnapshotsFromCartSnapshotId(final UUID cartSnapshotId, UUID cartId) {
-        final List<CartItem> cartItems = getActiveCartItemsByCartId(cartId);
-        final List<CartItemSnapshot> cartItemSnapshots = createCartItemSnapshots(cartItems, cartSnapshotId);
+    public List<CartItemSnapshot> createCartItemSnapshotsFromCartSnapshotId(final UUID cartSnapshotId, final UUID cartId) {
+        final List<CartItem> cartItems = this.getActiveCartItemsByCartId(cartId);
+        final List<CartItemSnapshot> cartItemSnapshots = this.createCartItemSnapshots(cartItems, cartSnapshotId);
 
         return cartItemSnapshotSavePort.saveAll(cartItemSnapshots);
     }
@@ -50,7 +50,7 @@ public class CartItemSnapshotServiceImpl implements CartItemSnapshotService {
 
     private CartItemSnapshot createCartItemSnapshot(final CartItem cartItem, final Product product, final UUID cartSnapshotId) {
         final CartItemSnapshot cartItemSnapshot = cartItemToCartItemSnapshotMapper.map(cartItem);
-        setCartItemSnapshot(cartItemSnapshot, cartItem, product, cartSnapshotId);
+        this.setCartItemSnapshot(cartItemSnapshot, cartItem, product, cartSnapshotId);
 
         return cartItemSnapshot;
     }
