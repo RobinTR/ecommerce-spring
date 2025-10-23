@@ -53,10 +53,10 @@ public class CustomerCartServiceImpl implements CustomerCartService {
         final List<CustomerCart> existingCarts = customerCartReadPort.findAllByCustomerIdAndCartStatus(securityReadPort.getCurrentUserId(), CartStatus.ACTIVE);
 
         if (!existingCarts.isEmpty()) {
-            return updateExistingCart(existingCarts.getFirst(), addToCartRequest);
+            return this.updateExistingCart(existingCarts.getFirst(), addToCartRequest);
         }
 
-        return createNewCart(addToCartRequest);
+        return this.createNewCart(addToCartRequest);
     }
 
     private CustomerCart createNewCart(final AddToCartRequest request) {
