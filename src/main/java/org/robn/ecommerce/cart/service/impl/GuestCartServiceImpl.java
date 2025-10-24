@@ -47,10 +47,10 @@ public class GuestCartServiceImpl implements GuestCartService {
         final List<GuestCart> existingCarts = guestCartReadPort.findAllByGuestIdAndCartStatus(guest.getId(), CartStatus.ACTIVE);
 
         if (!existingCarts.isEmpty()) {
-            return updateExistingCart(existingCarts.getFirst(), addToCartRequest);
+            return this.updateExistingCart(existingCarts.getFirst(), addToCartRequest);
         }
 
-        return createNewCart(guest, addToCartRequest);
+        return this.createNewCart(guest, addToCartRequest);
     }
 
     private GuestCart createNewCart(final Guest guest, final AddToCartRequest request) {
