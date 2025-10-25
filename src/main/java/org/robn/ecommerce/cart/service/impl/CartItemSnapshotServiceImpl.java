@@ -45,7 +45,7 @@ public class CartItemSnapshotServiceImpl implements CartItemSnapshotService {
         final List<Long> productIds = cartItems.stream().map(CartItem::getProductId).toList();
         final Map<Long, Product> productMap = productService.findAllByIds(productIds).stream().collect(Collectors.toMap(Product::getId, product -> product));
 
-        return cartItems.stream().map(cartItem -> createCartItemSnapshot(cartItem, productMap.get(cartItem.getProductId()), cartSnapshotId)).toList();
+        return cartItems.stream().map(cartItem -> this.createCartItemSnapshot(cartItem, productMap.get(cartItem.getProductId()), cartSnapshotId)).toList();
     }
 
     private CartItemSnapshot createCartItemSnapshot(final CartItem cartItem, final Product product, final UUID cartSnapshotId) {
