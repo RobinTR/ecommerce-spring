@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(final Long id) {
-        return getExistingCategory(id);
+        return this.getExistingCategory(id);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void update(final Long id, final CategoryUpdateRequest categoryUpdateRequest) {
         baseSecurityService.requireAdminAuthentication();
-        final Category categoryToUpdate = getExistingCategory(id);
+        final Category categoryToUpdate = this.getExistingCategory(id);
         categoryToUpdate.setName(categoryUpdateRequest.name());
         categorySavePort.save(categoryToUpdate);
     }
