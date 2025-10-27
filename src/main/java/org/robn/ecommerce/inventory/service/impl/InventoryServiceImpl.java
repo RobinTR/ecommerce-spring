@@ -59,7 +59,7 @@ public class InventoryServiceImpl implements InventoryService {
         final Long productId = inventoryCreateRequest.productId();
         final UUID warehouseId = inventoryCreateRequest.warehouseId();
 
-        if (existsByProductIdAndWarehouseId(productId, warehouseId)) {
+        if (this.existsByProductIdAndWarehouseId(productId, warehouseId)) {
             throw InventoryAlreadyExistsException.of(
                     productId,
                     warehouseId
