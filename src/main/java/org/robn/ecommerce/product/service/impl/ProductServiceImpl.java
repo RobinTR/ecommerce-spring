@@ -46,13 +46,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(final Long id) {
-        return getProductById(id);
+        return this.getProductById(id);
     }
 
     @Override
     @Transactional
     public void create(final ProductCreateRequest productCreateRequest) {
-        ensureBrandExists(productCreateRequest.brandId());
+        this.ensureBrandExists(productCreateRequest.brandId());
         final Product product = productCreateRequestToDomainMapper.map(productCreateRequest);
         product.setSellerId(securityReadPort.getCurrentUserId());
         final Product savedProduct = productSavePort.save(product);
@@ -65,10 +65,10 @@ public class ProductServiceImpl implements ProductService {
         productSecurityService.checkAccessByProductId(id);
 
         if (productUpdateRequest.brandId() != null) {
-            ensureBrandExists(productUpdateRequest.brandId());
+            this.ensureBrandExists(productUpdateRequest.brandId());
         }
 
-        final Product product = getProductById(id);
+        final Product product = this.getProductById(id);
         productUpdateMapper.update(product, productUpdateRequest);
         productSavePort.save(product);
     }
