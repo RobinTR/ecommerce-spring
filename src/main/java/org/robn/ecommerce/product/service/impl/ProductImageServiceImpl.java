@@ -70,14 +70,14 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     @Transactional
     public void uploadImages(final Long productId, final List<MultipartFile> files, final List<String> altTexts) {
-        ensureProductExists(productId);
-        checkForImageSizeLimit(productId, files.size());
+        this.ensureProductExists(productId);
+        this.checkForImageSizeLimit(productId, files.size());
 
         for (int i = 0; i < files.size(); i++) {
             final MultipartFile file = files.get(i);
             final String altText = (altTexts != null && i < altTexts.size()) ? altTexts.get(i) : null;
             final UploadedImage uploadedImage = imageStoragePort.upload(file);
-            final ProductImage productImage = buildProductImage(productId, uploadedImage, altText);
+            final ProductImage productImage = this.buildProductImage(productId, uploadedImage, altText);
             productImageSavePort.save(productImage);
         }
     }
