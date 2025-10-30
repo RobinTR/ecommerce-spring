@@ -41,7 +41,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public Warehouse findById(final UUID id) {
         warehouseSecurityService.checkAccessByWarehouseId(id);
 
-        return getWarehouseById(id);
+        return this.getWarehouseById(id);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Transactional
     public Warehouse update(final UUID id, final WarehouseUpdateRequest warehouseUpdateRequest) {
         warehouseSecurityService.checkAccessByWarehouseId(id);
-        final Warehouse warehouse = getWarehouseById(id);
+        final Warehouse warehouse = this.getWarehouseById(id);
         warehouseUpdateMapper.update(warehouse, warehouseUpdateRequest);
 
         return warehouseSavePort.save(warehouse);
